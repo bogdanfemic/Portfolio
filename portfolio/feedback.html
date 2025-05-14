@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Feedback | Bogdan Femic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* Base Styles (copied from index.html) */
+    :root {
+      --primary-color: #6C63FF;
+      --secondary-color: #FF6584;
+      --accent-color: #43CBFF;
+      --background-color: #FFFFFF;
+      --text-color: #333333;
+      --light-gray: #F5F5F5;
+      --medium-gray: #E0E0E0;
+      --dark-gray: #888888;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', 'Montserrat', sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    section {
+      padding: 80px 0;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 1rem 0;
+      background-color: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-link {
+      margin: 0 1rem;
+      font-weight: 500;
+      color: var(--text-color);
+      position: relative;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 3rem 0 2rem;
+    }
+
+    .footer-content {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .social-link {
+      color: white;
+      font-size: 1.5rem;
+    }
+
+    .footer-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-link {
+      color: white;
+      font-weight: 500;
+    }
+
+    .copyright {
+      text-align: center;
+      font-size: 0.875rem;
+      opacity: 0.8;
+    }
+
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: var(--primary-color);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      z-index: 100;
+      border: none;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .theme-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    /* Dark Mode Styles */
+    .dark-mode {
+      --primary-color: #8C83FF;
+      --secondary-color: #FF85A4;
+      --accent-color: #63EBFF;
+      --background-color: #121212;
+      --text-color: #E0E0E0;
+      --light-gray: #1E1E1E;
+      --medium-gray: #333333;
+      --dark-gray: #AAAAAA;
+    }
+    
+    .dark-mode body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+    }
+    
+    .dark-mode header {
+      background-color: rgba(18, 18, 18, 0.95);
+    }
+    
+    .dark-mode .nav-link {
+      color: var(--text-color);
+    }
+
+    /* Feedback Page Specific Styles */
+    .feedback-container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 120px 0 60px;
+    }
+    
+    .feedback-intro {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .feedback-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+    
+    .feedback-subtitle {
+      font-size: 1.25rem;
+      color: var(--dark-gray);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    
+    .feedback-options {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .feedback-option {
+      padding: 10px 20px;
+      background-color: var(--light-gray);
+      border: none;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .feedback-option.active {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .feedback-option:hover {
+      transform: translateY(-3px);
+    }
+    
+    .feedback-board-container {
+      position: relative;
+      width: 100%;
+      height: 600px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+    
+    #feedback-board {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+    }
+    
+    .board-tools {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background-color: white;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+    }
+    
+    .tool-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      background-color: var(--light-gray);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .tool-btn:hover {
+      background-color: var(--medium-gray);
+    }
+    
+    .tool-btn.active {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .color-picker {
+      display: flex;
+      gap: 5px;
+      margin-top: 10px;
+    }
+    
+    .color-option {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid white;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    
+    .color-option:hover {
+      transform: scale(1.2);
+    }
+    
+    .color-option.active {
+      border-color: var(--primary-color);
+      transform: scale(1.2);
+    }
+    
+    .sticky-notes-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5;
+    }
+    
+    .sticky-note {
+      position: absolute;
+      width: 200px;
+      min-height: 100px;
+      padding: 15px;
+      background-color: #FFFD8C;
+      box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 2px;
+      cursor: move;
+      pointer-events: auto;
+      z-index: 6;
+      transform: rotate(var(--rotate));
+    }
+    
+    .sticky-note::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      background-color: rgba(0, 0, 0, 0.05);
+      border-radius: 2px 2px 0 0;
+    }
+    
+    .sticky-note-content {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      width: 100%;
+      min-height: 70px;
+      border: none;
+      background-color: transparent;
+      resize: none;
+      outline: none;
+    }
+    
+    .sticky-note-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 5px;
+      font-size: 0.8rem;
+      color: #888;
+    }
+    
+    .sticky-note-delete {
+      cursor: pointer;
+      color: #ff6b6b;
+    }
+    
+    .sticky-note-delete:hover {
+      color: #ff3333;
+    }
+    
+    .reactions-container {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 10;
+    }
+    
+    .reaction-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: none;
+      background-color: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      font-size: 1.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .reaction-btn:hover {
+      transform: scale(1.1);
+    }
+    
+    .reaction {
+      position: absolute;
+      font-size: 2rem;
+      pointer-events: none;
+      animation: float-up 3s forwards;
+      z-index: 15;
+    }
+    
+    @keyframes float-up {
+      0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-100px) scale(1.5);
+      }
+    }
+    
+    .save-feedback {
+      display: block;
+      margin: 30px auto 0;
+      padding: 12px 30px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .save-feedback:hover {
+      background-color: #5a52d5;
+      transform: translateY(-3px);
+    }
+    
+    .feedback-gallery {
+      margin-top: 60px;
+    }
+    
+    .gallery-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--primary-color);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    
+    .gallery-item {
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .gallery-item:hover {
+      transform: translateY(-5px);
+    }
+    
+    .gallery-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    
+    .gallery-info {
+      padding: 15px;
+    }
+    
+    .gallery-author {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    
+    .gallery-date {
+      font-size: 0.8rem;
+      color: var(--dark-gray);
+    }
+    
+    /* Dark Mode Styles */
+    .dark-mode .feedback-option {
+      background-color: var(--medium-gray);
+      color: var(--text-color);
+    }
+    
+    .dark-mode .feedback-option.active {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .dark-mode .feedback-board-container {
+      background-color: var(--light-gray);
+    }
+    
+    .dark-mode .board-tools {
+      background-color: var(--medium-gray);
+    }
+    
+    .dark-mode .tool-btn {
+      background-color: var(--light-gray);
+      color: var(--text-color);
+    }
+    
+    .dark-mode .tool-btn:hover {
+      background-color: #444;
+    }
+    
+    .dark-mode .tool-btn.active {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .dark-mode .sticky-note {
+      background-color: #5d5c3c;
+      color: white;
+    }
+    
+    .dark-mode .sticky-note-content {
+      color: white;
+    }
+    
+    .dark-mode .sticky-note-footer {
+      color: #ccc;
+    }
+    
+    .dark-mode .reaction-btn {
+      background-color: var(--medium-gray);
+      color: var(--text-color);
+    }
+    
+    .dark-mode .gallery-item {
+      background-color: var(--light-gray);
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .feedback-board-container {
+        height: 400px;
+      }
+      
+      .board-tools {
+        flex-direction: row;
+        top: auto;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      
+      .color-picker {
+        margin-top: 0;
+        margin-left: 10px;
+      }
+      
+      .sticky-note {
+        width: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Custom Cursor -->
+  <div class="custom-cursor"></div>
+  
+  <!-- Header -->
+  <header>
+    <div class="nav-container">
+      <div class="logo">BF</div>
+      <nav class="nav-links">
+        <a href="index.html#home" class="nav-link">Home</a>
+        <a href="index.html#about" class="nav-link">About</a>
+        <a href="index.html#projects" class="nav-link">Projects</a>
+        <a href="index.html#skills" class="nav-link">Skills</a>
+        <a href="index.html#contact" class="nav-link">Contact</a>
+        <a href="feedback.html" class="nav-link">Feedback</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Feedback Section -->
+  <section id="feedback">
+    <div class="feedback-container">
+      <div class="feedback-intro">
+        <h1 class="feedback-title">Interactive Feedback Board</h1>
+        <p class="feedback-subtitle">Leave your thoughts, suggestions, or just a friendly note in a creative way. Draw, write, or add sticky notes to the board below.</p>
+      </div>
+      
+      <div class="feedback-options">
+        <button class="feedback-option active" data-mode="draw">Draw</button>
+        <button class="feedback-option" data-mode="sticky">Sticky Notes</button>
+        <button class="feedback-option" data-mode="react">Reactions</button>
+      </div>
+      
+      <div class="feedback-board-container">
+        <canvas id="feedback-board"></canvas>
+        
+        <div class="board-tools">
+          <button class="tool-btn active" id="pen-tool" title="Pen Tool">
+            <i class="fas fa-pen"></i>
+          </button>
+          <button class="tool-btn" id="eraser-tool" title="Eraser">
+            <i class="fas fa-eraser"></i>
+          </button>
+          <button class="tool-btn" id="clear-board" title="Clear Board">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+          
+          <div class="color-picker">
+            <div class="color-option active" style="background-color: #000000;" data-color="#000000"></div>
+            <div class="color-option" style="background-color: #FF5252;" data-color="#FF5252"></div>
+            <div class="color-option" style="background-color: #4CAF50;" data-color="#4CAF50"></div>
+            <div class="color-option" style="background-color: #2196F3;" data-color="#2196F3"></div>
+            <div class="color-option" style="background-color: #FFC107;" data-color="#FFC107"></div>
+          </div>
+        </div>
+        
+        <div class="sticky-notes-container" id="sticky-notes-container"></div>
+        
+        <div class="reactions-container">
+          <button class="reaction-btn" data-emoji="👍">👍</button>
+          <button class="reaction-btn" data-emoji="❤️">❤️</button>
+          <button class="reaction-btn" data-emoji="🎉">🎉</button>
+          <button class="reaction-btn" data-emoji="👏">👏</button>
+        </div>
+      </div>
+      
+      <button class="save-feedback">Save My Feedback</button>
+      
+      <div class="feedback-gallery">
+        <h2 class="gallery-title">Feedback Gallery</h2>
+        <div class="gallery-grid">
+          <!-- These would be dynamically populated in a real implementation -->
+          <div class="gallery-item">
+            <img src="https://via.placeholder.com/300x200?text=Feedback+1" alt="Feedback" class="gallery-image">
+            <div class="gallery-info">
+              <div class="gallery-author">John Doe</div>
+              <div class="gallery-date">May 10, 2025</div>
+            </div>
+          </div>
+          
+          <div class="gallery-item">
+            <img src="https://via.placeholder.com/300x200?text=Feedback+2" alt="Feedback" class="gallery-image">
+            <div class="gallery-info">
+              <div class="gallery-author">Jane Smith</div>
+              <div class="gallery-date">May 8, 2025</div>
+            </div>
+          </div>
+          
+          <div class="gallery-item">
+            <img src="https://via.placeholder.com/300x200?text=Feedback+3" alt="Feedback" class="gallery-image">
+            <div class="gallery-info">
+              <div class="gallery-author">Alex Johnson</div>
+              <div class="gallery-date">May 5, 2025</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-logo">Bogdan Femic</div>
+      
+      <div class="social-links">
+        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-link"><i class="fas fa-envelope"></i></a>
+      </div>
+      
+      <div class="footer-nav">
+        <a href="index.html#home" class="footer-link">Home</a>
+        <a href="index.html#about" class="footer-link">About</a>
+        <a href="index.html#projects" class="footer-link">Projects</a>
+        <a href="index.html#skills" class="footer-link">Skills</a>
+        <a href="index.html#contact" class="footer-link">Contact</a>
+        <a href="feedback.html" class="footer-link">Feedback</a>
+      </div>
+      
+      <div class="copyright">
+        &copy; 2025 Bogdan Femic. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Theme Toggle Button -->
+  <button id="dark-mode-toggle" class="theme-toggle">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <script src="js/effects.js"></script>
+  <script src="js/cursor.js"></script>
+  <script src="js/parallax.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize the feedback board
+      const canvas = document.getElementById('feedback-board');
+      const ctx = canvas.getContext('2d');
+      const stickyNotesContainer = document.getElementById('sticky-notes-container');
+      
+      // Drawing variables
+      let isDrawing = false;
+      let lastX = 0;
+      let lastY = 0;
+      let currentTool = 'pen';
+      let currentColor = '#000000';
+      let lineWidth = 3;
+      let canvasData = null;
+      
+      // Set canvas size
+      function resizeCanvas() {
+        const container = canvas.parentElement;
+        canvas.width = container.clientWidth;
+        canvas.height = container.clientHeight;
+        
+        // Redraw canvas content after resize
+        if (canvasData) {
+          const img = new Image();
+          img.onload = function() {
+            ctx.drawImage(img, 0, 0);
+          };
+          img.src = canvasData;
+        }
+      }
+      
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+      
+      // Mode variables
+      let currentMode = 'draw';
+      
+      // Load saved feedback data
+      function loadSavedFeedback() {
+        // Load canvas drawing
+        canvasData = localStorage.getItem('feedbackCanvasData');
+        if (canvasData) {
+          const img = new Image();
+          img.onload = function() {
+            ctx.drawImage(img, 0, 0);
+          };
+          img.src = canvasData;
+        }
+        
+        // Load sticky notes
+        const savedNotes = JSON.parse(localStorage.getItem('feedbackStickyNotes') || '[]');
+        savedNotes.forEach(note => {
+          createStickyNoteFromData(note);
+        });
+        
+        // Load permanent reactions
+        const savedReactions = JSON.parse(localStorage.getItem('feedbackReactions') || '[]');
+        savedReactions.forEach(reaction => {
+          createPermanentReaction(reaction.x, reaction.y, reaction.emoji);
+        });
+      }
+      
+      // Save current feedback data
+      function saveFeedbackData() {
+        // Save canvas drawing
+        canvasData = canvas.toDataURL();
+        localStorage.setItem('feedbackCanvasData', canvasData);
+        
+        // Save sticky notes
+        const notes = [];
+        document.querySelectorAll('.sticky-note').forEach(noteEl => {
+          const content = noteEl.querySelector('.sticky-note-content').value;
+          const date = noteEl.querySelector('.sticky-note-footer span').textContent;
+          const left = noteEl.style.left;
+          const top = noteEl.style.top;
+          const rotate = noteEl.style.getPropertyValue('--rotate');
+          
+          notes.push({
+            content,
+            date,
+            left,
+            top,
+            rotate
+          });
+        });
+        localStorage.setItem('feedbackStickyNotes', JSON.stringify(notes));
+        
+        // Save permanent reactions (not the animated ones)
+        const reactions = [];
+        document.querySelectorAll('.permanent-reaction').forEach(reactionEl => {
+          reactions.push({
+            emoji: reactionEl.textContent,
+            x: reactionEl.style.left,
+            y: reactionEl.style.top
+          });
+        });
+        localStorage.setItem('feedbackReactions', JSON.stringify(reactions));
+      }
+      
+      // Set up drawing functions
+      function startDrawing(e) {
+        if (currentMode !== 'draw') return;
+        
+        isDrawing = true;
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+      }
+      
+      function draw(e) {
+        if (!isDrawing || currentMode !== 'draw') return;
+        
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.stroke();
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+        
+        // Save canvas state after each stroke
+        canvasData = canvas.toDataURL();
+      }
+      
+      function stopDrawing() {
+        if (isDrawing) {
+          isDrawing = false;
+          saveFeedbackData();
+        }
+      }
+      
+      // Set up drawing style
+      function setDrawingStyle() {
+        ctx.strokeStyle = currentTool === 'eraser' ? '#FFFFFF' : currentColor;
+        ctx.lineWidth = lineWidth;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+      }
+      
+      // Clear the canvas
+      function clearCanvas() {
+        if (confirm('Are you sure you want to clear all drawings? This cannot be undone.')) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          canvasData = null;
+          localStorage.removeItem('feedbackCanvasData');
+        }
+      }
+      
+      // Event listeners for drawing
+      canvas.addEventListener('mousedown', startDrawing);
+      canvas.addEventListener('mousemove', draw);
+      canvas.addEventListener('mouseup', stopDrawing);
+      canvas.addEventListener('mouseout', stopDrawing);
+      
+      // Tool selection
+      document.getElementById('pen-tool').addEventListener('click', () => {
+        currentTool = 'pen';
+        document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById('pen-tool').classList.add('active');
+        setDrawingStyle();
+      });
+      
+      document.getElementById('eraser-tool').addEventListener('click', () => {
+        currentTool = 'eraser';
+        document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById('eraser-tool').classList.add('active');
+        setDrawingStyle();
+      });
+      
+      document.getElementById('clear-board').addEventListener('click', clearCanvas);
+      
+      // Color selection
+      document.querySelectorAll('.color-option').forEach(option => {
+        option.addEventListener('click', () => {
+          currentColor = option.getAttribute('data-color');
+          document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('active'));
+          option.classList.add('active');
+          currentTool = 'pen';
+          document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
+          document.getElementById('pen-tool').classList.add('active');
+          setDrawingStyle();
+        });
+      });
+      
+      // Mode selection
+      document.querySelectorAll('.feedback-option').forEach(option => {
+        option.addEventListener('click', () => {
+          currentMode = option.getAttribute('data-mode');
+          document.querySelectorAll('.feedback-option').forEach(opt => opt.classList.remove('active'));
+          option.classList.add('active');
+          
+          // Update cursor style based on mode
+          if (currentMode === 'draw') {
+            canvas.style.cursor = 'crosshair';
+          } else if (currentMode === 'sticky') {
+            canvas.style.cursor = 'default';
+          } else if (currentMode === 'react') {
+            canvas.style.cursor = 'pointer';
+          }
+        });
+      });
+      
+      // Sticky notes functionality
+      canvas.addEventListener('click', (e) => {
+        if (currentMode === 'sticky') {
+          createStickyNote(e.offsetX, e.offsetY);
+        } else if (currentMode === 'react') {
+          createReaction(e.offsetX, e.offsetY);
+          createPermanentReaction(e.offsetX, e.offsetY);
+        }
+      });
+      
+      function createStickyNoteFromData(noteData) {
+        const note = document.createElement('div');
+        note.className = 'sticky-note';
+        note.style.left = noteData.left;
+        note.style.top = noteData.top;
+        note.style.setProperty('--rotate', noteData.rotate);
+        
+        const textarea = document.createElement('textarea');
+        textarea.className = 'sticky-note-content';
+        textarea.placeholder = 'Write your feedback here...';
+        textarea.value = noteData.content || '';
+        
+        const footer = document.createElement('div');
+        footer.className = 'sticky-note-footer';
+        
+        const date = document.createElement('span');
+        date.textContent = noteData.date || new Date().toLocaleDateString();
+        
+        const deleteBtn = document.createElement('span');
+        deleteBtn.className = 'sticky-note-delete';
+        deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
+        deleteBtn.addEventListener('click', () => {
+          if (confirm('Are you sure you want to delete this note?')) {
+            note.remove();
+            saveFeedbackData();
+          }
+        });
+        
+        footer.appendChild(date);
+        footer.appendChild(deleteBtn);
+        
+        note.appendChild(textarea);
+        note.appendChild(footer);
+        
+        // Make the note draggable
+        let isDragging = false;
+        let offsetX, offsetY;
+        
+        note.addEventListener('mousedown', (e) => {
+          if (e.target === textarea) return;
+          
+          isDragging = true;
+          offsetX = e.clientX - note.getBoundingClientRect().left;
+          offsetY = e.clientY - note.getBoundingClientRect().top;
+          note.style.zIndex = '10';
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+          if (!isDragging) return;
+          
+          const x = e.clientX - offsetX;
+          const y = e.clientY - offsetY;
+          
+          note.style.left = `${x}px`;
+          note.style.top = `${y}px`;
+        });
+        
+        document.addEventListener('mouseup', () => {
+          if (isDragging) {
+            isDragging = false;
+            note.style.zIndex = '6';
+            saveFeedbackData();
+          }
+        });
+        
+        // Save note content when changed
+        textarea.addEventListener('blur', saveFeedbackData);
+        
+        stickyNotesContainer.appendChild(note);
+        return note;
+      }
+      
+      function createStickyNote(x, y) {
+        const noteData = {
+          left: `${x - 100}px`,
+          top: `${y - 50}px`,
+          rotate: `${Math.random() * 10 - 5}deg`,
+          content: '',
+          date: new Date().toLocaleDateString()
+        };
+        
+        const note = createStickyNoteFromData(noteData);
+        note.querySelector('textarea').focus();
+        saveFeedbackData();
+      }
+      
+      // Reactions functionality
+      document.querySelectorAll('.reaction-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const emoji = btn.getAttribute('data-emoji');
+          const rect = canvas.getBoundingClientRect();
+          const x = Math.random() * rect.width;
+          const y = rect.height - 50;
+          
+          createReaction(x, y, emoji);
+          createPermanentReaction(x, y, emoji);
+        });
+      });
+      
+      function createReaction(x, y, emoji = null) {
+        if (!emoji) {
+          const emojis = ['👍', '❤️', '🎉', '👏'];
+          emoji = emojis[Math.floor(Math.random() * emojis.length)];
+        }
+        
+        const reaction = document.createElement('div');
+        reaction.className = 'reaction';
+        reaction.textContent = emoji;
+        reaction.style.left = `${x}px`;
+        reaction.style.top = `${y}px`;
+        
+        canvas.parentElement.appendChild(reaction);
+        
+        // Remove the animated reaction after animation completes
+        setTimeout(() => {
+          reaction.remove();
+        }, 3000);
+      }
+      
+      function createPermanentReaction(x, y, emoji = null) {
+        if (!emoji) {
+          const emojis = ['👍', '❤️', '🎉', '👏'];
+          emoji = emojis[Math.floor(Math.random() * emojis.length)];
+        }
+        
+        // Create a smaller, permanent reaction
+        const reaction = document.createElement('div');
+        reaction.className = 'permanent-reaction';
+        reaction.textContent = emoji;
+        reaction.style.position = 'absolute';
+        reaction.style.left = `${x}px`;
+        reaction.style.top = `${y}px`;
+        reaction.style.fontSize = '1.2rem';
+        reaction.style.opacity = '0.7';
+        reaction.style.transform = `rotate(${Math.random() * 40 - 20}deg)`;
+        reaction.style.zIndex = '4';
+        
+        canvas.parentElement.appendChild(reaction);
+        saveFeedbackData();
+      }
+      
+      // Save feedback functionality
+      document.querySelector('.save-feedback').addEventListener('click', () => {
+        saveFeedbackData();
+        alert('Your feedback has been saved and will be visible to other visitors!');
+        
+        // Add to gallery
+        addToGallery();
+      });
+      
+      function addToGallery() {
+        // Create a thumbnail of the current feedback
+        const thumbnail = document.createElement('div');
+        thumbnail.className = 'gallery-item';
+        
+        // Create a snapshot of the canvas
+        const snapshot = document.createElement('img');
+        snapshot.className = 'gallery-image';
+        snapshot.src = canvas.toDataURL();
+        snapshot.alt = 'Feedback';
+        
+        const info = document.createElement('div');
+        info.className = 'gallery-info';
+        
+        const author = document.createElement('div');
+        author.className = 'gallery-author';
+        author.textContent = 'Anonymous User'; // In a real app, this would be the user's name
+        
+        const date = document.createElement('div');
+        date.className = 'gallery-date';
+        date.textContent = new Date().toLocaleDateString();
+        
+        info.appendChild(author);
+        info.appendChild(date);
+        
+        thumbnail.appendChild(snapshot);
+        thumbnail.appendChild(info);
+        
+        // Add to the gallery
+        const gallery = document.querySelector('.gallery-grid');
+        gallery.insertBefore(thumbnail, gallery.firstChild);
+        
+        // Save gallery
+        const galleryItems = [];
+        document.querySelectorAll('.gallery-item').forEach(item => {
+          const imgSrc = item.querySelector('img').src;
+          const authorText = item.querySelector('.gallery-author').textContent;
+          const dateText = item.querySelector('.gallery-date').textContent;
+          
+          galleryItems.push({
+            imgSrc,
+            author: authorText,
+            date: dateText
+          });
+        });
+        
+        localStorage.setItem('feedbackGallery', JSON.stringify(galleryItems));
+      }
+      
+      // Load gallery
+      function loadGallery() {
+        const galleryItems = JSON.parse(localStorage.getItem('feedbackGallery') || '[]');
+        const gallery = document.querySelector('.gallery-grid');
+        
+        // Clear default items
+        gallery.innerHTML = '';
+        
+        galleryItems.forEach(item => {
+          const thumbnail = document.createElement('div');
+          thumbnail.className = 'gallery-item';
+          
+          const snapshot = document.createElement('img');
+          snapshot.className = 'gallery-image';
+          snapshot.src = item.imgSrc;
+          snapshot.alt = 'Feedback';
+          
+          const info = document.createElement('div');
+          info.className = 'gallery-info';
+          
+          const author = document.createElement('div');
+          author.className = 'gallery-author';
+          author.textContent = item.author;
+          
+          const date = document.createElement('div');
+          date.className = 'gallery-date';
+          date.textContent = item.date;
+          
+          info.appendChild(author);
+          info.appendChild(date);
+          
+          thumbnail.appendChild(snapshot);
+          thumbnail.appendChild(info);
+          
+          gallery.appendChild(thumbnail);
+        });
+      }
+      
+      // Initialize
+      setDrawingStyle();
+      loadSavedFeedback();
+      loadGallery();
+    });
+    
+    // Dark Mode Toggle
+    const toggleBtn = document.getElementById('dark-mode-toggle');
+    
+    // Check for saved user preference
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      document.body.classList.add('dark-mode');
+      toggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme
+    toggleBtn.addEventListener('click', () => {
+      const isDarkMode = document.body.classList.toggle('dark-mode');
+      
+      if (isDarkMode) {
+        localStorage.setItem('theme', 'dark');
+        toggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+      } else {
+        localStorage.setItem('theme', 'light');
+        toggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
+      }
+    });
+    
+    // Smooth scrolling for navigation links
+    const debounce = (func, wait) => {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    };
+    
+    // Use event delegation for better performance
+    document.body.addEventListener('click', debounce(function(e) {
+      // Find closest anchor tag
+      const anchor = e.target.closest('a[href^="#"]');
+      if (!anchor) return;
+      
+      e.preventDefault();
+      const targetId = anchor.getAttribute('href');
+      const targetElement = document.querySelector(targetId);
+      
+      if (targetElement) {
+        // Use native scrollTo with requestAnimationFrame for smoother scrolling
+        const headerOffset = 60; // Adjust based on your header height
+        const elementPosition = targetElement.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }, 50)); // 50ms debounce
+  </script>
+</body>
+</html>

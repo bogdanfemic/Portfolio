@@ -1,0 +1,481 @@
+/* Additional Styles for Portfolio Website */
+
+/* Custom Cursor - Optimized */
+.custom-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  pointer-events: none;
+  mix-blend-mode: difference;
+  z-index: 9999;
+  /* Remove transform translate and let JS handle positioning */
+  /* transform: translate(-50%, -50%); */
+  /* Simplify transitions for better performance */
+  transition: width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+  margin-top: -10px; /* Half the height */
+  margin-left: -10px; /* Half the width */
+  will-change: transform; /* Optimize for animations */
+}
+
+.custom-cursor.hover {
+  width: 50px;
+  height: 50px;
+  margin-top: -25px; /* Half the height */
+  margin-left: -25px; /* Half the width */
+  background-color: var(--secondary-color);
+}
+
+/* Parallax Effect */
+.parallax {
+  position: relative;
+  overflow: hidden;
+}
+
+.parallax-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+
+/* Animated Background Gradient */
+.animated-gradient {
+  background: linear-gradient(-45deg, #6C63FF, #43CBFF, #FF6584, #6C63FF);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Floating Elements */
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Glitch Effect for Text */
+.glitch {
+  position: relative;
+  color: var(--text-color);
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  left: 2px;
+  text-shadow: -1px 0 red;
+  animation: glitch-anim-1 2s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+  left: -2px;
+  text-shadow: 1px 0 blue;
+  animation: glitch-anim-2 3s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim-1 {
+  0% {
+    clip-path: inset(20% 0 80% 0);
+  }
+  20% {
+    clip-path: inset(60% 0 40% 0);
+  }
+  40% {
+    clip-path: inset(40% 0 60% 0);
+  }
+  60% {
+    clip-path: inset(80% 0 20% 0);
+  }
+  80% {
+    clip-path: inset(10% 0 90% 0);
+  }
+  100% {
+    clip-path: inset(30% 0 70% 0);
+  }
+}
+
+@keyframes glitch-anim-2 {
+  0% {
+    clip-path: inset(10% 0 90% 0);
+  }
+  20% {
+    clip-path: inset(30% 0 70% 0);
+  }
+  40% {
+    clip-path: inset(50% 0 50% 0);
+  }
+  60% {
+    clip-path: inset(70% 0 30% 0);
+  }
+  80% {
+    clip-path: inset(90% 0 10% 0);
+  }
+  100% {
+    clip-path: inset(20% 0 80% 0);
+  }
+}
+
+/* Neon Text Effect */
+.neon-text {
+  color: #fff;
+  text-shadow:
+    0 0 5px #fff,
+    0 0 10px #fff,
+    0 0 20px var(--primary-color),
+    0 0 40px var(--primary-color),
+    0 0 80px var(--primary-color);
+}
+
+/* Interactive Timeline */
+.timeline {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.timeline::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  background-color: var(--medium-gray);
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  margin-left: -3px;
+}
+
+.timeline-container {
+  padding: 10px 40px;
+  position: relative;
+  background-color: inherit;
+  width: 50%;
+}
+
+.timeline-container::after {
+  content: '';
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  right: -17px;
+  background-color: var(--background-color);
+  border: 4px solid var(--primary-color);
+  top: 15px;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.timeline-left {
+  left: 0;
+}
+
+.timeline-right {
+  left: 50%;
+}
+
+.timeline-left::before {
+  content: " ";
+  height: 0;
+  position: absolute;
+  top: 22px;
+  width: 0;
+  z-index: 1;
+  right: 30px;
+  border: medium solid var(--medium-gray);
+  border-width: 10px 0 10px 10px;
+  border-color: transparent transparent transparent var(--medium-gray);
+}
+
+.timeline-right::before {
+  content: " ";
+  height: 0;
+  position: absolute;
+  top: 22px;
+  width: 0;
+  z-index: 1;
+  left: 30px;
+  border: medium solid var(--medium-gray);
+  border-width: 10px 10px 10px 0;
+  border-color: transparent var(--medium-gray) transparent transparent;
+}
+
+.timeline-right::after {
+  left: -16px;
+}
+
+.timeline-content {
+  padding: 20px 30px;
+  background-color: white;
+  position: relative;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 3D Card Flip Effect */
+.card-3d {
+  perspective: 1000px;
+  width: 100%;
+  height: 400px;
+}
+
+.card-3d-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.card-3d:hover .card-3d-inner {
+  transform: rotateY(180deg);
+}
+
+.card-3d-front, .card-3d-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card-3d-front {
+  background-color: white;
+  color: var(--text-color);
+}
+
+.card-3d-back {
+  background-color: var(--primary-color);
+  color: white;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Animated Progress Circle */
+.progress-circle {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.progress-circle svg {
+  width: 100%;
+  height: 100%;
+}
+
+.progress-circle svg circle {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke-width: 10;
+  stroke: var(--medium-gray);
+  stroke-linecap: round;
+  transform: translate(5px, 5px);
+}
+
+.progress-circle svg circle:nth-child(2) {
+  stroke-dasharray: 440;
+  stroke-dashoffset: calc(440 - (440 * var(--percent)) / 100);
+  stroke: var(--primary-color);
+  transition: stroke-dashoffset 1s ease;
+}
+
+.progress-circle-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+/* Interactive Project Showcase */
+.project-showcase {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.project-showcase-image {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.project-showcase:hover .project-showcase-image {
+  transform: scale(1.1);
+}
+
+.project-showcase-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.8));
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  color: white;
+}
+
+.project-showcase:hover .project-showcase-overlay {
+  opacity: 1;
+}
+
+.project-showcase-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.project-showcase:hover .project-showcase-title {
+  transform: translateY(0);
+  opacity: 1;
+  transition-delay: 0.1s;
+}
+
+.project-showcase-description {
+  font-size: 1rem;
+  margin-bottom: 15px;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.project-showcase:hover .project-showcase-description {
+  transform: translateY(0);
+  opacity: 1;
+  transition-delay: 0.2s;
+}
+
+.project-showcase-links {
+  display: flex;
+  gap: 15px;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.project-showcase:hover .project-showcase-links {
+  transform: translateY(0);
+  opacity: 1;
+  transition-delay: 0.3s;
+}
+
+.project-showcase-link {
+  color: white;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.project-showcase-link:hover {
+  color: var(--accent-color);
+}
+
+/* Filter Buttons */
+.filter-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.filter-btn {
+  padding: 0.5rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  background-color: white;
+  color: var(--text-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.filter-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filter-btn.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .timeline::after {
+    left: 31px;
+  }
+  
+  .timeline-container {
+    width: 100%;
+    padding-left: 70px;
+    padding-right: 25px;
+  }
+  
+  .timeline-container::before {
+    left: 60px;
+    border: medium solid var(--medium-gray);
+    border-width: 10px 10px 10px 0;
+    border-color: transparent var(--medium-gray) transparent transparent;
+  }
+
+  .timeline-left::after, .timeline-right::after {
+    left: 15px;
+  }
+
+  .timeline-right {
+    left: 0%;
+  }
+}
