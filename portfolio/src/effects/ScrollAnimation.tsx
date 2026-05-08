@@ -9,15 +9,15 @@ interface ScrollAnimationProps {
 }
 
 interface AnimatedDivProps {
-  isVisible: boolean;
-  animationDelay: number;
+  $isVisible: boolean;
+  $animationDelay: number;
 }
 
 const AnimatedDiv = styled.div<AnimatedDivProps>`
-  opacity: ${props => (props.isVisible ? 1 : 0)};
-  transform: translateY(${props => (props.isVisible ? 0 : 30)}px);
+  opacity: ${props => (props.$isVisible ? 1 : 0)};
+  transform: translateY(${props => (props.$isVisible ? 0 : 30)}px);
   transition: opacity 0.8s ease, transform 0.8s ease;
-  transition-delay: ${props => props.animationDelay}ms;
+  transition-delay: ${props => props.$animationDelay}ms;
 `;
 
 const ScrollAnimation: React.FC<ScrollAnimationProps> = ({
@@ -59,8 +59,8 @@ const ScrollAnimation: React.FC<ScrollAnimationProps> = ({
   return (
     <AnimatedDiv
       ref={elementRef}
-      isVisible={isVisible}
-      animationDelay={animationDelay}
+      $isVisible={isVisible}
+      $animationDelay={animationDelay}
       className={`animate-on-scroll ${isVisible ? 'animate' : ''} ${className}`}
     >
       {children}

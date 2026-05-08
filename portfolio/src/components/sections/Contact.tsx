@@ -58,7 +58,7 @@ const ContactInfo = styled(motion.div)`
 
 const ContactForm = styled(motion.div)`
   flex: 1;
-  background-color: white;
+  background-color: var(--surface-color);
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   padding: 2rem;
   box-shadow: ${({ theme }) => theme.shadows.medium};
@@ -117,29 +117,6 @@ const InfoValue = styled.p`
   color: ${({ theme }) => theme.colors.darkGray};
 `;
 
-const SocialLinks = styled.div`
-  display: flex;
-  gap: 1rem;
-`;
-
-const SocialLink = styled.a`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1rem;
-  transition: all ${({ theme }) => theme.transitions.medium};
-  
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.secondary};
-    transform: translateY(-3px);
-  }
-`;
-
 const FormTitle = styled.h3`
   font-size: ${({ theme }) => theme.fontSizes.xlarge};
   font-weight: 600;
@@ -162,10 +139,16 @@ const FormLabel = styled.label`
 const FormInput = styled.input`
   width: 100%;
   padding: 0.8rem 1rem;
+  background-color: var(--surface-2-color);
+  color: var(--text-color);
   border: 1px solid ${({ theme }) => theme.colors.mediumGray};
   border-radius: ${({ theme }) => theme.borderRadius.small};
   font-size: ${({ theme }) => theme.fontSizes.medium};
   transition: border-color ${({ theme }) => theme.transitions.short};
+
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.darkGray};
+  }
   
   &:focus {
     outline: none;
@@ -176,12 +159,18 @@ const FormInput = styled.input`
 const FormTextarea = styled.textarea`
   width: 100%;
   padding: 0.8rem 1rem;
+  background-color: var(--surface-2-color);
+  color: var(--text-color);
   border: 1px solid ${({ theme }) => theme.colors.mediumGray};
   border-radius: ${({ theme }) => theme.borderRadius.small};
   font-size: ${({ theme }) => theme.fontSizes.medium};
   resize: vertical;
   min-height: 150px;
   transition: border-color ${({ theme }) => theme.transitions.short};
+
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.darkGray};
+  }
   
   &:focus {
     outline: none;
@@ -264,25 +253,6 @@ const Contact: React.FC = () => {
         setFormMessage(null);
       }, 5000);
     }, 1500);
-  };
-  
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-  
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.5, ease: "easeOut" },
-    },
   };
   
   return (

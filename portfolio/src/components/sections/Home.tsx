@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { FaArrowDown } from 'react-icons/fa';
+import { FaArrowDown, FaBolt, FaLayerGroup, FaRocket } from 'react-icons/fa';
 import { IconWrapper } from '../../utils/IconWrapper';
-import { ThreeBackground, ParallaxEffect, TypingEffect } from '../../effects';
+import { ParallaxEffect, ThreeBackground, TypingEffect } from '../../effects';
 import { isWebGLAvailable } from '../../utils/webGLUtils';
+import usePrefersReducedMotion from '../../hooks/usePrefersReducedMotion';
 
 const HomeSection = styled.section`
   min-height: 100vh;
@@ -12,297 +13,397 @@ const HomeSection = styled.section`
   align-items: center;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #6C63FF 0%, #43CBFF 100%);
-  color: white;
+  background:
+    radial-gradient(circle at 15% 18%, rgba(37, 214, 255, 0.12), transparent 26%),
+    radial-gradient(circle at 82% 30%, rgba(255, 79, 162, 0.1), transparent 24%),
+    linear-gradient(145deg, rgba(5, 8, 22, 0.94), rgba(8, 14, 34, 0.98));
+  color: var(--hero-fg);
 `;
 
-const HomeContent = styled.div`
-  width: 90%;
-  max-width: 1200px;
+const HomeFrame = styled.div`
+  width: min(92%, 1240px);
   margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    flex-direction: column-reverse;
-    text-align: center;
-    gap: 2rem;
-  }
-`;
-
-const TextContent = styled.div`
-  flex: 1;
-  padding-right: 2rem;
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    padding-right: 0;
-  }
-`;
-
-const ImageContent = styled.div`
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ProfileImage = styled(motion.div)`
-  width: 350px;
-  height: 350px;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.2);
-  display: flex;
-  justify-content: center;
-  align-items: center;
   position: relative;
-  
-  &:before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    animation: rotate 10s linear infinite;
-  }
-  
-  @keyframes rotate {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    width: 250px;
-    height: 250px;
-  }
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    width: 200px;
-    height: 200px;
-  }
+  z-index: 1;
 `;
 
-const Greeting = styled(motion.h2)`
-  font-size: ${({ theme }) => theme.fontSizes.xlarge};
-  font-weight: 500;
-  margin-bottom: 1rem;
-  color: rgba(255, 255, 255, 0.9);
-`;
-
-const Name = styled(motion.h1)`
-  font-size: ${({ theme }) => theme.fontSizes.xxxlarge};
-  font-weight: 700;
-  margin-bottom: 1rem;
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    font-size: ${({ theme }) => theme.fontSizes.xxlarge};
-  }
-`;
-
-const Title = styled(motion.h3)`
-  font-size: ${({ theme }) => theme.fontSizes.xlarge};
-  font-weight: 500;
-  margin-bottom: 1.5rem;
-  color: rgba(255, 255, 255, 0.9);
-`;
-
-const Description = styled(motion.p)`
-  font-size: ${({ theme }) => theme.fontSizes.medium};
-  line-height: 1.6;
-  margin-bottom: 2rem;
-  max-width: 600px;
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    margin: 0 auto 2rem;
-  }
-`;
-
-const ButtonContainer = styled(motion.div)`
-  display: flex;
-  gap: 1rem;
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    justify-content: center;
-  }
-`;
-
-const PrimaryButton = styled(motion.a)`
-  display: inline-block;
-  padding: 0.8rem 2rem;
-  background-color: white;
-  color: ${({ theme }) => theme.colors.primary};
-  font-weight: 600;
-  border-radius: ${({ theme }) => theme.borderRadius.medium};
-  box-shadow: ${({ theme }) => theme.shadows.medium};
-  transition: all ${({ theme }) => theme.transitions.medium};
-  
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: ${({ theme }) => theme.shadows.large};
-  }
-`;
-
-const SecondaryButton = styled(motion.a)`
-  display: inline-block;
-  padding: 0.8rem 2rem;
-  background-color: transparent;
-  color: white;
-  font-weight: 600;
-  border: 2px solid white;
-  border-radius: ${({ theme }) => theme.borderRadius.medium};
-  transition: all ${({ theme }) => theme.transitions.medium};
-  
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    transform: translateY(-3px);
-  }
-`;
-
-const ScrollDown = styled(motion.div)`
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
+const HomeGrid = styled.div`
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(330px, 0.95fr);
   align-items: center;
-  color: white;
-  cursor: pointer;
+  gap: clamp(2rem, 6vw, 5rem);
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    grid-template-columns: 1fr;
+  }
 `;
 
-const ScrollText = styled.span`
-  font-size: ${({ theme }) => theme.fontSizes.small};
-  margin-bottom: 0.5rem;
+const Eyebrow = styled(motion.div)`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid rgba(37, 214, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(8, 14, 34, 0.56);
+  color: rgba(243, 247, 255, 0.82);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
 `;
 
-const ScrollIcon = styled(motion.div)`
-  font-size: 1.2rem;
+const Title = styled(motion.h1)`
+  max-width: 10ch;
+  font-size: clamp(3.4rem, 8vw, 6.8rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  margin: 0;
+  text-wrap: balance;
+`;
+
+const Accent = styled.span`
+  display: block;
+  color: rgba(243, 247, 255, 0.72);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 600;
+  line-height: 1.2;
+  margin-top: 0.45rem;
+`;
+
+const Lead = styled(motion.p)`
+  max-width: 62ch;
+  margin: 1.5rem 0 0;
+  color: rgba(243, 247, 255, 0.82);
+  font-size: clamp(1rem, 1.45vw, 1.125rem);
+  line-height: 1.72;
+`;
+
+const ActionRow = styled(motion.div)`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-top: 2rem;
+`;
+
+const PrimaryButton = styled.a`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  min-height: 50px;
+  padding: 0 1.2rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ffffff 0%, #d7e8ff 100%);
+  color: #05101f;
+  font-weight: 800;
+  box-shadow: 0 18px 40px rgba(37, 214, 255, 0.12);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 22px 48px rgba(255, 79, 162, 0.18);
+  }
+`;
+
+const SecondaryButton = styled.a`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 0 1.2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(37, 214, 255, 0.22);
+  background: rgba(8, 14, 34, 0.42);
+  color: var(--hero-fg);
+  font-weight: 700;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 79, 162, 0.44);
+    background: rgba(255, 79, 162, 0.08);
+  }
+`;
+
+const StatsRow = styled(motion.div)`
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-top: 2.25rem;
+  max-width: 560px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    max-width: none;
+  }
+`;
+
+const StatCard = styled.div`
+  border: 1px solid rgba(37, 214, 255, 0.16);
+  border-radius: 8px;
+  background: rgba(8, 14, 34, 0.52);
+  padding: 0.95rem 1rem;
+  backdrop-filter: blur(14px);
+`;
+
+const StatValue = styled.div`
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+`;
+
+const StatLabel = styled.div`
+  margin-top: 0.35rem;
+  color: rgba(243, 247, 255, 0.7);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+`;
+
+const HeroPanel = styled(motion.div)`
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 540px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    min-height: 420px;
+  }
+`;
+
+const PortraitShell = styled.div`
+  position: relative;
+  width: min(100%, 500px);
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+`;
+
+const PortraitRing = styled(motion.div)`
+  position: absolute;
+  inset: 7%;
+  border-radius: 50%;
+  border: 1px solid rgba(37, 214, 255, 0.18);
+  background:
+    radial-gradient(circle at center, rgba(255, 79, 162, 0.08), transparent 58%),
+    radial-gradient(circle at center, rgba(37, 214, 255, 0.08), transparent 70%);
+  box-shadow: inset 0 0 40px rgba(37, 214, 255, 0.08);
+`;
+
+const PortraitCore = styled(motion.div)`
+  width: 58%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.18), transparent 45%),
+    linear-gradient(145deg, rgba(13, 20, 38, 0.96), rgba(33, 46, 80, 0.96));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 32px 90px rgba(0, 0, 0, 0.36),
+    inset 0 0 38px rgba(37, 214, 255, 0.08);
+`;
+
+const OrbBadge = styled(motion.div)`
+  position: absolute;
+  border-radius: 999px;
+  padding: 0.7rem 0.9rem;
+  background: rgba(8, 14, 34, 0.76);
+  border: 1px solid rgba(37, 214, 255, 0.16);
+  backdrop-filter: blur(12px);
+  color: rgba(243, 247, 255, 0.92);
+  font-size: 0.8rem;
+  font-weight: 700;
+`;
+
+const OrbBadgeTop = styled(OrbBadge)`
+  top: 8%;
+  right: 6%;
+`;
+
+const OrbBadgeBottom = styled(OrbBadge)`
+  bottom: 12%;
+  left: 4%;
+`;
+
+const ScrollDown = styled(motion.button)`
+  position: absolute;
+  left: 50%;
+  bottom: 1.25rem;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(37, 214, 255, 0.16);
+  background: rgba(8, 14, 34, 0.45);
+  color: rgba(243, 247, 255, 0.82);
+  backdrop-filter: blur(12px);
 `;
 
 const Home: React.FC = () => {
   const [webGLAvailable, setWebGLAvailable] = useState(false);
-  
+  const prefersReducedMotion = usePrefersReducedMotion();
+
   useEffect(() => {
     setWebGLAvailable(isWebGLAvailable());
   }, []);
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.5, ease: "easeOut" },
-    },
-  };
-
-  const imageVariants = {
-    hidden: { scale: 0.8, opacity: 0 },
-    visible: {
-      scale: 1,
-      opacity: 1,
-      transition: { duration: 0.7, ease: "easeOut" },
-    },
-  };
-
-  const scrollDownVariants = {
-    initial: { y: 0 },
-    animate: {
-      y: [0, 10, 0],
-      transition: {
-        duration: 1.5,
-        repeat: Infinity,
-        repeatType: "loop" as const,
-      },
-    },
-  };
 
   const handleScrollDown = () => {
-    const aboutSection = document.getElementById('about');
-    if (aboutSection) {
-      aboutSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <HomeSection id="home">
-      {webGLAvailable && <ThreeBackground sectionId="home" />}
-      <ParallaxEffect sectionId="home" />
-      <HomeContent>
-        <TextContent>
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <Greeting variants={itemVariants}>Hello, I'm</Greeting>
-            <Name variants={itemVariants}>Bogdan Femic</Name>
-            <Title variants={itemVariants}>
-              Frontend Developer <TypingEffect words={["React Expert", "TypeScript Enthusiast", "UI/UX Designer", "Problem Solver"]} />
-            </Title>
-            <Description variants={itemVariants}>
-              I build modern, responsive web applications with React, TypeScript, and other cutting-edge technologies. Let's create something amazing together!
-            </Description>
-            <ButtonContainer variants={itemVariants}>
-              <PrimaryButton href="#projects">View My Work</PrimaryButton>
-              <SecondaryButton href="#contact">Contact Me</SecondaryButton>
-            </ButtonContainer>
-          </motion.div>
-        </TextContent>
-        
-        <ImageContent>
-          <ProfileImage
-            variants={imageVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {/* You can add an actual image here */}
-            <motion.div
-              animate={{
-                scale: [1, 1.05, 1],
-                transition: {
-                  duration: 3,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                },
-              }}
+      {webGLAvailable && !prefersReducedMotion && <ThreeBackground sectionId="home" />}
+      {!prefersReducedMotion && <ParallaxEffect sectionId="home" />}
+
+      <HomeFrame>
+        <HomeGrid>
+          <div>
+            <Eyebrow
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45 }}
             >
-              {/* Placeholder for profile image */}
-              <svg width="150" height="150" viewBox="0 0 200 200" fill="none">
-                <circle cx="100" cy="100" r="80" fill="rgba(255, 255, 255, 0.2)" />
-                <circle cx="100" cy="80" r="30" fill="rgba(255, 255, 255, 0.3)" />
-                <path d="M50 140C50 118.954 67.9543 100 100 100C132.046 100 150 118.954 150 140" stroke="rgba(255, 255, 255, 0.3)" strokeWidth="10" />
-              </svg>
-            </motion.div>
-          </ProfileImage>
-        </ImageContent>
-      </HomeContent>
-      
-      <ScrollDown onClick={handleScrollDown}>
-        <ScrollText>Scroll Down</ScrollText>
-        <ScrollIcon
-          variants={scrollDownVariants}
-          initial="initial"
-          animate="animate"
-        >
-          <IconWrapper icon={FaArrowDown} />
-        </ScrollIcon>
+              <IconWrapper icon={FaBolt} />
+              Portfolio / Frontend / Three.js
+            </Eyebrow>
+
+            <Title
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55 }}
+            >
+              Bogdan Femic
+              <Accent>Frontend Developer building sharp interfaces and expressive interactions.</Accent>
+            </Title>
+
+            <Lead
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.1 }}
+            >
+              I design and build modern web experiences with React, TypeScript, motion design, and interactive 3D systems.
+              <span style={{ display: 'block', marginTop: '0.5rem', color: 'rgba(243, 247, 255, 0.65)', fontWeight: 600 }}>
+                Currently focused on fast, polished product experiences and portfolio work that feels memorable in the first few seconds.
+              </span>
+            </Lead>
+
+            <ActionRow
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.16 }}
+            >
+              <PrimaryButton href="#projects">
+                <IconWrapper icon={FaRocket} />
+                View Work
+              </PrimaryButton>
+              <SecondaryButton href="#threejs-game">
+                <IconWrapper icon={FaLayerGroup} />
+                Open Neon Drift
+              </SecondaryButton>
+            </ActionRow>
+
+            <StatsRow
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.2 }}
+            >
+              <StatCard>
+                <StatValue>React + TS</StatValue>
+                <StatLabel>Primary stack</StatLabel>
+              </StatCard>
+              <StatCard>
+                <StatValue>Motion-led</StatValue>
+                <StatLabel>Interaction style</StatLabel>
+              </StatCard>
+              <StatCard>
+                <StatValue>3D-ready</StatValue>
+                <StatLabel>Portfolio focus</StatLabel>
+              </StatCard>
+            </StatsRow>
+          </div>
+
+          <HeroPanel
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7 }}
+          >
+            <PortraitShell>
+              <PortraitRing
+                animate={{ rotate: 360 }}
+                transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+              />
+              <PortraitCore
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                <motion.div
+                  animate={{ rotate: [0, 7, 0, -7, 0] }}
+                  transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+                  style={{
+                    width: '68%',
+                    aspectRatio: '1 / 1',
+                    borderRadius: '50%',
+                    display: 'grid',
+                    placeItems: 'center',
+                    color: 'white',
+                    background:
+                      'radial-gradient(circle at 50% 35%, rgba(255,255,255,0.18), transparent 42%), linear-gradient(135deg, rgba(37,214,255,0.18), rgba(255,79,162,0.12))',
+                    boxShadow: '0 0 40px rgba(37,214,255,0.08)',
+                  }}
+                >
+                  <svg width="220" height="220" viewBox="0 0 220 220" fill="none" aria-hidden="true">
+                    <circle cx="110" cy="110" r="72" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
+                    <circle cx="110" cy="92" r="24" fill="rgba(255,255,255,0.18)" />
+                    <path
+                      d="M58 156c10-23 31-36 52-36s42 13 52 36"
+                      stroke="rgba(255,255,255,0.18)"
+                      strokeWidth="10"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M40 110h140"
+                      stroke="rgba(37,214,255,0.18)"
+                      strokeWidth="2"
+                      strokeDasharray="6 10"
+                    />
+                    <path
+                      d="M110 30v160"
+                      stroke="rgba(255,79,162,0.14)"
+                      strokeWidth="2"
+                      strokeDasharray="6 10"
+                    />
+                  </svg>
+                </motion.div>
+              </PortraitCore>
+              <OrbBadgeTop
+                animate={{ y: [0, -6, 0] }}
+                transition={{ duration: 4.4, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                UI systems
+              </OrbBadgeTop>
+              <OrbBadgeBottom
+                animate={{ y: [0, 6, 0] }}
+                transition={{ duration: 5.1, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                3D + motion
+              </OrbBadgeBottom>
+            </PortraitShell>
+          </HeroPanel>
+        </HomeGrid>
+      </HomeFrame>
+
+      <ScrollDown type="button" onClick={handleScrollDown} aria-label="Scroll to about section">
+        Scroll
+        <IconWrapper icon={FaArrowDown} />
       </ScrollDown>
     </HomeSection>
   );

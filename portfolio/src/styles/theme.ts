@@ -46,9 +46,9 @@ export const theme = {
     round: '50%',
   },
   shadows: {
-    small: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    medium: '0 4px 8px rgba(0, 0, 0, 0.1)',
-    large: '0 8px 16px rgba(0, 0, 0, 0.1)',
+    small: 'var(--shadow-small)',
+    medium: 'var(--shadow-medium)',
+    large: 'var(--shadow-large)',
   },
   transitions: {
     short: '0.2s ease',

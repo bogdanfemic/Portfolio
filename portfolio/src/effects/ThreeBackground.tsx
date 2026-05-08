@@ -36,6 +36,9 @@ const ThreeBackground: React.FC<ThreeBackgroundProps> = ({ sectionId }) => {
     }
     
     try {
+      let rafId: number | null = null;
+      let isDisposed = false;
+
       // Create scene, camera, and renderer
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -48,7 +51,7 @@ const ThreeBackground: React.FC<ThreeBackgroundProps> = ({ sectionId }) => {
       
       // Set renderer size and append to container
       renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       
       // Store a reference to the container for cleanup
       const container = containerRef.current;
@@ -147,7 +150,9 @@ const ThreeBackground: React.FC<ThreeBackgroundProps> = ({ sectionId }) => {
       const updateConnections = () => {
         // Remove old connections
         while (connections.children.length > 0) {
-          connections.remove(connections.children[0]);
+          const child = connections.children[0] as THREE.Line;
+          connections.remove(child);
+          if (child.geometry) child.geometry.dispose();
         }
         
         // Get particle positions
@@ -197,7 +202,8 @@ const ThreeBackground: React.FC<ThreeBackgroundProps> = ({ sectionId }) => {
       
       // Animation loop
       const animate = () => {
-        requestAnimationFrame(animate);
+        if (isDisposed) return;
+        rafId = requestAnimationFrame(animate);
         
         // Smooth mouse tracking
         targetX += (mouseX - targetX) * 0.05;
@@ -225,9 +231,18 @@ const ThreeBackground: React.FC<ThreeBackgroundProps> = ({ sectionId }) => {
       
       // Clean up on component unmount
       return () => {
+        isDisposed = true;
+        if (rafId !== null) cancelAnimationFrame(rafId);
+
         window.removeEventListener('resize', handleResize);
         document.removeEventListener('mousemove', handleMouseMove);
         
+        // Dispose of connection geometries
+        connections.traverse((obj) => {
+          const line = obj as THREE.Line;
+          if (line.geometry) line.geometry.dispose();
+        });
+
         // Dispose of resources
         particlesGeometry.dispose();
         particlesMaterial.dispose();

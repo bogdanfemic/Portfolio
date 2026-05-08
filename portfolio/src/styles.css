@@ -1,0 +1,194 @@
+.neon-drift-shell {
+  position: relative;
+  width: 100%;
+  height: clamp(520px, 68vh, 760px);
+  overflow: hidden;
+  border: 1px solid rgba(52, 246, 255, 0.28);
+  border-radius: 8px;
+  background: #02030b;
+  box-shadow: 0 26px 90px rgba(0, 0, 0, 0.45), 0 0 42px rgba(52, 246, 255, 0.16);
+  isolation: isolate;
+}
+
+.neon-drift-shell:fullscreen {
+  width: 100vw;
+  height: 100vh;
+  border-radius: 0;
+}
+
+.neon-drift-canvas,
+.neon-drift-canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+.neon-drift-shell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    radial-gradient(circle at 50% 55%, transparent 42%, rgba(2, 3, 11, 0.35));
+  background-size: 100% 4px, 100% 100%;
+  mix-blend-mode: screen;
+  opacity: 0.5;
+}
+
+.neon-drift-hud,
+.neon-drift-badge,
+.neon-drift-actions,
+.neon-drift-overlay {
+  position: absolute;
+  z-index: 2;
+}
+
+.neon-drift-hud {
+  top: 18px;
+  left: 18px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.neon-drift-hud span,
+.neon-drift-badge,
+.neon-drift-actions button,
+.neon-drift-toggle {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(52, 246, 255, 0.32);
+  background: rgba(4, 8, 22, 0.66);
+  color: #e9fbff;
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 22px rgba(52, 246, 255, 0.12);
+}
+
+.neon-drift-badge {
+  right: 18px;
+  bottom: 18px;
+  color: #34f6ff;
+}
+
+.neon-drift-actions {
+  top: 18px;
+  right: 18px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.neon-drift-actions button,
+.neon-drift-panel button {
+  cursor: pointer;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.neon-drift-actions button:hover,
+.neon-drift-panel button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 43, 214, 0.85);
+  box-shadow: 0 0 28px rgba(255, 43, 214, 0.25);
+}
+
+.neon-drift-toggle {
+  gap: 8px;
+  text-transform: none;
+}
+
+.neon-drift-toggle input {
+  accent-color: #34f6ff;
+}
+
+.neon-drift-overlay {
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: radial-gradient(circle at center, rgba(4, 8, 22, 0.14), rgba(2, 3, 11, 0.64));
+}
+
+.neon-drift-panel {
+  width: min(92vw, 470px);
+  border: 1px solid rgba(255, 43, 214, 0.35);
+  border-radius: 8px;
+  background: linear-gradient(145deg, rgba(8, 10, 28, 0.82), rgba(17, 7, 31, 0.74));
+  color: #f7fbff;
+  padding: clamp(1.4rem, 4vw, 2.2rem);
+  text-align: center;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 0 60px rgba(52, 246, 255, 0.12), inset 0 0 40px rgba(255, 43, 214, 0.08);
+}
+
+.neon-drift-kicker {
+  color: #34f6ff;
+  font-size: 0.76rem;
+  font-weight: 800;
+  margin: 0 0 0.7rem;
+  text-transform: uppercase;
+}
+
+.neon-drift-panel h3 {
+  color: #fff;
+  font-size: clamp(2.4rem, 7vw, 4.4rem);
+  line-height: 1;
+  margin: 0 0 0.8rem;
+  text-shadow: 0 0 22px rgba(255, 43, 214, 0.42);
+}
+
+.neon-drift-panel p {
+  color: rgba(230, 241, 255, 0.82);
+  margin: 0 0 1.2rem;
+}
+
+.neon-drift-panel button {
+  min-height: 46px;
+  min-width: 148px;
+  border: 1px solid rgba(52, 246, 255, 0.68);
+  border-radius: 8px;
+  background: linear-gradient(90deg, rgba(52, 246, 255, 0.95), rgba(255, 43, 214, 0.95));
+  color: #050611;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.neon-drift-panel span {
+  display: block;
+  color: rgba(230, 241, 255, 0.68);
+  font-size: 0.86rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 720px) {
+  .neon-drift-shell {
+    height: 560px;
+  }
+
+  .neon-drift-hud {
+    top: 12px;
+    left: 12px;
+    right: 12px;
+  }
+
+  .neon-drift-actions {
+    top: auto;
+    right: 12px;
+    bottom: 62px;
+  }
+
+  .neon-drift-badge {
+    right: 12px;
+    bottom: 12px;
+  }
+}

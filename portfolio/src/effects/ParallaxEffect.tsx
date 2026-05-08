@@ -19,7 +19,7 @@ const ParallaxLayer = styled.div`
 const ParallaxShape = styled.div`
   position: absolute;
   opacity: 0.1;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: var(--parallax-shape-color);
 `;
 
 const Circle = styled(ParallaxShape)`

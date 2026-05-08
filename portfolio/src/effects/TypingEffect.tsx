@@ -48,9 +48,7 @@ const TypingEffect: React.FC<TypingEffectProps> = ({
   useEffect(() => {
     // Skip if no words are provided
     if (!words || words.length === 0) return;
-    
-    const currentWord = words[wordIndex];
-    
+
     // Handle typing and deleting
     const handleTyping = () => {
       if (!isMounted.current) return;

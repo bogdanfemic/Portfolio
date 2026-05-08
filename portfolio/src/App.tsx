@@ -9,8 +9,11 @@ import Projects from './components/sections/Projects';
 import Skills from './components/sections/Skills';
 import Contact from './components/sections/Contact';
 import ThreeJsGame from './components/sections/ThreeJsGame';
+import CommandPalette from './components/ui/CommandPalette';
 import { CustomCursor, ThreeProjectViewer } from './effects';
 import { isWebGLAvailable } from './utils/webGLUtils';
+import usePrefersReducedMotion from './hooks/usePrefersReducedMotion';
+import { useThemeMode } from './hooks/useThemeMode';
 
 // Sample project data for the 3D viewer
 const projectData = [
@@ -33,6 +36,8 @@ const projectData = [
 
 const App: React.FC = () => {
   const [webGLAvailable, setWebGLAvailable] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
+  useThemeMode(); // sets `data-theme` early for CSS variable themes
   
   useEffect(() => {
     setWebGLAvailable(isWebGLAvailable());
@@ -41,7 +46,8 @@ const App: React.FC = () => {
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <CustomCursor />
-      {webGLAvailable && <ThreeProjectViewer projects={projectData} />}
+      <CommandPalette />
+      {webGLAvailable && !prefersReducedMotion && <ThreeProjectViewer projects={projectData} />}
       <Layout>
         <Home />
         <About />

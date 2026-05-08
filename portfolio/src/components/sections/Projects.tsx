@@ -52,22 +52,22 @@ const FilterContainer = styled(motion.div)`
   margin-bottom: 3rem;
 `;
 
-const FilterButton = styled(motion.button)<{ isActive: boolean }>`
+const FilterButton = styled(motion.button)<{ $isActive: boolean }>`
   padding: 0.5rem 1.5rem;
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   font-weight: 500;
-  background-color: ${({ isActive, theme }) => 
-    isActive ? theme.colors.primary : 'white'};
-  color: ${({ isActive, theme }) => 
-    isActive ? 'white' : theme.colors.text};
+  background-color: ${({ $isActive, theme }) => 
+    $isActive ? theme.colors.primary : 'var(--surface-color)'};
+  color: ${({ $isActive, theme }) => 
+    $isActive ? 'white' : theme.colors.text};
   box-shadow: ${({ theme }) => theme.shadows.small};
   transition: all ${({ theme }) => theme.transitions.medium};
   
   &:hover {
     transform: translateY(-3px);
     box-shadow: ${({ theme }) => theme.shadows.medium};
-    background-color: ${({ isActive, theme }) => 
-      isActive ? theme.colors.primary : theme.colors.lightGray};
+    background-color: ${({ $isActive, theme }) => 
+      $isActive ? theme.colors.primary : theme.colors.lightGray};
   }
 `;
 
@@ -82,7 +82,7 @@ const ProjectsGrid = styled(motion.div)`
 `;
 
 const ProjectCard = styled(motion.div)`
-  background-color: white;
+  background-color: var(--surface-color);
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   overflow: hidden;
   box-shadow: ${({ theme }) => theme.shadows.medium};
@@ -198,7 +198,7 @@ const ModalOverlay = styled(motion.div)`
 `;
 
 const ModalContent = styled(motion.div)`
-  background-color: white;
+  background-color: var(--surface-color);
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   width: 100%;
   max-width: 900px;
@@ -476,7 +476,7 @@ const Projects: React.FC = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <FilterButton 
-            isActive={filter === 'all'}
+            $isActive={filter === 'all'}
             onClick={() => setFilter('all')}
             whileHover={{ y: -3 }}
             whileTap={{ y: 0 }}
@@ -484,7 +484,7 @@ const Projects: React.FC = () => {
             All
           </FilterButton>
           <FilterButton 
-            isActive={filter === 'web'}
+            $isActive={filter === 'web'}
             onClick={() => setFilter('web')}
             whileHover={{ y: -3 }}
             whileTap={{ y: 0 }}
@@ -492,7 +492,7 @@ const Projects: React.FC = () => {
             Web
           </FilterButton>
           <FilterButton 
-            isActive={filter === 'mobile'}
+            $isActive={filter === 'mobile'}
             onClick={() => setFilter('mobile')}
             whileHover={{ y: -3 }}
             whileTap={{ y: 0 }}
@@ -500,7 +500,7 @@ const Projects: React.FC = () => {
             Mobile
           </FilterButton>
           <FilterButton 
-            isActive={filter === 'design'}
+            $isActive={filter === 'design'}
             onClick={() => setFilter('design')}
             whileHover={{ y: -3 }}
             whileTap={{ y: 0 }}

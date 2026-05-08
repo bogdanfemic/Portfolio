@@ -119,7 +119,7 @@ const ServicesContainer = styled.div`
 `;
 
 const ServiceCard = styled(motion.div)`
-  background-color: white;
+  background-color: var(--surface-color);
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   padding: 2rem;
   box-shadow: ${({ theme }) => theme.shadows.small};
@@ -158,15 +158,6 @@ const About: React.FC = () => {
       transition: {
         staggerChildren: 0.2,
       },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 30, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.6, ease: "easeOut" },
     },
   };
 

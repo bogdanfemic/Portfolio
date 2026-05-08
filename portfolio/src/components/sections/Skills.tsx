@@ -24,7 +24,7 @@ import {
 import { IconWrapper } from '../../utils/IconWrapper';
 
 const SkillsSection = styled.section`
-  background-color: white;
+  background-color: var(--background-color);
   padding: 100px 0;
 `;
 
@@ -91,7 +91,7 @@ const SkillsGrid = styled.div`
 `;
 
 const SkillCard = styled(motion.div)`
-  background-color: white;
+  background-color: var(--surface-color);
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   padding: 2rem;
   box-shadow: ${({ theme }) => theme.shadows.small};
@@ -147,19 +147,6 @@ const SkillLevelFill = styled(motion.div)<{ level: number }>`
   width: ${({ level }) => `${level}%`};
 `;
 
-const SkillsChart = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
-  margin-top: 3rem;
-`;
-
-const ChartContainer = styled(motion.div)`
-  width: 100%;
-  max-width: 600px;
-`;
-
 const Skills: React.FC = () => {
   const frontendSkills = [
     { name: 'React', icon: FaReact, level: 90 },
@@ -185,25 +172,6 @@ const Skills: React.FC = () => {
     { name: 'Webpack', icon: SiWebpack, level: 70 },
     { name: 'Jest', icon: SiJest, level: 75 },
   ];
-  
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-  
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.5, ease: "easeOut" },
-    },
-  };
   
   const barVariants = {
     hidden: { width: 0 },

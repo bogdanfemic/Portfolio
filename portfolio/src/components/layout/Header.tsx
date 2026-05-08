@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import { FaBars, FaTimes, FaMoon, FaSun, FaSearch } from 'react-icons/fa';
 import { IconWrapper } from '../../utils/IconWrapper';
+import { useThemeMode } from '../../hooks/useThemeMode';
 
 const HeaderContainer = styled(motion.header)`
   position: fixed;
@@ -10,9 +11,10 @@ const HeaderContainer = styled(motion.header)`
   left: 0;
   width: 100%;
   z-index: ${({ theme }) => theme.zIndex.menu};
-  padding: 1rem 0;
-  background-color: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(5px);
+  padding: 0.8rem 0;
+  background-color: var(--header-bg);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(37, 214, 255, 0.08);
   box-shadow: ${({ theme }) => theme.shadows.small};
   transition: all ${({ theme }) => theme.transitions.medium};
 `;
@@ -27,15 +29,32 @@ const NavContainer = styled.div`
 `;
 
 const Logo = styled(motion.div)`
-  font-size: ${({ theme }) => theme.fontSizes.xlarge};
+  font-size: ${({ theme }) => theme.fontSizes.large};
   font-weight: 700;
-  color: ${({ theme }) => theme.colors.primary};
+  color: var(--hero-fg);
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:before {
+    content: '';
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
+    box-shadow: 0 0 18px rgba(37, 214, 255, 0.45);
+  }
 `;
 
-const NavLinks = styled.nav<{ isOpen: boolean }>`
+const NavLinks = styled.nav<{ $isOpen: boolean }>`
   display: flex;
   align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem;
+  border-radius: 999px;
+  border: 1px solid rgba(37, 214, 255, 0.09);
+  background: rgba(8, 14, 34, 0.28);
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     position: fixed;
@@ -46,33 +65,35 @@ const NavLinks = styled.nav<{ isOpen: boolean }>`
     max-width: 300px;
     flex-direction: column;
     justify-content: center;
-    background-color: ${({ theme }) => theme.colors.background};
+    background: linear-gradient(180deg, rgba(5, 8, 22, 0.96), rgba(13, 20, 38, 0.98));
     box-shadow: ${({ theme }) => theme.shadows.large};
-    transform: ${({ isOpen }) => (isOpen ? 'translateX(0)' : 'translateX(100%)')};
+    transform: ${({ $isOpen }) => ($isOpen ? 'translateX(0)' : 'translateX(100%)')};
     transition: transform ${({ theme }) => theme.transitions.medium};
     z-index: ${({ theme }) => theme.zIndex.menu};
+    backdrop-filter: blur(18px);
   }
 `;
 
 const NavLink = styled(motion.a)`
-  margin: 0 1rem;
+  margin: 0 0.1rem;
   font-weight: 500;
-  color: ${({ theme }) => theme.colors.text};
+  color: rgba(243, 247, 255, 0.82);
   position: relative;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
   
   &:after {
     content: '';
     position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: ${({ theme }) => theme.colors.primary};
-    transition: width ${({ theme }) => theme.transitions.medium};
+    inset: 0;
+    border-radius: 999px;
+    background: rgba(37, 214, 255, 0.08);
+    opacity: 0;
+    transition: opacity ${({ theme }) => theme.transitions.medium};
   }
   
   &:hover:after, &.active:after {
-    width: 100%;
+    opacity: 1;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
@@ -92,15 +113,40 @@ const MobileMenuButton = styled.button`
   }
 `;
 
-const Overlay = styled.div<{ isOpen: boolean }>`
+const ActionRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const ActionButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  color: rgba(243, 247, 255, 0.86);
+  background: rgba(8, 14, 34, 0.32);
+  border: 1px solid rgba(37, 214, 255, 0.1);
+  transition: transform ${({ theme }) => theme.transitions.short}, background-color ${({ theme }) => theme.transitions.short}, border-color ${({ theme }) => theme.transitions.short};
+
+  &:hover {
+    transform: translateY(-1px);
+    background: rgba(37, 214, 255, 0.08);
+    border-color: rgba(255, 79, 162, 0.22);
+  }
+`;
+
+const Overlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
-  visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
+  opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
+  visibility: ${({ $isOpen }) => ($isOpen ? 'visible' : 'hidden')};
   transition: all ${({ theme }) => theme.transitions.medium};
   z-index: ${({ theme }) => theme.zIndex.menu - 1};
 `;
@@ -108,6 +154,7 @@ const Overlay = styled.div<{ isOpen: boolean }>`
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { mode, toggle } = useThemeMode();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -146,7 +193,7 @@ const Header: React.FC = () => {
       variants={headerVariants}
       style={{ 
         padding: scrolled ? '0.7rem 0' : '1rem 0',
-        backgroundColor: scrolled ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.8)',
+        backgroundColor: scrolled ? 'var(--header-bg-scrolled)' : 'var(--header-bg)',
       }}
     >
       <NavContainer>
@@ -160,12 +207,31 @@ const Header: React.FC = () => {
         >
           BF
         </Logo>
-        
-        <MobileMenuButton onClick={toggleMenu}>
-          {isOpen ? <IconWrapper icon={FaTimes} /> : <IconWrapper icon={FaBars} />}
-        </MobileMenuButton>
-        
-        <NavLinks isOpen={isOpen}>
+
+        <ActionRow>
+          <ActionButton
+            type="button"
+            aria-label="Open command palette"
+            title="Search (Ctrl/⌘ K or /)"
+            onClick={() => window.dispatchEvent(new Event('command-palette:open'))}
+          >
+            <IconWrapper icon={FaSearch} />
+          </ActionButton>
+          <ActionButton
+            type="button"
+            aria-label={`Switch to ${mode === 'dark' ? 'light' : 'dark'} mode`}
+            title="Toggle theme"
+            onClick={toggle}
+          >
+            <IconWrapper icon={mode === 'dark' ? FaSun : FaMoon} />
+          </ActionButton>
+
+          <MobileMenuButton onClick={toggleMenu} aria-label="Toggle menu">
+            {isOpen ? <IconWrapper icon={FaTimes} /> : <IconWrapper icon={FaBars} />}
+          </MobileMenuButton>
+        </ActionRow>
+
+        <NavLinks $isOpen={isOpen}>
           <NavLink 
             href="#home" 
             variants={linkVariants}
@@ -216,7 +282,7 @@ const Header: React.FC = () => {
           </NavLink>
         </NavLinks>
         
-        <Overlay isOpen={isOpen} onClick={closeMenu} />
+        <Overlay $isOpen={isOpen} onClick={closeMenu} />
       </NavContainer>
     </HeaderContainer>
   );

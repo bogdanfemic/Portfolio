@@ -9,10 +9,10 @@ interface TiltEffectProps {
   className?: string;
 }
 
-const TiltContainer = styled.div<{ perspective: number, transitionDuration: number }>`
+const TiltContainer = styled.div<{ $perspective: number; $transitionDuration: number }>`
   transform-style: preserve-3d;
-  perspective: ${props => props.perspective}px;
-  transition: transform ${props => props.transitionDuration}s ease;
+  perspective: ${props => props.$perspective}px;
+  transition: transform ${props => props.$transitionDuration}s ease;
   will-change: transform;
 `;
 
@@ -61,8 +61,8 @@ const TiltEffect: React.FC<TiltEffectProps> = ({
   return (
     <TiltContainer 
       ref={containerRef} 
-      perspective={perspective} 
-      transitionDuration={transitionDuration}
+      $perspective={perspective} 
+      $transitionDuration={transitionDuration}
       className={`tilt-effect ${className}`}
     >
       {children}

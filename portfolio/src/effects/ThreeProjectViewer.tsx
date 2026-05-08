@@ -73,6 +73,8 @@ const ThreeProjectViewer: React.FC<ThreeProjectViewerProps> = ({ projects }) => 
   
   const modalRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const cleanupViewerRef = useRef<null | (() => void)>(null);
+  const rafIdRef = useRef<number | null>(null);
   
   // Variables to store current viewer state
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -305,6 +307,14 @@ const ThreeProjectViewer: React.FC<ThreeProjectViewerProps> = ({ projects }) => 
     }
     
     try {
+      // Clean up any prior viewer instance
+      cleanupViewerRef.current?.();
+      cleanupViewerRef.current = null;
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+        rafIdRef.current = null;
+      }
+
       // Clear previous renderer if exists
       if (rendererRef.current) {
         rendererRef.current.dispose();
@@ -330,7 +340,7 @@ const ThreeProjectViewer: React.FC<ThreeProjectViewerProps> = ({ projects }) => 
       // Create renderer
       const renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setSize(width, height);
-      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       container.innerHTML = '';
       container.appendChild(renderer.domElement);
       rendererRef.current = renderer;
@@ -371,7 +381,7 @@ const ThreeProjectViewer: React.FC<ThreeProjectViewerProps> = ({ projects }) => 
       const animate = () => {
         if (!isOpen) return;
         
-        requestAnimationFrame(animate);
+        rafIdRef.current = requestAnimationFrame(animate);
         
         // Apply rotation to model
         if (modelRef.current) {
@@ -394,13 +404,30 @@ const ThreeProjectViewer: React.FC<ThreeProjectViewerProps> = ({ projects }) => 
       animate();
       
       // Clean up function
-      return () => {
+      const cleanup = () => {
         window.removeEventListener('resize', handleResize);
         container.removeEventListener('mousedown', onMouseDown);
         container.removeEventListener('mousemove', onMouseMove);
         container.removeEventListener('mouseup', onMouseUp);
         container.removeEventListener('mouseleave', onMouseUp);
+
+        if (rafIdRef.current !== null) {
+          cancelAnimationFrame(rafIdRef.current);
+          rafIdRef.current = null;
+        }
+
+        if (rendererRef.current) {
+          rendererRef.current.dispose();
+          rendererRef.current = null;
+        }
+
+        // Remove canvas from DOM
+        if (containerRef.current) {
+          containerRef.current.innerHTML = '';
+        }
       };
+
+      cleanupViewerRef.current = cleanup;
     } catch (error) {
       console.error('Error initializing 3D project viewer:', error);
     }
@@ -431,10 +458,8 @@ const ThreeProjectViewer: React.FC<ThreeProjectViewerProps> = ({ projects }) => 
     }
     
     // Clean up Three.js resources
-    if (rendererRef.current) {
-      rendererRef.current.dispose();
-      rendererRef.current = null;
-    }
+    cleanupViewerRef.current?.();
+    cleanupViewerRef.current = null;
   }, []);
   
   // Add 3D view buttons to project cards
