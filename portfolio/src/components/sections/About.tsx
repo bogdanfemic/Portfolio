@@ -84,6 +84,39 @@ const AboutDescription = styled.p`
   margin-bottom: 1.5rem;
 `;
 
+const HighlightGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 2rem 0 1.5rem;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const HighlightCard = styled.div`
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: ${({ theme }) => theme.borderRadius.medium};
+  padding: 1rem 1.1rem;
+  box-shadow: ${({ theme }) => theme.shadows.small};
+`;
+
+const HighlightLabel = styled.p`
+  font-size: ${({ theme }) => theme.fontSizes.small};
+  color: ${({ theme }) => theme.colors.darkGray};
+  margin-bottom: 0.35rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+`;
+
+const HighlightValue = styled.p`
+  font-size: ${({ theme }) => theme.fontSizes.medium};
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.text};
+`;
+
 const AboutStats = styled.div`
   display: flex;
   gap: 2rem;
@@ -224,11 +257,30 @@ const About: React.FC = () => {
           >
             <AboutHeading>Who am I?</AboutHeading>
             <AboutDescription>
-              I'm a passionate Frontend Developer with expertise in building modern web applications using React, TypeScript, and other cutting-edge technologies. With a strong foundation in JavaScript and a keen eye for design, I create responsive and user-friendly interfaces that deliver exceptional user experiences.
+              I'm a Frontend Developer and Computer Science student at TU Darmstadt, based in Frankfurt. I build modern web applications with React, TypeScript, and interactive motion systems, with a focus on clarity, performance, and polished presentation.
             </AboutDescription>
             <AboutDescription>
-              My journey in web development started several years ago, and since then, I've been continuously learning and adapting to the ever-evolving landscape of frontend technologies. I believe in writing clean, maintainable code and following best practices to ensure scalable and robust applications.
+              Beyond development, I mentor students through the Digitechnikum initiative at Stiftung Polytechnische Gesellschaft, helping young IT talent work on projects around mobility, climate action, sustainability, energy, and accessibility.
             </AboutDescription>
+
+            <HighlightGrid>
+              <HighlightCard>
+                <HighlightLabel>Education</HighlightLabel>
+                <HighlightValue>B.Sc. Computer Science, TU Darmstadt</HighlightValue>
+              </HighlightCard>
+              <HighlightCard>
+                <HighlightLabel>Location</HighlightLabel>
+                <HighlightValue>Frankfurt, Hessen, Germany</HighlightValue>
+              </HighlightCard>
+              <HighlightCard>
+                <HighlightLabel>Mentoring</HighlightLabel>
+                <HighlightValue>Digitechnikum, Stiftung Polytechnische Gesellschaft</HighlightValue>
+              </HighlightCard>
+              <HighlightCard>
+                <HighlightLabel>Languages</HighlightLabel>
+                <HighlightValue>German, Serbian, English, French</HighlightValue>
+              </HighlightCard>
+            </HighlightGrid>
             
             <AboutStats>
               <StatItem
@@ -237,8 +289,8 @@ const About: React.FC = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                <StatNumber>3+</StatNumber>
-                <StatTitle>Years Experience</StatTitle>
+                <StatNumber>CS</StatNumber>
+                <StatTitle>TU Darmstadt student</StatTitle>
               </StatItem>
               <StatItem
                 initial={{ opacity: 0, y: 20 }}
@@ -246,8 +298,8 @@ const About: React.FC = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.3 }}
               >
-                <StatNumber>20+</StatNumber>
-                <StatTitle>Projects Completed</StatTitle>
+                <StatNumber>Mentor</StatNumber>
+                <StatTitle>Digitechnikum initiative</StatTitle>
               </StatItem>
               <StatItem
                 initial={{ opacity: 0, y: 20 }}
@@ -255,8 +307,8 @@ const About: React.FC = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.4 }}
               >
-                <StatNumber>10+</StatNumber>
-                <StatTitle>Happy Clients</StatTitle>
+                <StatNumber>4</StatNumber>
+                <StatTitle>Languages spoken</StatTitle>
               </StatItem>
             </AboutStats>
           </AboutText>
@@ -316,7 +368,7 @@ const About: React.FC = () => {
               </ServiceIcon>
               <ServiceTitle>React Applications</ServiceTitle>
               <ServiceDescription>
-                Developing complex, interactive web applications with React, Redux, and TypeScript.
+                Developing complex, interactive web applications with React, TypeScript, and motion-driven interfaces.
               </ServiceDescription>
             </ServiceCard>
             

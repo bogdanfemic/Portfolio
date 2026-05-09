@@ -86,7 +86,7 @@ const Footer: React.FC = () => {
         
         <SocialLinks>
           <SocialLink 
-            href="https://github.com/" 
+            href="https://github.com/bogdanfemic" 
             target="_blank" 
             rel="noopener noreferrer"
             variants={socialVariants}
@@ -95,7 +95,7 @@ const Footer: React.FC = () => {
             <IconWrapper icon={FaGithub} />
           </SocialLink>
           <SocialLink 
-            href="https://linkedin.com/" 
+            href="https://www.linkedin.com/in/bogdan-femic/" 
             target="_blank" 
             rel="noopener noreferrer"
             variants={socialVariants}
@@ -104,16 +104,7 @@ const Footer: React.FC = () => {
             <IconWrapper icon={FaLinkedin} />
           </SocialLink>
           <SocialLink 
-            href="https://twitter.com/" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            variants={socialVariants}
-            whileHover="hover"
-          >
-            <IconWrapper icon={FaTwitter} />
-          </SocialLink>
-          <SocialLink 
-            href="mailto:contact@example.com" 
+            href="mailto:bogdanfemic07@gmail.com" 
             variants={socialVariants}
             whileHover="hover"
           >

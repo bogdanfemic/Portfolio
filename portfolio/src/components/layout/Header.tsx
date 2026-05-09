@@ -14,7 +14,7 @@ const HeaderContainer = styled(motion.header)`
   padding: 0.8rem 0;
   background-color: var(--header-bg);
   backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(37, 214, 255, 0.08);
+  border-bottom: 1px solid var(--border-color);
   box-shadow: ${({ theme }) => theme.shadows.small};
   transition: all ${({ theme }) => theme.transitions.medium};
 `;
@@ -31,7 +31,7 @@ const NavContainer = styled.div`
 const Logo = styled(motion.div)`
   font-size: ${({ theme }) => theme.fontSizes.large};
   font-weight: 700;
-  color: var(--hero-fg);
+  color: var(--text-color);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -43,7 +43,7 @@ const Logo = styled(motion.div)`
     height: 12px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
-    box-shadow: 0 0 18px rgba(37, 214, 255, 0.45);
+    box-shadow: 0 0 18px color-mix(in srgb, var(--accent-color) 45%, transparent);
   }
 `;
 
@@ -53,8 +53,8 @@ const NavLinks = styled.nav<{ $isOpen: boolean }>`
   gap: 0.35rem;
   padding: 0.35rem;
   border-radius: 999px;
-  border: 1px solid rgba(37, 214, 255, 0.09);
-  background: rgba(8, 14, 34, 0.28);
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--surface-color) 76%, transparent);
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     position: fixed;
@@ -65,7 +65,11 @@ const NavLinks = styled.nav<{ $isOpen: boolean }>`
     max-width: 300px;
     flex-direction: column;
     justify-content: center;
-    background: linear-gradient(180deg, rgba(5, 8, 22, 0.96), rgba(13, 20, 38, 0.98));
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--background-color) 95%, transparent),
+      color-mix(in srgb, var(--surface-color) 96%, transparent)
+    );
     box-shadow: ${({ theme }) => theme.shadows.large};
     transform: ${({ $isOpen }) => ($isOpen ? 'translateX(0)' : 'translateX(100%)')};
     transition: transform ${({ theme }) => theme.transitions.medium};
@@ -77,7 +81,7 @@ const NavLinks = styled.nav<{ $isOpen: boolean }>`
 const NavLink = styled(motion.a)`
   margin: 0 0.1rem;
   font-weight: 500;
-  color: rgba(243, 247, 255, 0.82);
+  color: var(--text-color);
   position: relative;
   padding: 0.55rem 0.9rem;
   border-radius: 999px;
@@ -87,7 +91,7 @@ const NavLink = styled(motion.a)`
     position: absolute;
     inset: 0;
     border-radius: 999px;
-    background: rgba(37, 214, 255, 0.08);
+    background: color-mix(in srgb, var(--accent-color) 12%, transparent);
     opacity: 0;
     transition: opacity ${({ theme }) => theme.transitions.medium};
   }
@@ -126,15 +130,15 @@ const ActionButton = styled.button`
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  color: rgba(243, 247, 255, 0.86);
-  background: rgba(8, 14, 34, 0.32);
-  border: 1px solid rgba(37, 214, 255, 0.1);
+  color: var(--text-color);
+  background: color-mix(in srgb, var(--surface-color) 78%, transparent);
+  border: 1px solid var(--border-color);
   transition: transform ${({ theme }) => theme.transitions.short}, background-color ${({ theme }) => theme.transitions.short}, border-color ${({ theme }) => theme.transitions.short};
 
   &:hover {
     transform: translateY(-1px);
-    background: rgba(37, 214, 255, 0.08);
-    border-color: rgba(255, 79, 162, 0.22);
+    background: color-mix(in srgb, var(--accent-color) 12%, transparent);
+    border-color: color-mix(in srgb, var(--secondary-color) 28%, transparent);
   }
 `;
 
@@ -223,7 +227,7 @@ const Header: React.FC = () => {
             title="Toggle theme"
             onClick={toggle}
           >
-            <IconWrapper icon={mode === 'dark' ? FaSun : FaMoon} />
+            <IconWrapper icon={mode === 'dark' ? FaMoon : FaSun} />
           </ActionButton>
 
           <MobileMenuButton onClick={toggleMenu} aria-label="Toggle menu">
@@ -263,6 +267,14 @@ const Header: React.FC = () => {
             onClick={closeMenu}
           >
             Skills
+          </NavLink>
+          <NavLink
+            href="#future-goals"
+            variants={linkVariants}
+            whileHover="hover"
+            onClick={closeMenu}
+          >
+            Goals
           </NavLink>
           <NavLink 
             href="#threejs-game" 

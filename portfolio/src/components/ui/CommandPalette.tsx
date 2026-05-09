@@ -88,6 +88,7 @@ export default function CommandPalette() {
       { id: 'about', label: 'Go to About', run: () => scrollToId('about') },
       { id: 'projects', label: 'Go to Projects', run: () => scrollToId('projects') },
       { id: 'skills', label: 'Go to Skills', run: () => scrollToId('skills') },
+      { id: 'future-goals', label: 'Go to Future Goals', keywords: 'roadmap ambitions next', run: () => scrollToId('future-goals') },
       { id: 'threejs-game', label: 'Go to 3D Game', keywords: 'three webgl', run: () => scrollToId('threejs-game') },
       { id: 'contact', label: 'Go to Contact', run: () => scrollToId('contact') },
     ],
@@ -189,4 +190,3 @@ export default function CommandPalette() {
     </Backdrop>
   );
 }
-

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FaArrowDown, FaBolt, FaLayerGroup, FaRocket } from 'react-icons/fa';
 import { IconWrapper } from '../../utils/IconWrapper';
-import { ParallaxEffect, ThreeBackground, TypingEffect } from '../../effects';
+import { ParallaxEffect, ThreeBackground } from '../../effects';
 import { isWebGLAvailable } from '../../utils/webGLUtils';
 import usePrefersReducedMotion from '../../hooks/usePrefersReducedMotion';
 
@@ -14,9 +14,9 @@ const HomeSection = styled.section`
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(circle at 15% 18%, rgba(37, 214, 255, 0.12), transparent 26%),
-    radial-gradient(circle at 82% 30%, rgba(255, 79, 162, 0.1), transparent 24%),
-    linear-gradient(145deg, rgba(5, 8, 22, 0.94), rgba(8, 14, 34, 0.98));
+    radial-gradient(circle at 15% 18%, color-mix(in srgb, var(--accent-color) 18%, transparent), transparent 26%),
+    radial-gradient(circle at 82% 30%, color-mix(in srgb, var(--secondary-color) 14%, transparent), transparent 24%),
+    linear-gradient(145deg, var(--hero-gradient-start), var(--hero-gradient-end));
   color: var(--hero-fg);
 `;
 
@@ -43,10 +43,10 @@ const Eyebrow = styled(motion.div)`
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0.9rem;
-  border: 1px solid rgba(37, 214, 255, 0.22);
+  border: 1px solid var(--hero-border);
   border-radius: 999px;
-  background: rgba(8, 14, 34, 0.56);
-  color: rgba(243, 247, 255, 0.82);
+  background: color-mix(in srgb, var(--surface-color) 76%, transparent);
+  color: var(--hero-fg-muted);
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -55,29 +55,49 @@ const Eyebrow = styled(motion.div)`
 `;
 
 const Title = styled(motion.h1)`
-  max-width: 10ch;
+  max-width: 12ch;
   font-size: clamp(3.4rem, 8vw, 6.8rem);
-  line-height: 0.9;
+  line-height: 0.92;
   letter-spacing: -0.04em;
   margin: 0;
   text-wrap: balance;
 `;
 
-const Accent = styled.span`
-  display: block;
-  color: rgba(243, 247, 255, 0.72);
-  font-size: clamp(1rem, 2vw, 1.25rem);
+const Subtitle = styled(motion.p)`
+  max-width: 28ch;
+  margin: 0.8rem 0 0;
+  color: var(--hero-fg-muted);
+  font-size: clamp(1rem, 1.35vw, 1.2rem);
   font-weight: 600;
-  line-height: 1.2;
-  margin-top: 0.45rem;
+  line-height: 1.45;
 `;
 
 const Lead = styled(motion.p)`
   max-width: 62ch;
   margin: 1.5rem 0 0;
-  color: rgba(243, 247, 255, 0.82);
+  color: var(--hero-fg-muted);
   font-size: clamp(1rem, 1.45vw, 1.125rem);
   line-height: 1.72;
+`;
+
+const ContextRow = styled(motion.div)`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+`;
+
+const ContextPill = styled.span`
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--hero-border);
+  background: color-mix(in srgb, var(--surface-color) 78%, transparent);
+  color: var(--hero-fg-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
 `;
 
 const ActionRow = styled(motion.div)`
@@ -95,15 +115,15 @@ const PrimaryButton = styled.a`
   min-height: 50px;
   padding: 0 1.2rem;
   border-radius: 999px;
-  background: linear-gradient(135deg, #ffffff 0%, #d7e8ff 100%);
-  color: #05101f;
+  background: var(--home-primary-btn-bg);
+  color: var(--home-primary-btn-text);
   font-weight: 800;
-  box-shadow: 0 18px 40px rgba(37, 214, 255, 0.12);
+  box-shadow: 0 18px 40px color-mix(in srgb, var(--accent-color) 22%, transparent);
   transition: transform 180ms ease, box-shadow 180ms ease;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 22px 48px rgba(255, 79, 162, 0.18);
+    box-shadow: 0 22px 48px color-mix(in srgb, var(--secondary-color) 24%, transparent);
   }
 `;
 
@@ -114,16 +134,16 @@ const SecondaryButton = styled.a`
   min-height: 50px;
   padding: 0 1.2rem;
   border-radius: 999px;
-  border: 1px solid rgba(37, 214, 255, 0.22);
-  background: rgba(8, 14, 34, 0.42);
+  border: 1px solid var(--hero-border);
+  background: color-mix(in srgb, var(--surface-color) 74%, transparent);
   color: var(--hero-fg);
   font-weight: 700;
   transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
 
   &:hover {
     transform: translateY(-2px);
-    border-color: rgba(255, 79, 162, 0.44);
-    background: rgba(255, 79, 162, 0.08);
+    border-color: color-mix(in srgb, var(--secondary-color) 45%, transparent);
+    background: color-mix(in srgb, var(--secondary-color) 14%, transparent);
   }
 `;
 
@@ -141,9 +161,9 @@ const StatsRow = styled(motion.div)`
 `;
 
 const StatCard = styled.div`
-  border: 1px solid rgba(37, 214, 255, 0.16);
+  border: 1px solid var(--hero-border);
   border-radius: 8px;
-  background: rgba(8, 14, 34, 0.52);
+  background: color-mix(in srgb, var(--surface-color) 78%, transparent);
   padding: 0.95rem 1rem;
   backdrop-filter: blur(14px);
 `;
@@ -151,13 +171,13 @@ const StatCard = styled.div`
 const StatValue = styled.div`
   font-size: 1.35rem;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--hero-fg);
   line-height: 1;
 `;
 
 const StatLabel = styled.div`
   margin-top: 0.35rem;
-  color: rgba(243, 247, 255, 0.7);
+  color: var(--hero-fg-muted);
   font-size: 0.78rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -187,11 +207,11 @@ const PortraitRing = styled(motion.div)`
   position: absolute;
   inset: 7%;
   border-radius: 50%;
-  border: 1px solid rgba(37, 214, 255, 0.18);
+  border: 1px solid var(--hero-border);
   background:
-    radial-gradient(circle at center, rgba(255, 79, 162, 0.08), transparent 58%),
-    radial-gradient(circle at center, rgba(37, 214, 255, 0.08), transparent 70%);
-  box-shadow: inset 0 0 40px rgba(37, 214, 255, 0.08);
+    radial-gradient(circle at center, color-mix(in srgb, var(--secondary-color) 15%, transparent), transparent 58%),
+    radial-gradient(circle at center, color-mix(in srgb, var(--accent-color) 16%, transparent), transparent 70%);
+  box-shadow: inset 0 0 40px color-mix(in srgb, var(--accent-color) 14%, transparent);
 `;
 
 const PortraitCore = styled(motion.div)`
@@ -201,22 +221,26 @@ const PortraitCore = styled(motion.div)`
   display: grid;
   place-items: center;
   background:
-    radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.18), transparent 45%),
-    linear-gradient(145deg, rgba(13, 20, 38, 0.96), rgba(33, 46, 80, 0.96));
-  border: 1px solid rgba(255, 255, 255, 0.08);
+    radial-gradient(circle at 50% 35%, color-mix(in srgb, var(--hero-fg) 20%, transparent), transparent 45%),
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--surface-color) 85%, var(--text-color)),
+      color-mix(in srgb, var(--surface-2-color) 82%, var(--text-color))
+    );
+  border: 1px solid color-mix(in srgb, var(--hero-fg) 14%, transparent);
   box-shadow:
     0 32px 90px rgba(0, 0, 0, 0.36),
-    inset 0 0 38px rgba(37, 214, 255, 0.08);
+    inset 0 0 38px color-mix(in srgb, var(--accent-color) 16%, transparent);
 `;
 
 const OrbBadge = styled(motion.div)`
   position: absolute;
   border-radius: 999px;
   padding: 0.7rem 0.9rem;
-  background: rgba(8, 14, 34, 0.76);
-  border: 1px solid rgba(37, 214, 255, 0.16);
+  background: color-mix(in srgb, var(--surface-color) 84%, transparent);
+  border: 1px solid var(--hero-border);
   backdrop-filter: blur(12px);
-  color: rgba(243, 247, 255, 0.92);
+  color: var(--hero-fg);
   font-size: 0.8rem;
   font-weight: 700;
 `;
@@ -241,9 +265,9 @@ const ScrollDown = styled(motion.button)`
   gap: 0.55rem;
   padding: 0.65rem 0.9rem;
   border-radius: 999px;
-  border: 1px solid rgba(37, 214, 255, 0.16);
-  background: rgba(8, 14, 34, 0.45);
-  color: rgba(243, 247, 255, 0.82);
+  border: 1px solid var(--hero-border);
+  background: color-mix(in srgb, var(--surface-color) 76%, transparent);
+  color: var(--hero-fg-muted);
   backdrop-filter: blur(12px);
 `;
 
@@ -282,8 +306,15 @@ const Home: React.FC = () => {
               transition={{ duration: 0.55 }}
             >
               Bogdan Femic
-              <Accent>Frontend Developer building sharp interfaces and expressive interactions.</Accent>
             </Title>
+
+            <Subtitle
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.05 }}
+            >
+              Frontend Developer building sharp interfaces and expressive interactions.
+            </Subtitle>
 
             <Lead
               initial={{ opacity: 0, y: 18 }}
@@ -291,10 +322,20 @@ const Home: React.FC = () => {
               transition={{ duration: 0.55, delay: 0.1 }}
             >
               I design and build modern web experiences with React, TypeScript, motion design, and interactive 3D systems.
-              <span style={{ display: 'block', marginTop: '0.5rem', color: 'rgba(243, 247, 255, 0.65)', fontWeight: 600 }}>
+              <span style={{ display: 'block', marginTop: '0.5rem', color: 'var(--hero-fg-muted)', fontWeight: 600 }}>
                 Currently focused on fast, polished product experiences and portfolio work that feels memorable in the first few seconds.
               </span>
             </Lead>
+
+            <ContextRow
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.14 }}
+            >
+              <ContextPill>Computer Science student at TU Darmstadt</ContextPill>
+              <ContextPill>Based in Frankfurt, Hessen</ContextPill>
+              <ContextPill>Mentor for Digitechnikum</ContextPill>
+            </ContextRow>
 
             <ActionRow
               initial={{ opacity: 0, y: 18 }}
@@ -354,30 +395,30 @@ const Home: React.FC = () => {
                     borderRadius: '50%',
                     display: 'grid',
                     placeItems: 'center',
-                    color: 'white',
+                    color: 'var(--hero-fg)',
                     background:
-                      'radial-gradient(circle at 50% 35%, rgba(255,255,255,0.18), transparent 42%), linear-gradient(135deg, rgba(37,214,255,0.18), rgba(255,79,162,0.12))',
-                    boxShadow: '0 0 40px rgba(37,214,255,0.08)',
+                      'radial-gradient(circle at 50% 35%, color-mix(in srgb, var(--hero-fg) 20%, transparent), transparent 42%), linear-gradient(135deg, color-mix(in srgb, var(--accent-color) 22%, transparent), color-mix(in srgb, var(--secondary-color) 14%, transparent))',
+                    boxShadow: '0 0 40px color-mix(in srgb, var(--accent-color) 16%, transparent)',
                   }}
                 >
                   <svg width="220" height="220" viewBox="0 0 220 220" fill="none" aria-hidden="true">
-                    <circle cx="110" cy="110" r="72" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
-                    <circle cx="110" cy="92" r="24" fill="rgba(255,255,255,0.18)" />
+                    <circle cx="110" cy="110" r="72" stroke="color-mix(in srgb, var(--hero-fg) 16%, transparent)" strokeWidth="1.5" />
+                    <circle cx="110" cy="92" r="24" fill="color-mix(in srgb, var(--hero-fg) 20%, transparent)" />
                     <path
                       d="M58 156c10-23 31-36 52-36s42 13 52 36"
-                      stroke="rgba(255,255,255,0.18)"
+                      stroke="color-mix(in srgb, var(--hero-fg) 22%, transparent)"
                       strokeWidth="10"
                       strokeLinecap="round"
                     />
                     <path
                       d="M40 110h140"
-                      stroke="rgba(37,214,255,0.18)"
+                      stroke="color-mix(in srgb, var(--accent-color) 22%, transparent)"
                       strokeWidth="2"
                       strokeDasharray="6 10"
                     />
                     <path
                       d="M110 30v160"
-                      stroke="rgba(255,79,162,0.14)"
+                      stroke="color-mix(in srgb, var(--secondary-color) 18%, transparent)"
                       strokeWidth="2"
                       strokeDasharray="6 10"
                     />

@@ -4,6 +4,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaGithub, FaExternalLinkAlt, FaTimes } from 'react-icons/fa';
 import { IconWrapper } from '../../utils/IconWrapper';
 import { TiltEffect, ScrollAnimation } from '../../effects';
+import yaraShopImage from '../../assets/Yara-Shop.png';
+import hotTakeImage from '../../assets/HotTakePR.png';
+import digitechnikumImage from '../../assets/Digitechnikum.png';
 
 const ProjectsSection = styled.section`
   background-color: ${({ theme }) => theme.colors.lightGray};
@@ -52,13 +55,13 @@ const FilterContainer = styled(motion.div)`
   margin-bottom: 3rem;
 `;
 
-const FilterButton = styled(motion.button)<{ $isActive: boolean }>`
+const FilterButton = styled(motion.button) <{ $isActive: boolean }>`
   padding: 0.5rem 1.5rem;
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   font-weight: 500;
-  background-color: ${({ $isActive, theme }) => 
+  background-color: ${({ $isActive, theme }) =>
     $isActive ? theme.colors.primary : 'var(--surface-color)'};
-  color: ${({ $isActive, theme }) => 
+  color: ${({ $isActive, theme }) =>
     $isActive ? 'white' : theme.colors.text};
   box-shadow: ${({ theme }) => theme.shadows.small};
   transition: all ${({ theme }) => theme.transitions.medium};
@@ -66,8 +69,8 @@ const FilterButton = styled(motion.button)<{ $isActive: boolean }>`
   &:hover {
     transform: translateY(-3px);
     box-shadow: ${({ theme }) => theme.shadows.medium};
-    background-color: ${({ $isActive, theme }) => 
-      $isActive ? theme.colors.primary : theme.colors.lightGray};
+    background-color: ${({ $isActive, theme }) =>
+    $isActive ? theme.colors.primary : theme.colors.lightGray};
   }
 `;
 
@@ -337,52 +340,43 @@ const ModalLink = styled.a`
 const projectsData = [
   {
     id: 1,
-    title: 'E-commerce Website',
-    description: 'A fully responsive e-commerce platform with product filtering, cart functionality, and payment integration.',
-    fullDescription: 'This e-commerce platform was built using React and Node.js, featuring a responsive design that works seamlessly across all devices. The application includes product filtering, sorting, and search capabilities, allowing users to easily find what they\'re looking for. The shopping cart is implemented with Redux for state management, and the checkout process integrates with Stripe for secure payments. User authentication is handled with JWT, and the platform also includes an admin dashboard for product management.',
-    image: 'ecommerce-placeholder.jpg',
-    tags: ['React', 'Node.js', 'Redux'],
-    techStack: ['React', 'Node.js', 'Express', 'MongoDB', 'Redux', 'Stripe API', 'JWT', 'Styled Components'],
-    liveLink: 'https://example.com',
-    githubLink: 'https://github.com',
+    title: 'Yárà Shop',
+    description: 'An upcoming African Brand that focuses on creating high-quality, stylish clothing inspired by African culture and heritage.',
+    fullDescription: 'Yárà Shop is an exciting new African brand that celebrates the rich culture and heritage of the continent through fashion. The brand focuses on creating high-quality, stylish clothing that incorporates traditional African patterns, fabrics, and designs with a modern twist. Yárà Shop aims to empower individuals to express their unique style while honoring their roots. The brand offers a wide range of products including dresses, shirts, accessories, and more, all crafted with attention to detail and a commitment to sustainability. With a strong emphasis on community and cultural pride, Yárà Shop is poised to make a significant impact in the fashion industry while promoting African culture globally.',
+    image: yaraShopImage,
+    tags: ['React', 'Node.js', 'TypeScript'],
+    techStack: ['React', 'Node.js', 'MongoDB', 'Stripe API', 'Styled Components'],
+    liveLink: 'https://shop.yara.community',
+    githubLink: '',
     category: 'web',
   },
   {
     id: 2,
-    title: 'Task Management App',
-    description: 'A drag-and-drop task management application with real-time updates and team collaboration features.',
-    fullDescription: 'This task management application was designed to help teams organize their work efficiently. Built with React and Firebase, it features a drag-and-drop interface for easy task management, real-time updates so all team members can see changes instantly, and comprehensive team collaboration tools including comments, attachments, and task assignments. The application also includes data visualization for project progress, deadline reminders, and integrations with popular tools like Slack and Google Calendar.',
-    image: 'task-app-placeholder.jpg',
-    tags: ['React', 'Firebase', 'TypeScript'],
-    techStack: ['React', 'TypeScript', 'Firebase', 'React DnD', 'Chart.js', 'Material UI'],
-    liveLink: 'https://example.com',
-    githubLink: 'https://github.com',
-    category: 'web',
+    title: 'HotTake',
+    description: 'This is an App developed by me, it is meant as a platform for people to share their "critical" opinions on various topics, it is built with Swift.',
+    fullDescription: 'HotTake is a mobile application developed using Swift that serves as a platform for users to share their critical opinions on a wide range of topics. The app allows users to create and share "hot takes" – concise, provocative statements or opinions that spark discussion and debate. Users can browse through hot takes from others, engage in conversations by commenting and liking posts, and follow their favorite contributors. The app features a clean and intuitive interface, making it easy for users to navigate and interact with content. With a focus on fostering open dialogue and diverse perspectives, HotTake aims to create a vibrant community where people can express their thoughts freely and engage in meaningful discussions.',
+    image: hotTakeImage,
+    tags: ['Swift', 'iOS', 'Mobile App'],
+    techStack: ['Swift', 'iOS', 'Firebase', 'Push Notifications', 'User Authentication'],
+    liveLink: '',
+    githubLink: '',
+    category: 'mobile',
   },
+
   {
     id: 3,
-    title: 'Weather Dashboard',
-    description: 'A weather application that displays current conditions and forecasts for locations worldwide.',
-    fullDescription: 'This weather dashboard provides users with accurate weather information for any location around the world. Using the OpenWeatherMap API, the application displays current weather conditions, hourly forecasts, and 7-day predictions. Users can save their favorite locations for quick access and view detailed weather data including temperature, humidity, wind speed, and precipitation. The dashboard also features interactive charts for visualizing weather trends and a responsive design that works well on both desktop and mobile devices.',
-    image: 'weather-placeholder.jpg',
-    tags: ['JavaScript', 'API', 'CSS'],
-    techStack: ['JavaScript', 'HTML5', 'CSS3', 'OpenWeatherMap API', 'Chart.js', 'Geolocation API'],
-    liveLink: 'https://example.com',
-    githubLink: 'https://github.com',
-    category: 'web',
+    title: 'Digitechnikum',
+    description: 'In the Digitechnikum project, I am an Mentor for Jung aspiring developers, I provide guidance and support to help them navigate the world of software development and achieve their goals.',
+    fullDescription: 'Digitechnikum is an educational initiative where I serve as a mentor for young aspiring developers. I provide guidance and support to help them navigate the world of software development and achieve their goals. The project focuses on fostering a love for programming and providing hands-on experience with real-world applications.',
+    image: digitechnikumImage,
+    tags: [],
+    techStack: ['Mentorship', 'Career Guidance'],
+    liveLink: 'https://sptg.de/projekte/wissenschaft-und-technik/digitechnikum',
+    githubLink: '',
+    category: '',
   },
-  {
-    id: 4,
-    title: 'Social Media Dashboard',
-    description: 'A dashboard for managing and analyzing social media accounts across multiple platforms.',
-    fullDescription: 'This social media dashboard allows users to manage and analyze their social media presence across multiple platforms from a single interface. Built with React and Node.js, it integrates with APIs from Twitter, Facebook, Instagram, and LinkedIn to provide a comprehensive view of social media performance. The dashboard includes analytics for engagement, reach, and follower growth, as well as tools for scheduling posts, responding to comments, and monitoring mentions. It also features customizable reports and alerts for important metrics.',
-    image: 'social-placeholder.jpg',
-    tags: ['React', 'Node.js', 'API'],
-    techStack: ['React', 'Node.js', 'Express', 'MongoDB', 'Social Media APIs', 'Chart.js', 'Socket.io'],
-    liveLink: 'https://example.com',
-    githubLink: 'https://github.com',
-    category: 'web',
-  },
+
+
 ];
 
 interface Project {
@@ -401,21 +395,21 @@ interface Project {
 const Projects: React.FC = () => {
   const [filter, setFilter] = useState('all');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  
-  const filteredProjects = filter === 'all' 
-    ? projectsData 
+
+  const filteredProjects = filter === 'all'
+    ? projectsData
     : projectsData.filter(project => project.category === filter);
-  
+
   const openModal = (project: Project) => {
     setSelectedProject(project);
     document.body.style.overflow = 'hidden';
   };
-  
+
   const closeModal = () => {
     setSelectedProject(null);
     document.body.style.overflow = 'auto';
   };
-  
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -425,7 +419,7 @@ const Projects: React.FC = () => {
       },
     },
   };
-  
+
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
@@ -434,7 +428,7 @@ const Projects: React.FC = () => {
       transition: { duration: 0.5, ease: "easeOut" },
     },
   };
-  
+
   const modalVariants = {
     hidden: { opacity: 0, scale: 0.8 },
     visible: {
@@ -448,7 +442,7 @@ const Projects: React.FC = () => {
       transition: { duration: 0.3, ease: "easeIn" },
     },
   };
-  
+
   return (
     <ProjectsSection id="projects">
       <ProjectsContainer>
@@ -468,14 +462,14 @@ const Projects: React.FC = () => {
         >
           Check out some of my recent work
         </SectionSubtitle>
-        
+
         <FilterContainer
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <FilterButton 
+          <FilterButton
             $isActive={filter === 'all'}
             onClick={() => setFilter('all')}
             whileHover={{ y: -3 }}
@@ -483,7 +477,7 @@ const Projects: React.FC = () => {
           >
             All
           </FilterButton>
-          <FilterButton 
+          <FilterButton
             $isActive={filter === 'web'}
             onClick={() => setFilter('web')}
             whileHover={{ y: -3 }}
@@ -491,7 +485,7 @@ const Projects: React.FC = () => {
           >
             Web
           </FilterButton>
-          <FilterButton 
+          <FilterButton
             $isActive={filter === 'mobile'}
             onClick={() => setFilter('mobile')}
             whileHover={{ y: -3 }}
@@ -499,7 +493,7 @@ const Projects: React.FC = () => {
           >
             Mobile
           </FilterButton>
-          <FilterButton 
+          <FilterButton
             $isActive={filter === 'design'}
             onClick={() => setFilter('design')}
             whileHover={{ y: -3 }}
@@ -508,7 +502,7 @@ const Projects: React.FC = () => {
             Design
           </FilterButton>
         </FilterContainer>
-        
+
         <ProjectsGrid
           variants={containerVariants}
           initial="hidden"
@@ -523,18 +517,7 @@ const Projects: React.FC = () => {
                   onClick={() => openModal(project)}
                 >
                   <ProjectImage>
-                    {/* Placeholder for project image */}
-                    <div style={{ 
-                      backgroundColor: '#e0e0e0', 
-                      height: '100%',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      color: '#aaa',
-                      fontSize: '1.2rem'
-                    }}>
-                      Project Image
-                    </div>
+                    <img src={project.image} alt={project.title} loading="lazy" />
                     <ProjectOverlay />
                     <ProjectTags>
                       {project.tags.slice(0, 2).map((tag, index) => (
@@ -548,12 +531,16 @@ const Projects: React.FC = () => {
                       {project.description}
                     </ProjectDescription>
                     <ProjectLinks>
-                      <ProjectLink href={project.githubLink} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
-                        <IconWrapper icon={FaGithub} /> GitHub
-                      </ProjectLink>
-                      <ProjectLink href={project.liveLink} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
-                        <IconWrapper icon={FaExternalLinkAlt} /> Live Demo
-                      </ProjectLink>
+                      {project.githubLink.trim() !== '' && (
+                        <ProjectLink href={project.githubLink} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
+                          <IconWrapper icon={FaGithub} /> GitHub
+                        </ProjectLink>
+                      )}
+                      {project.liveLink.trim() !== '' && (
+                        <ProjectLink href={project.liveLink} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
+                          <IconWrapper icon={FaExternalLinkAlt} /> Live Demo
+                        </ProjectLink>
+                      )}
                     </ProjectLinks>
                   </ProjectContent>
                 </ProjectCard>
@@ -561,7 +548,7 @@ const Projects: React.FC = () => {
             </ScrollAnimation>
           ))}
         </ProjectsGrid>
-        
+
         <AnimatePresence>
           {selectedProject && (
             <ModalOverlay
@@ -580,30 +567,19 @@ const Projects: React.FC = () => {
                 <ModalCloseButton onClick={closeModal}>
                   <IconWrapper icon={FaTimes} />
                 </ModalCloseButton>
-                
+
                 <ModalImageContainer>
                   <ModalImage>
-                    {/* Placeholder for modal image */}
-                    <div style={{ 
-                      backgroundColor: '#e0e0e0', 
-                      height: '100%',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      color: '#aaa',
-                      fontSize: '1.2rem'
-                    }}>
-                      Project Image
-                    </div>
+                    <img src={selectedProject.image} alt={selectedProject.title} />
                   </ModalImage>
                 </ModalImageContainer>
-                
+
                 <ModalBody>
                   <ModalTitle>{selectedProject.title}</ModalTitle>
                   <ModalDescription>
                     {selectedProject.fullDescription}
                   </ModalDescription>
-                  
+
                   <ModalTechStack>
                     <ModalTechTitle>Technologies Used</ModalTechTitle>
                     <ModalTechList>
@@ -612,11 +588,13 @@ const Projects: React.FC = () => {
                       ))}
                     </ModalTechList>
                   </ModalTechStack>
-                  
+
                   <ModalLinks>
-                    <ModalLink href={selectedProject.githubLink} target="_blank" rel="noopener noreferrer">
-                      <IconWrapper icon={FaGithub} /> View Source Code
-                    </ModalLink>
+                    {selectedProject.githubLink.trim() !== '' && (
+                      <ModalLink href={selectedProject.githubLink} target="_blank" rel="noopener noreferrer">
+                        <IconWrapper icon={FaGithub} /> View Source Code
+                      </ModalLink>
+                    )}
                     <ModalLink href={selectedProject.liveLink} target="_blank" rel="noopener noreferrer">
                       <IconWrapper icon={FaExternalLinkAlt} /> View Live Demo
                     </ModalLink>

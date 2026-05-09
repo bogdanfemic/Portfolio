@@ -7,6 +7,7 @@ import Home from './components/sections/Home';
 import About from './components/sections/About';
 import Projects from './components/sections/Projects';
 import Skills from './components/sections/Skills';
+import FutureGoals from './components/sections/FutureGoals';
 import Contact from './components/sections/Contact';
 import ThreeJsGame from './components/sections/ThreeJsGame';
 import CommandPalette from './components/ui/CommandPalette';
@@ -53,6 +54,7 @@ const App: React.FC = () => {
         <About />
         <Projects />
         <Skills />
+        <FutureGoals />
         <ThreeJsGame />
         <Contact />
       </Layout>

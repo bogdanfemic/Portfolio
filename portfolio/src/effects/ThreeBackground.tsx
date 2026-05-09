@@ -39,6 +39,8 @@ const ThreeBackground: React.FC<ThreeBackgroundProps> = ({ sectionId }) => {
       let rafId: number | null = null;
       let isDisposed = false;
 
+      const isDarkMode = () => document.documentElement.dataset.theme === 'dark';
+
       // Create scene, camera, and renderer
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -68,32 +70,50 @@ const ThreeBackground: React.FC<ThreeBackgroundProps> = ({ sectionId }) => {
       const positions = new Float32Array(particlesCount * 3);
       const colors = new Float32Array(particlesCount * 3);
       
+      const paintParticleColors = (darkMode: boolean) => {
+        for (let i = 0; i < particlesCount * 3; i += 3) {
+          const colorChoice = Math.random();
+          if (darkMode) {
+            if (colorChoice < 0.6) {
+              colors[i] = 0.37;
+              colors[i + 1] = 0.49;
+              colors[i + 2] = 1.0;
+            } else if (colorChoice < 0.85) {
+              colors[i] = 0.21;
+              colors[i + 1] = 0.84;
+              colors[i + 2] = 1.0;
+            } else {
+              colors[i] = 0.9;
+              colors[i + 1] = 0.92;
+              colors[i + 2] = 1.0;
+            }
+          } else {
+            // Darker tones keep contrast against bright hero backgrounds.
+            if (colorChoice < 0.55) {
+              colors[i] = 0.2;
+              colors[i + 1] = 0.29;
+              colors[i + 2] = 0.8;
+            } else if (colorChoice < 0.85) {
+              colors[i] = 0.02;
+              colors[i + 1] = 0.54;
+              colors[i + 2] = 0.78;
+            } else {
+              colors[i] = 0.5;
+              colors[i + 1] = 0.38;
+              colors[i + 2] = 0.78;
+            }
+          }
+        }
+      };
+
       // Set random positions and colors for particles
       for (let i = 0; i < particlesCount * 3; i += 3) {
         // Positions - spread particles in a sphere
         positions[i] = (Math.random() - 0.5) * 50;     // x
         positions[i + 1] = (Math.random() - 0.5) * 50; // y
         positions[i + 2] = (Math.random() - 0.5) * 50; // z
-        
-        // Colors - use primary and accent colors
-        const colorChoice = Math.random();
-        if (colorChoice < 0.6) {
-          // Primary color (purple)
-          colors[i] = 0.42;     // R (108/255)
-          colors[i + 1] = 0.39; // G (99/255)
-          colors[i + 2] = 1.0;  // B (255/255)
-        } else if (colorChoice < 0.8) {
-          // Secondary color (light blue)
-          colors[i] = 0.26;     // R (67/255)
-          colors[i + 1] = 0.8;  // G (203/255)
-          colors[i + 2] = 1.0;  // B (255/255)
-        } else {
-          // White/light color
-          colors[i] = 0.9;      // R
-          colors[i + 1] = 0.9;  // G
-          colors[i + 2] = 1.0;  // B
-        }
       }
+      paintParticleColors(isDarkMode());
       
       // Set attributes
       particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
@@ -104,7 +124,7 @@ const ThreeBackground: React.FC<ThreeBackgroundProps> = ({ sectionId }) => {
         size: 0.15,
         sizeAttenuation: true,
         transparent: true,
-        opacity: 0.8,
+        opacity: 0.82,
         vertexColors: true,
         blending: THREE.AdditiveBlending,
       });
@@ -199,6 +219,27 @@ const ThreeBackground: React.FC<ThreeBackgroundProps> = ({ sectionId }) => {
       
       // Initial connection setup
       updateConnections();
+
+      const applyTheme = (darkMode: boolean) => {
+        paintParticleColors(darkMode);
+        const colorAttr = particlesGeometry.getAttribute('color') as THREE.BufferAttribute;
+        colorAttr.needsUpdate = true;
+        particlesMaterial.opacity = darkMode ? 0.82 : 0.94;
+        particlesMaterial.size = darkMode ? 0.15 : 0.18;
+        particlesMaterial.blending = darkMode ? THREE.AdditiveBlending : THREE.NormalBlending;
+        lineMaterial.color.set(darkMode ? 0x8c83ff : 0x3654c8);
+        lineMaterial.opacity = darkMode ? 0.2 : 0.32;
+      };
+
+      applyTheme(isDarkMode());
+
+      const themeObserver = new MutationObserver(() => {
+        applyTheme(isDarkMode());
+      });
+      themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme'],
+      });
       
       // Animation loop
       const animate = () => {
@@ -233,6 +274,7 @@ const ThreeBackground: React.FC<ThreeBackgroundProps> = ({ sectionId }) => {
       return () => {
         isDisposed = true;
         if (rafId !== null) cancelAnimationFrame(rafId);
+        themeObserver.disconnect();
 
         window.removeEventListener('resize', handleResize);
         document.removeEventListener('mousemove', handleMouseMove);

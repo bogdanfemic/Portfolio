@@ -9,7 +9,8 @@ import {
   FaJs, 
   FaGitAlt, 
   FaNpm, 
-  FaDatabase 
+  FaDatabase, 
+  FaJava
 } from 'react-icons/fa';
 import { 
   SiTypescript, 
@@ -19,7 +20,8 @@ import {
   SiWebpack, 
   SiJest, 
   SiMongodb, 
-  SiExpress 
+  SiExpress, 
+  SiTailwindcss
 } from 'react-icons/si';
 import { IconWrapper } from '../../utils/IconWrapper';
 
@@ -149,19 +151,18 @@ const SkillLevelFill = styled(motion.div)<{ level: number }>`
 
 const Skills: React.FC = () => {
   const frontendSkills = [
-    { name: 'React', icon: FaReact, level: 90 },
-    { name: 'TypeScript', icon: SiTypescript, level: 85 },
-    { name: 'JavaScript', icon: FaJs, level: 95 },
+    { name: 'React', icon: FaReact, level: 85 },
+    { name: 'TypeScript', icon: SiTypescript, level: 75 },
+    { name: 'JavaScript', icon: FaJs, level: 85 },
     { name: 'HTML5', icon: FaHtml5, level: 95 },
     { name: 'CSS3', icon: FaCss3Alt, level: 90 },
-    { name: 'Redux', icon: SiRedux, level: 80 },
-    { name: 'Styled Components', icon: SiStyledcomponents, level: 85 },
-    { name: 'Framer Motion', icon: SiFramer, level: 75 },
+    { name: 'TailwindCSS', icon: SiTailwindcss, level: 80 },
+    { name: 'Styled Components', icon: SiStyledcomponents, level: 75 },
+    { name: 'Framer Motion', icon: SiFramer, level: 35 },
   ];
   
   const backendSkills = [
     { name: 'Node.js', icon: FaNodeJs, level: 80 },
-    { name: 'Express', icon: SiExpress, level: 75 },
     { name: 'MongoDB', icon: SiMongodb, level: 70 },
     { name: 'SQL', icon: FaDatabase, level: 65 },
   ];
@@ -169,9 +170,8 @@ const Skills: React.FC = () => {
   const toolsSkills = [
     { name: 'Git', icon: FaGitAlt, level: 85 },
     { name: 'npm', icon: FaNpm, level: 90 },
-    { name: 'Webpack', icon: SiWebpack, level: 70 },
-    { name: 'Jest', icon: SiJest, level: 75 },
   ];
+
   
   const barVariants = {
     hidden: { width: 0 },

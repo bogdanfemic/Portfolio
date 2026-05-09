@@ -18,7 +18,7 @@ const ParallaxLayer = styled.div`
 
 const ParallaxShape = styled.div`
   position: absolute;
-  opacity: 0.1;
+  opacity: var(--parallax-shape-opacity, 0.12);
   background-color: var(--parallax-shape-color);
 `;
 

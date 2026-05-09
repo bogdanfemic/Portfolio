@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { FaMapMarkerAlt, FaEnvelope, FaPhone, FaPaperPlane } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaEnvelope, FaPhone, FaPaperPlane, FaBook } from 'react-icons/fa';
 import { IconWrapper } from '../../utils/IconWrapper';
 
 const ContactSection = styled.section`
@@ -284,7 +284,7 @@ const Contact: React.FC = () => {
           >
             <InfoTitle>Contact Information</InfoTitle>
             <InfoText>
-              I'm open for freelance projects, full-time positions, and collaborations. Feel free to reach out if you have any questions or just want to say hello!
+              I'm open for collaborations, internships, and frontend work. Feel free to reach out if you want to discuss a project, a role, or just compare notes on interfaces and product design.
             </InfoText>
             
             <InfoItems>
@@ -299,7 +299,22 @@ const Contact: React.FC = () => {
                 </InfoIcon>
                 <InfoContent>
                   <InfoLabel>Location</InfoLabel>
-                  <InfoValue>Berlin, Germany</InfoValue>
+                  <InfoValue>Frankfurt, Hessen, Germany</InfoValue>
+                </InfoContent>
+              </InfoItem>
+
+              <InfoItem
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.25 }}
+              >
+                <InfoIcon>
+                  <IconWrapper icon={FaBook} />
+                </InfoIcon>
+                <InfoContent>
+                  <InfoLabel>Academic focus</InfoLabel>
+                  <InfoValue>Computer Science at TU Darmstadt</InfoValue>
                 </InfoContent>
               </InfoItem>
               
@@ -314,7 +329,7 @@ const Contact: React.FC = () => {
                 </InfoIcon>
                 <InfoContent>
                   <InfoLabel>Email</InfoLabel>
-                  <InfoValue>contact@example.com</InfoValue>
+                  <InfoValue>bogdanfemic07@gmail.com</InfoValue>
                 </InfoContent>
               </InfoItem>
               
