@@ -67,6 +67,7 @@ npm run preview
 - Global colors, spacing, and dark/light mode behavior are driven by CSS variables in `portfolio/src/styles/GlobalStyles.ts`.
 - Section and component filenames are typically PascalCase; hooks use `use*`; helpers live in `utils/`.
 - Animated UI uses Framer Motion, usually with `motion.*` elements and `whileInView`/`whileHover` variants.
+- For section-level scroll reveals, use `portfolio/src/effects/ScrollAnimation.tsx` from `App.tsx`; default behavior should replay (animate in on enter, animate out on exit) unless a task explicitly needs one-time reveal.
 - Icons from `react-icons` are usually wrapped with `IconWrapper`.
 - Keep navigation and section anchors aligned: when adding a section, update the header nav and command palette together.
 - Avoid mixing the React app with the legacy static layer under `portfolio/feedback.html`, `portfolio/css/`, and `portfolio/js/`.
