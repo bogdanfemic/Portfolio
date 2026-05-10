@@ -11,7 +11,7 @@ import FutureGoals from './components/sections/FutureGoals';
 import Contact from './components/sections/Contact';
 import ThreeJsGame from './components/sections/ThreeJsGame';
 import CommandPalette from './components/ui/CommandPalette';
-import { CustomCursor, ThreeProjectViewer } from './effects';
+import { CustomCursor, ScrollAnimation, ThreeProjectViewer } from './effects';
 import { isWebGLAvailable } from './utils/webGLUtils';
 import usePrefersReducedMotion from './hooks/usePrefersReducedMotion';
 import { useThemeMode } from './hooks/useThemeMode';
@@ -51,12 +51,24 @@ const App: React.FC = () => {
       {webGLAvailable && !prefersReducedMotion && <ThreeProjectViewer projects={projectData} />}
       <Layout>
         <Home />
-        <About />
-        <Projects />
-        <Skills />
-        <FutureGoals />
-        <ThreeJsGame />
-        <Contact />
+        <ScrollAnimation reducedMotion={prefersReducedMotion}>
+          <About />
+        </ScrollAnimation>
+        <ScrollAnimation animationDelay={80} reducedMotion={prefersReducedMotion}>
+          <Projects />
+        </ScrollAnimation>
+        <ScrollAnimation animationDelay={120} reducedMotion={prefersReducedMotion}>
+          <Skills />
+        </ScrollAnimation>
+        <ScrollAnimation animationDelay={160} reducedMotion={prefersReducedMotion}>
+          <FutureGoals />
+        </ScrollAnimation>
+        <ScrollAnimation animationDelay={200} reducedMotion={prefersReducedMotion}>
+          <ThreeJsGame />
+        </ScrollAnimation>
+        <ScrollAnimation animationDelay={240} reducedMotion={prefersReducedMotion}>
+          <Contact />
+        </ScrollAnimation>
       </Layout>
     </ThemeProvider>
   );

@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
+import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
 interface ScrollAnimationProps {
@@ -6,62 +7,29 @@ interface ScrollAnimationProps {
   animationDelay?: number;
   threshold?: number;
   className?: string;
+  reducedMotion?: boolean;
+  once?: boolean;
 }
 
-interface AnimatedDivProps {
-  $isVisible: boolean;
-  $animationDelay: number;
-}
-
-const AnimatedDiv = styled.div<AnimatedDivProps>`
-  opacity: ${props => (props.$isVisible ? 1 : 0)};
-  transform: translateY(${props => (props.$isVisible ? 0 : 30)}px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-  transition-delay: ${props => props.$animationDelay}ms;
+const AnimatedDiv = styled(motion.div)`
+  width: 100%;
 `;
 
 const ScrollAnimation: React.FC<ScrollAnimationProps> = ({
   children,
   animationDelay = 0,
   threshold = 0.3,
-  className = ''
+  className = '',
+  reducedMotion = false,
+  once = false,
 }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const elementRef = useRef<HTMLDivElement>(null);
-  
-  useEffect(() => {
-    const element = elementRef.current;
-    if (!element) return;
-    
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(element);
-        }
-      },
-      {
-        root: null,
-        rootMargin: '0px',
-        threshold: threshold
-      }
-    );
-    
-    observer.observe(element);
-    
-    return () => {
-      if (element) {
-        observer.unobserve(element);
-      }
-    };
-  }, [threshold]);
-  
   return (
     <AnimatedDiv
-      ref={elementRef}
-      $isVisible={isVisible}
-      $animationDelay={animationDelay}
-      className={`animate-on-scroll ${isVisible ? 'animate' : ''} ${className}`}
+      initial={reducedMotion ? false : { opacity: 0, y: 30 }}
+      whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
+      viewport={{ once, amount: threshold }}
+      transition={{ duration: 0.8, ease: 'easeOut', delay: animationDelay / 1000 }}
+      className={className}
     >
       {children}
     </AnimatedDiv>

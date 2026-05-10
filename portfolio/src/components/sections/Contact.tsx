@@ -332,8 +332,9 @@ const Contact: React.FC = () => {
                   <InfoValue>bogdanfemic07@gmail.com</InfoValue>
                 </InfoContent>
               </InfoItem>
-              
-              <InfoItem
+                            
+
+              {/* <InfoItem
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -346,7 +347,7 @@ const Contact: React.FC = () => {
                   <InfoLabel>Phone</InfoLabel>
                   <InfoValue>+49 123 456 7890</InfoValue>
                 </InfoContent>
-              </InfoItem>
+              </InfoItem> */}
             </InfoItems>
           </ContactInfo>
           
