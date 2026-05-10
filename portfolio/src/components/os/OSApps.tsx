@@ -517,6 +517,45 @@ const appAliases: Record<string, OSAppId> = {
   'resume.pdf': 'resume',
 };
 
+const commandCompletionOptions = [
+  'help',
+  'neofetch',
+  'ls',
+  'open',
+  'theme',
+  'skills',
+  'stack',
+  'contact',
+  'whoami',
+  'date',
+  'pwd',
+  'echo',
+  'matrix',
+  'mission',
+  'demo',
+  'arrange',
+  'ignite',
+  'closeall',
+  'brief',
+  'map',
+  'history',
+  'clear',
+];
+
+const appCompletionOptions = ['about', 'projects', 'skills', 'contact', 'now', 'resume'];
+const themeCompletionOptions = ['dark', 'light', 'toggle'];
+
+const getCommonPrefix = (items: string[]) => {
+  if (items.length === 0) return '';
+  return items.reduce((prefix, item) => {
+    let index = 0;
+    while (index < prefix.length && index < item.length && prefix[index] === item[index]) {
+      index += 1;
+    }
+    return prefix.slice(0, index);
+  });
+};
+
 const helpText = `Available commands:
   help             Show this command list
   neofetch         Render a Portfolio OS system card
@@ -639,6 +678,42 @@ export const SkillsTerminalApp: React.FC<SkillsTerminalAppProps> = ({ mode, onOp
     setEntries((items) => [...items, { id: entryId.current++, command, output }]);
   };
 
+  const appendSystemLine = (output: string) => {
+    setEntries((items) => [...items, { id: entryId.current++, output }]);
+  };
+
+  const completeValue = (rawValue: string) => {
+    const lowerValue = rawValue.toLowerCase();
+    const hasTrailingSpace = /\s$/.test(lowerValue);
+    const [base = '', ...args] = lowerValue.trimStart().split(/\s+/);
+    const argument = hasTrailingSpace ? '' : args.join(' ');
+
+    const formatMatches = (matches: string[]) => `completions:\n  ${matches.join('\n  ')}`;
+    const completeFrom = (prefix: string, options: string[], format: (match: string) => string) => {
+      const matches = options.filter((option) => option.startsWith(prefix));
+      if (matches.length === 0) return { output: 'no completions' };
+      if (matches.length === 1) return { value: format(matches[0]) };
+
+      const commonPrefix = getCommonPrefix(matches);
+      if (commonPrefix.length > prefix.length) {
+        return { value: format(commonPrefix), output: formatMatches(matches) };
+      }
+      return { output: formatMatches(matches) };
+    };
+
+    if (base === 'open') {
+      return completeFrom(argument, appCompletionOptions, (match) => `open ${match}`);
+    }
+
+    if (base === 'theme') {
+      return completeFrom(argument, themeCompletionOptions, (match) => `theme ${match}`);
+    }
+
+    if (args.length > 0) return { output: 'no completions' };
+
+    return completeFrom(base, commandCompletionOptions, (match) => (match === 'open' || match === 'theme' ? `${match} ` : match));
+  };
+
   const getOutput = (command: string) => {
     const [base, ...args] = command.split(/\s+/);
     const argument = args.join(' ');
@@ -743,6 +818,19 @@ Identity: Bogdan Femic`;
   };
 
   const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      const completion = completeValue(value);
+      if (completion.value !== undefined) {
+        setValue(completion.value);
+      }
+      if (completion.output) {
+        appendSystemLine(completion.output);
+      }
+      setHistoryIndex(null);
+      return;
+    }
+
     if (event.key === 'ArrowUp') {
       event.preventDefault();
       if (commandHistory.length === 0) return;
