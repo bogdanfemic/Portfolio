@@ -1,7 +1,7 @@
 # AGENTS.md
 
 ## Project overview
-This repository contains a personal portfolio site. The main app lives in `portfolio/` and is built with React, TypeScript, styled-components, Framer Motion, and Three.js. It includes animated portfolio sections, a contained Three.js game section, and a small command palette/navigation layer.
+This repository contains a personal portfolio site. The main app lives in `portfolio/` and is built with React, TypeScript, styled-components, Framer Motion, and Three.js. It includes animated portfolio sections, a contained Three.js game section, a small command palette/navigation layer, and a separate `/os` Mini OS Portfolio experience.
 
 ## Tech stack
 - React 19
@@ -16,9 +16,10 @@ This repository contains a personal portfolio site. The main app lives in `portf
 - npm
 
 ## Project structure
-- `portfolio/src/App.tsx`: app composition and top-level section order.
+- `portfolio/src/App.tsx`: app composition, top-level section order, and the `/os` route switch for the Mini OS page.
 - `portfolio/src/components/layout/`: header, layout wrapper, and footer.
 - `portfolio/src/components/sections/`: page sections such as Home, About, Projects, Skills, Future Goals, ThreeJsGame, and Contact.
+- `portfolio/src/components/os/`: the Mini OS Portfolio feature. `MiniOSPage.tsx` owns the desktop shell, window manager, dock, command palette, boot screen, theme state, context menu, and resize/drag behavior. `OSApps.tsx` contains the app-window content. `osData.ts` contains app metadata, project/contact data, and editable Now Playing content.
 - `portfolio/src/components/ui/`: small interactive UI pieces such as the command palette.
 - `portfolio/src/effects/`: motion/visual helpers and Three.js background/viewer components.
 - `portfolio/src/game/`: the Neon Drift game engine and gameplay systems.
@@ -70,6 +71,11 @@ npm run preview
 - For section-level scroll reveals, use `portfolio/src/effects/ScrollAnimation.tsx` from `App.tsx`; default behavior should replay (animate in on enter, animate out on exit) unless a task explicitly needs one-time reveal.
 - Icons from `react-icons` are usually wrapped with `IconWrapper`.
 - Keep navigation and section anchors aligned: when adding a section, update the header nav and command palette together.
+- The Mini OS is a separate route rendered from `App.tsx` when `window.location.pathname === '/os'`; this project does not currently use Next.js routing.
+- Keep the homepage “Enter Mini OS” CTA in `portfolio/src/components/sections/Home.tsx` pointed at `/os`.
+- For Mini OS app content edits, prefer updating `portfolio/src/components/os/osData.ts` first. Update `OSApps.tsx` only when the app-window layout or behavior needs to change.
+- The Mini OS window system is custom controlled state. Preserve open, close, minimize, maximize/restore, focus/z-index, drag, resize, mobile stacking, and command-palette app opening behavior when editing it.
+- The Mini OS terminal supports predefined commands and can open OS apps / switch theme. Keep terminal commands deterministic and frontend-only; do not add backend or shell execution.
 - Avoid mixing the React app with the legacy static layer under `portfolio/feedback.html`, `portfolio/css/`, and `portfolio/js/`.
 
 ## AI agent workflow
@@ -85,6 +91,7 @@ npm run preview
 - Do not edit `.env*` files unless the task explicitly requires environment configuration.
 - Treat `package-lock.json` files as dependency-tree artifacts; only change them when dependency changes are intentional.
 - Be careful with the Three.js/game surface: `portfolio/src/components/sections/ThreeJsGame.tsx`, `portfolio/src/game/*`, `portfolio/src/effects/ThreeBackground.tsx`, and `portfolio/src/effects/ThreeProjectViewer.tsx`.
+- Be careful with the Mini OS surface: `portfolio/src/components/os/*`, the `/os` route switch in `portfolio/src/App.tsx`, and the Mini OS CTA in `portfolio/src/components/sections/Home.tsx`.
 - Treat `portfolio/src/styles/GlobalStyles.ts` and `portfolio/src/styles/theme.ts` as shared design-system files.
 - Treat the legacy static layer (`portfolio/feedback.html`, `portfolio/css/`, `portfolio/js/`) as separate from the React app.
 - Check references before editing `portfolio/src/components/sections/Home 2.tsx`.
@@ -93,5 +100,6 @@ npm run preview
 - The requested change is implemented with minimal collateral edits.
 - `npm run build` passes in `portfolio/`.
 - New or changed navigation targets are reachable from the header and command palette when applicable.
+- Mini OS changes keep `/os` reachable from the homepage CTA and preserve dock/desktop icon app launching, window controls, resizing, command palette, terminal commands, theme toggle, and mobile usability.
 - Tests or docs are updated when the change affects behavior or usage.
 - The final summary states what changed and any remaining uncertainty.

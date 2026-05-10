@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { FaArrowDown, FaBolt, FaLayerGroup, FaRocket } from 'react-icons/fa';
+import { FaArrowDown, FaBolt, FaDesktop, FaLayerGroup, FaRocket, FaTerminal } from 'react-icons/fa';
 import { IconWrapper } from '../../utils/IconWrapper';
 import { ParallaxEffect, ThreeBackground } from '../../effects';
 import { isWebGLAvailable } from '../../utils/webGLUtils';
@@ -147,6 +147,30 @@ const SecondaryButton = styled.a`
   }
 `;
 
+const OSButton = styled.a`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  min-height: 50px;
+  padding: 0 1.2rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--secondary-color) 42%, transparent);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--secondary-color) 28%, transparent), color-mix(in srgb, var(--accent-color) 22%, transparent)),
+    color-mix(in srgb, var(--surface-color) 76%, transparent);
+  color: var(--hero-fg);
+  font-weight: 800;
+  box-shadow: 0 18px 42px color-mix(in srgb, var(--secondary-color) 18%, transparent);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--secondary-color) 66%, transparent);
+    box-shadow: 0 22px 52px color-mix(in srgb, var(--secondary-color) 24%, transparent);
+  }
+`;
+
 const StatsRow = styled(motion.div)`
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -255,6 +279,86 @@ const OrbBadgeBottom = styled(OrbBadge)`
   left: 4%;
 `;
 
+const OSPreview = styled(motion.a)`
+  position: absolute;
+  right: 0;
+  bottom: 2%;
+  width: min(82%, 360px);
+  border: 1px solid var(--hero-border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--surface-color) 82%, transparent);
+  color: var(--hero-fg);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(18px);
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: 100%;
+    margin-top: 1rem;
+  }
+`;
+
+const OSPreviewBar = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 30px;
+  padding: 0 0.75rem;
+  border-bottom: 1px solid var(--hero-border);
+  background: color-mix(in srgb, var(--surface-2-color) 72%, transparent);
+  font-size: 0.78rem;
+  font-weight: 900;
+
+  span:nth-child(-n + 3) {
+    width: 9px;
+    height: 9px;
+    border-radius: 999px;
+  }
+
+  span:nth-child(1) {
+    background: #ff6b6b;
+  }
+
+  span:nth-child(2) {
+    background: #ffd166;
+  }
+
+  span:nth-child(3) {
+    background: #7cf7b5;
+  }
+
+  strong {
+    margin-left: 0.3rem;
+  }
+`;
+
+const OSPreviewBody = styled.div`
+  display: grid;
+  gap: 0.65rem;
+  padding: 0.85rem;
+`;
+
+const OSPreviewLine = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 34px;
+  border: 1px solid var(--hero-border);
+  border-radius: 8px;
+  padding: 0 0.7rem;
+  color: var(--hero-fg-muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+
+  span:last-child {
+    color: var(--hero-fg);
+  }
+`;
+
 const ScrollDown = styled(motion.button)`
   position: absolute;
   left: 50%;
@@ -350,6 +454,10 @@ const Home: React.FC = () => {
                 <IconWrapper icon={FaLayerGroup} />
                 Open Neon Drift
               </SecondaryButton>
+              <OSButton href="/os">
+                <IconWrapper icon={FaDesktop} />
+                Enter Mini OS
+              </OSButton>
             </ActionRow>
 
             <StatsRow
@@ -437,6 +545,37 @@ const Home: React.FC = () => {
               >
                 3D + motion
               </OrbBadgeBottom>
+              <OSPreview
+                href="/os"
+                aria-label="Open Mini OS Portfolio preview"
+                initial={{ opacity: 0, y: 18, rotate: -1 }}
+                animate={{ opacity: 1, y: 0, rotate: 0 }}
+                transition={{ duration: 0.55, delay: 0.35 }}
+                whileHover={{ y: -5, scale: 1.02 }}
+              >
+                <OSPreviewBar>
+                  <span />
+                  <span />
+                  <span />
+                  <strong>Portfolio OS</strong>
+                </OSPreviewBar>
+                <OSPreviewBody>
+                  <OSPreviewLine>
+                    <span>Mission Control</span>
+                    <span>live</span>
+                  </OSPreviewLine>
+                  <OSPreviewLine>
+                    <span>Terminal command</span>
+                    <span>
+                      <IconWrapper icon={FaTerminal} /> demo
+                    </span>
+                  </OSPreviewLine>
+                  <OSPreviewLine>
+                    <span>Window engine</span>
+                    <span>drag / resize</span>
+                  </OSPreviewLine>
+                </OSPreviewBody>
+              </OSPreview>
             </PortraitShell>
           </HeroPanel>
         </HomeGrid>

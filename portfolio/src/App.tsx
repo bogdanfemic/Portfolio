@@ -11,6 +11,7 @@ import FutureGoals from './components/sections/FutureGoals';
 import Contact from './components/sections/Contact';
 import ThreeJsGame from './components/sections/ThreeJsGame';
 import CommandPalette from './components/ui/CommandPalette';
+import MiniOSPage from './components/os/MiniOSPage';
 import { CustomCursor, ScrollAnimation, ThreeProjectViewer } from './effects';
 import { isWebGLAvailable } from './utils/webGLUtils';
 import usePrefersReducedMotion from './hooks/usePrefersReducedMotion';
@@ -39,6 +40,7 @@ const App: React.FC = () => {
   const [webGLAvailable, setWebGLAvailable] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
   useThemeMode(); // sets `data-theme` early for CSS variable themes
+  const isOSRoute = window.location.pathname === '/os';
   
   useEffect(() => {
     setWebGLAvailable(isWebGLAvailable());
@@ -46,30 +48,36 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-      <CustomCursor />
-      <CommandPalette />
-      {webGLAvailable && !prefersReducedMotion && <ThreeProjectViewer projects={projectData} />}
-      <Layout>
-        <Home />
-        <ScrollAnimation reducedMotion={prefersReducedMotion}>
-          <About />
-        </ScrollAnimation>
-        <ScrollAnimation animationDelay={80} reducedMotion={prefersReducedMotion}>
-          <Projects />
-        </ScrollAnimation>
-        <ScrollAnimation animationDelay={120} reducedMotion={prefersReducedMotion}>
-          <Skills />
-        </ScrollAnimation>
-        <ScrollAnimation animationDelay={160} reducedMotion={prefersReducedMotion}>
-          <FutureGoals />
-        </ScrollAnimation>
-        <ScrollAnimation animationDelay={200} reducedMotion={prefersReducedMotion}>
-          <ThreeJsGame />
-        </ScrollAnimation>
-        <ScrollAnimation animationDelay={240} reducedMotion={prefersReducedMotion}>
-          <Contact />
-        </ScrollAnimation>
-      </Layout>
+      {isOSRoute ? (
+        <MiniOSPage />
+      ) : (
+        <>
+          <CustomCursor />
+          <CommandPalette />
+          {webGLAvailable && !prefersReducedMotion && <ThreeProjectViewer projects={projectData} />}
+          <Layout>
+            <Home />
+            <ScrollAnimation reducedMotion={prefersReducedMotion}>
+              <About />
+            </ScrollAnimation>
+            <ScrollAnimation animationDelay={80} reducedMotion={prefersReducedMotion}>
+              <Projects />
+            </ScrollAnimation>
+            <ScrollAnimation animationDelay={120} reducedMotion={prefersReducedMotion}>
+              <Skills />
+            </ScrollAnimation>
+            <ScrollAnimation animationDelay={160} reducedMotion={prefersReducedMotion}>
+              <FutureGoals />
+            </ScrollAnimation>
+            <ScrollAnimation animationDelay={200} reducedMotion={prefersReducedMotion}>
+              <ThreeJsGame />
+            </ScrollAnimation>
+            <ScrollAnimation animationDelay={240} reducedMotion={prefersReducedMotion}>
+              <Contact />
+            </ScrollAnimation>
+          </Layout>
+        </>
+      )}
     </ThemeProvider>
   );
 };

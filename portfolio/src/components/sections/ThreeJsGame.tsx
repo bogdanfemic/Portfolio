@@ -68,17 +68,22 @@ const ThreeJsGame: React.FC = () => {
   useEffect(() => {
     if (!webGLAvailable || !canvasRef.current) return undefined;
 
-    const game = new Game(canvasRef.current, {
-      reducedMotion,
-      onSnapshot: setSnapshot,
-    });
-    gameRef.current = game;
+    try {
+      const game = new Game(canvasRef.current, {
+        reducedMotion,
+        onSnapshot: setSnapshot,
+      });
+      gameRef.current = game;
 
-    return () => {
-      game.dispose();
-      gameRef.current = null;
-    };
-  }, [webGLAvailable]);
+      return () => {
+        game.dispose();
+        gameRef.current = null;
+      };
+    } catch {
+      setWebGLAvailable(false);
+      return undefined;
+    }
+  }, [reducedMotion, webGLAvailable]);
 
   useEffect(() => {
     gameRef.current?.setReducedMotion(reducedMotion);
