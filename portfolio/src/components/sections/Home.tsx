@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FaArrowDown, FaBolt, FaDesktop, FaLayerGroup, FaRocket, FaTerminal } from 'react-icons/fa';
 import { IconWrapper } from '../../utils/IconWrapper';
-import { ParallaxEffect, ThreeBackground } from '../../effects';
+import ParallaxEffect from '../../effects/ParallaxEffect';
 import { isWebGLAvailable } from '../../utils/webGLUtils';
 import usePrefersReducedMotion from '../../hooks/usePrefersReducedMotion';
+import { portfolioPath } from '../../config/siteConfig';
+
+const ThreeBackground = lazy(() => import('../../effects/ThreeBackground'));
 
 const HomeSection = styled.section`
   min-height: 100vh;
@@ -389,7 +392,9 @@ const Home: React.FC = () => {
 
   return (
     <HomeSection id="home">
-      {webGLAvailable && !prefersReducedMotion && <ThreeBackground sectionId="home" />}
+      {webGLAvailable && !prefersReducedMotion && (
+        <Suspense fallback={null}><ThreeBackground sectionId="home" /></Suspense>
+      )}
       {!prefersReducedMotion && <ParallaxEffect sectionId="home" />}
 
       <HomeFrame>
@@ -450,14 +455,14 @@ const Home: React.FC = () => {
                 <IconWrapper icon={FaRocket} />
                 View Work
               </PrimaryButton>
-              <SecondaryButton href="#threejs-game">
-                <IconWrapper icon={FaLayerGroup} />
-                Open Neon Drift
-              </SecondaryButton>
-              <OSButton href="/os">
+              <OSButton href={portfolioPath('os')}>
                 <IconWrapper icon={FaDesktop} />
                 Enter Mini OS
               </OSButton>
+              <SecondaryButton href="#threejs-game">
+                <IconWrapper icon={FaLayerGroup} />
+                Play Neon Drift
+              </SecondaryButton>
             </ActionRow>
 
             <StatsRow
@@ -466,16 +471,16 @@ const Home: React.FC = () => {
               transition={{ duration: 0.55, delay: 0.2 }}
             >
               <StatCard>
-                <StatValue>React + TS</StatValue>
-                <StatLabel>Primary stack</StatLabel>
+                <StatValue>3</StatValue>
+                <StatLabel>Selected projects</StatLabel>
               </StatCard>
               <StatCard>
-                <StatValue>Motion-led</StatValue>
-                <StatLabel>Interaction style</StatLabel>
+                <StatValue>2</StatValue>
+                <StatLabel>Interactive experiences</StatLabel>
               </StatCard>
               <StatCard>
-                <StatValue>3D-ready</StatValue>
-                <StatLabel>Portfolio focus</StatLabel>
+                <StatValue>1</StatValue>
+                <StatLabel>Active mentoring role</StatLabel>
               </StatCard>
             </StatsRow>
           </div>
@@ -546,7 +551,7 @@ const Home: React.FC = () => {
                 3D + motion
               </OrbBadgeBottom>
               <OSPreview
-                href="/os"
+                href={portfolioPath('os')}
                 aria-label="Open Mini OS Portfolio preview"
                 initial={{ opacity: 0, y: 18, rotate: -1 }}
                 animate={{ opacity: 1, y: 0, rotate: 0 }}

@@ -16,6 +16,7 @@ import { IconWrapper } from '../../utils/IconWrapper';
 import usePrefersReducedMotion from '../../hooks/usePrefersReducedMotion';
 import { AboutApp, ContactMailApp, NowPlayingApp, ProjectsApp, ResumeApp, SkillsTerminalApp } from './OSApps';
 import { OSAppConfig, OSAppId, OSSystemAction, osApps } from './osData';
+import { portfolioPath } from '../../config/siteConfig';
 
 type OSTheme = 'dark' | 'light';
 type ResizeEdge = 'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'bottomRight' | 'bottomLeft' | 'topLeft';
@@ -1044,7 +1045,7 @@ const TopBar: React.FC<{
 }> = ({ mode, time, openCount, onToggleTheme, onOpenPalette, onOpenMission }) => (
   <TopBarShell>
     <TopCluster>
-      <OSTitle href="/">Portfolio OS</OSTitle>
+      <OSTitle href={portfolioPath()}>Portfolio OS</OSTitle>
       <StatusText>{time}</StatusText>
     </TopCluster>
     <TopCluster>
@@ -1066,7 +1067,10 @@ const TopBar: React.FC<{
       <IconButton type="button" onClick={onToggleTheme} aria-label="Toggle OS theme">
         <IconWrapper icon={mode === 'dark' ? FaSun : FaMoon} />
       </IconButton>
-      <IconButton as="a" href="/" aria-label="Exit Mini OS">
+      <IconButton as="a" href={portfolioPath('impressum')} aria-label="Open legal information">
+        §
+      </IconButton>
+      <IconButton as="a" href={portfolioPath()} aria-label="Exit Mini OS">
         <IconWrapper icon={FaPowerOff} />
       </IconButton>
     </TopCluster>
@@ -1163,12 +1167,12 @@ const OSWindow: React.FC<{
       transition={{ duration: 0.18 }}
     >
       <TitleBar
-        onPointerDown={(event) => {
+        onPointerDown={(event: React.PointerEvent<HTMLDivElement>) => {
           if (!state.isMaximized) onBeginMove(app.id, event);
         }}
         onDoubleClick={() => onMaximize(app.id)}
       >
-        <TrafficLights onPointerDown={(event) => event.stopPropagation()}>
+        <TrafficLights onPointerDown={(event: React.PointerEvent<HTMLDivElement>) => event.stopPropagation()}>
           <button type="button" aria-label={`Close ${app.title}`} onClick={() => onClose(app.id)} />
           <button type="button" aria-label={`Minimize ${app.title}`} onClick={() => onMinimize(app.id)} />
           <button type="button" aria-label={`${state.isMaximized ? 'Restore' : 'Fullscreen'} ${app.title}`} onClick={() => onMaximize(app.id)} />
@@ -1188,7 +1192,7 @@ const OSWindow: React.FC<{
             type="button"
             $edge={edge}
             aria-label={`Resize ${app.title} from ${edge}`}
-            onPointerDown={(event) => onBeginResize(app.id, edge, event)}
+            onPointerDown={(event: React.PointerEvent<HTMLButtonElement>) => onBeginResize(app.id, edge, event)}
           />
         ))}
     </WindowShell>
@@ -1236,7 +1240,7 @@ const DesktopContextMenu: React.FC<{
         exit={{ opacity: 0, scale: 0.96, y: -4 }}
         transition={{ duration: 0.12 }}
         role="menu"
-        onMouseDown={(event) => event.stopPropagation()}
+        onMouseDown={(event: React.MouseEvent<HTMLDivElement>) => event.stopPropagation()}
       >
         <ContextMenuButton
           type="button"
@@ -1369,7 +1373,7 @@ const CommandPalette: React.FC<{
             initial={{ opacity: 0, y: -12, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -12, scale: 0.98 }}
-            onMouseDown={(event) => event.stopPropagation()}
+            onMouseDown={(event: React.MouseEvent<HTMLDivElement>) => event.stopPropagation()}
             role="dialog"
             aria-modal="true"
             aria-label="Mini OS command palette"
@@ -1377,7 +1381,7 @@ const CommandPalette: React.FC<{
             <PaletteInput
               ref={inputRef}
               value={query}
-              onChange={(event) => setQuery(event.target.value)}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setQuery(event.target.value)}
               onKeyDown={onKeyDown}
               placeholder="Open an app..."
               aria-label="Search apps"
@@ -1432,7 +1436,7 @@ const MissionControl: React.FC<{
           role="dialog"
           aria-modal="true"
           aria-label="Mini OS Mission Control"
-          onMouseDown={(event) => event.stopPropagation()}
+          onMouseDown={(event: React.MouseEvent<HTMLDivElement>) => event.stopPropagation()}
         >
           <MissionHeader>
             <div>
@@ -1819,7 +1823,7 @@ const MiniOSPage: React.FC = () => {
   return (
     <OSRoot
       $mode={mode}
-      onPointerMove={(event) => {
+      onPointerMove={(event: React.PointerEvent<HTMLDivElement>) => {
         event.currentTarget.style.setProperty('--pointer-x', `${event.clientX}px`);
         event.currentTarget.style.setProperty('--pointer-y', `${event.clientY}px`);
       }}
@@ -1833,7 +1837,7 @@ const MiniOSPage: React.FC = () => {
         onOpenMission={() => setMissionOpen(true)}
       />
       <Desktop
-        onContextMenu={(event) => {
+        onContextMenu={(event: React.MouseEvent<HTMLDivElement>) => {
           event.preventDefault();
           setContextMenu({
             x: clamp(event.clientX, 8, window.innerWidth - 232),

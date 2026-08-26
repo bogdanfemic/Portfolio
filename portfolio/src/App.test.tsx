@@ -12,7 +12,6 @@ jest.mock('./components/sections/ThreeJsGame', () => ({
 
 jest.mock('./effects', () => ({
   CustomCursor: () => null,
-  ThreeProjectViewer: () => null,
   ThreeBackground: () => null,
   ParallaxEffect: () => null,
   TypingEffect: () => null,

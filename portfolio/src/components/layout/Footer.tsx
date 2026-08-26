@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
 import { IconWrapper } from '../../utils/IconWrapper';
+import { portfolioPath } from '../../config/siteConfig';
 
 const FooterContainer = styled.footer`
   background-color: ${({ theme }) => theme.colors.primary};
@@ -91,6 +92,7 @@ const Footer: React.FC = () => {
             rel="noopener noreferrer"
             variants={socialVariants}
             whileHover="hover"
+            aria-label="Bogdan Femic on GitHub"
           >
             <IconWrapper icon={FaGithub} />
           </SocialLink>
@@ -100,6 +102,7 @@ const Footer: React.FC = () => {
             rel="noopener noreferrer"
             variants={socialVariants}
             whileHover="hover"
+            aria-label="Bogdan Femic on LinkedIn"
           >
             <IconWrapper icon={FaLinkedin} />
           </SocialLink>
@@ -107,6 +110,7 @@ const Footer: React.FC = () => {
             href="mailto:bogdanfemic07@gmail.com" 
             variants={socialVariants}
             whileHover="hover"
+            aria-label="Email Bogdan Femic"
           >
             <IconWrapper icon={FaEnvelope} />
           </SocialLink>
@@ -118,6 +122,8 @@ const Footer: React.FC = () => {
           <FooterLink href="#projects">Projects</FooterLink>
           <FooterLink href="#skills">Skills</FooterLink>
           <FooterLink href="#contact">Contact</FooterLink>
+          <FooterLink href={portfolioPath('impressum')}>Impressum</FooterLink>
+          <FooterLink href={portfolioPath('datenschutz')}>Privacy</FooterLink>
         </FooterNav>
         
         <Copyright>

@@ -28,11 +28,13 @@ const NavContainer = styled.div`
   margin: 0 auto;
 `;
 
-const Logo = styled(motion.div)`
+const Logo = styled(motion.button)`
   font-size: ${({ theme }) => theme.fontSizes.large};
   font-weight: 700;
   color: var(--text-color);
   cursor: pointer;
+  border: 0;
+  background: transparent;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -63,6 +65,9 @@ const NavLinks = styled.nav<{ $isOpen: boolean }>`
     height: 100vh;
     width: 70%;
     max-width: 300px;
+    padding: 5rem 1.25rem 2rem;
+    border-radius: 0;
+    border-width: 0 0 0 1px;
     flex-direction: column;
     justify-content: center;
     background: linear-gradient(
@@ -72,6 +77,7 @@ const NavLinks = styled.nav<{ $isOpen: boolean }>`
     );
     box-shadow: ${({ theme }) => theme.shadows.large};
     transform: ${({ $isOpen }) => ($isOpen ? 'translateX(0)' : 'translateX(100%)')};
+    visibility: ${({ $isOpen }) => ($isOpen ? 'visible' : 'hidden')};
     transition: transform ${({ theme }) => theme.transitions.medium};
     z-index: ${({ theme }) => theme.zIndex.menu};
     backdrop-filter: blur(18px);
@@ -169,6 +175,20 @@ const Header: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (!isOpen) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsOpen(false);
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [isOpen]);
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -202,6 +222,8 @@ const Header: React.FC = () => {
     >
       <NavContainer>
         <Logo 
+          type="button"
+          aria-label="Back to top"
           variants={logoVariants}
           whileHover="hover"
           onClick={() => {
@@ -230,12 +252,17 @@ const Header: React.FC = () => {
             <IconWrapper icon={mode === 'dark' ? FaMoon : FaSun} />
           </ActionButton>
 
-          <MobileMenuButton onClick={toggleMenu} aria-label="Toggle menu">
+          <MobileMenuButton
+            onClick={toggleMenu}
+            aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={isOpen}
+            aria-controls="primary-navigation"
+          >
             {isOpen ? <IconWrapper icon={FaTimes} /> : <IconWrapper icon={FaBars} />}
           </MobileMenuButton>
         </ActionRow>
 
-        <NavLinks $isOpen={isOpen}>
+        <NavLinks id="primary-navigation" $isOpen={isOpen} aria-label="Primary navigation">
           <NavLink 
             href="#home" 
             variants={linkVariants}
@@ -294,7 +321,7 @@ const Header: React.FC = () => {
           </NavLink>
         </NavLinks>
         
-        <Overlay $isOpen={isOpen} onClick={closeMenu} />
+        <Overlay $isOpen={isOpen} onClick={closeMenu} aria-hidden="true" />
       </NavContainer>
     </HeaderContainer>
   );

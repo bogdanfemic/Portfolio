@@ -71,7 +71,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    font-family: 'Poppins', 'Montserrat', sans-serif;
+    font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     background-color: var(--background-color);
     color: var(--text-color);
     line-height: 1.6;
@@ -115,6 +115,10 @@ const GlobalStyles = createGlobalStyle`
   section {
     padding: 80px 0;
     position: relative;
+  }
+
+  section[id] {
+    scroll-margin-top: 88px;
   }
 
   .container {

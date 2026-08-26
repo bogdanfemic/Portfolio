@@ -14,8 +14,8 @@ export const theme = {
     info: 'var(--info-color)',
   },
   fonts: {
-    primary: "'Poppins', sans-serif",
-    secondary: "'Montserrat', sans-serif",
+    primary: 'Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    secondary: 'Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
   },
   fontSizes: {
     small: '0.875rem',

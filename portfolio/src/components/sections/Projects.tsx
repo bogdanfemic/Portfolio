@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaGithub, FaExternalLinkAlt, FaTimes } from 'react-icons/fa';
 import { IconWrapper } from '../../utils/IconWrapper';
-import { TiltEffect, ScrollAnimation } from '../../effects';
-import yaraShopImage from '../../assets/Yara-Shop.png';
-import hotTakeImage from '../../assets/HotTakePR.png';
-import digitechnikumImage from '../../assets/Digitechnikum.png';
+import TiltEffect from '../../effects/TiltEffect';
+import ScrollAnimation from '../../effects/ScrollAnimation';
+import yaraShopImage from '../../assets/Yara-Shop.webp';
+import hotTakeImage from '../../assets/HotTakePR.webp';
+import digitechnikumImage from '../../assets/Digitechnikum.webp';
 
 const ProjectsSection = styled.section`
   background-color: ${({ theme }) => theme.colors.lightGray};
@@ -91,6 +92,11 @@ const ProjectCard = styled(motion.div)`
   box-shadow: ${({ theme }) => theme.shadows.medium};
   cursor: pointer;
   position: relative;
+
+  &:focus-visible {
+    outline: 3px solid var(--accent-color);
+    outline-offset: 4px;
+  }
 `;
 
 const ProjectImage = styled.div`
@@ -341,8 +347,8 @@ const projectsData = [
   {
     id: 1,
     title: 'Yárà Shop',
-    description: 'An upcoming African Brand that focuses on creating high-quality, stylish clothing inspired by African culture and heritage.',
-    fullDescription: 'Yárà Shop is an exciting new African brand that celebrates the rich culture and heritage of the continent through fashion. The brand focuses on creating high-quality, stylish clothing that incorporates traditional African patterns, fabrics, and designs with a modern twist. Yárà Shop aims to empower individuals to express their unique style while honoring their roots. The brand offers a wide range of products including dresses, shirts, accessories, and more, all crafted with attention to detail and a commitment to sustainability. With a strong emphasis on community and cultural pride, Yárà Shop is poised to make a significant impact in the fashion industry while promoting African culture globally.',
+    description: 'A responsive storefront for a fashion brand inspired by African culture and heritage.',
+    fullDescription: 'Yárà Shop is a modern e-commerce experience for an African fashion brand. My work focused on translating the brand into a clear, responsive shopping interface and creating a polished path from product discovery to checkout.',
     image: yaraShopImage,
     tags: ['React', 'Node.js', 'TypeScript'],
     techStack: ['React', 'Node.js', 'MongoDB', 'Stripe API', 'Styled Components'],
@@ -353,8 +359,8 @@ const projectsData = [
   {
     id: 2,
     title: 'HotTake',
-    description: 'This is an App developed by me, it is meant as a platform for people to share their "critical" opinions on various topics, it is built with Swift.',
-    fullDescription: 'HotTake is a mobile application developed using Swift that serves as a platform for users to share their critical opinions on a wide range of topics. The app allows users to create and share "hot takes" – concise, provocative statements or opinions that spark discussion and debate. Users can browse through hot takes from others, engage in conversations by commenting and liking posts, and follow their favorite contributors. The app features a clean and intuitive interface, making it easy for users to navigate and interact with content. With a focus on fostering open dialogue and diverse perspectives, HotTake aims to create a vibrant community where people can express their thoughts freely and engage in meaningful discussions.',
+    description: 'A Swift iOS concept for sharing concise opinions and starting focused discussions.',
+    fullDescription: 'HotTake explores how a mobile community can make short, provocative opinions easy to publish and discuss. I designed and developed the Swift interface around fast browsing, clear reactions, and lightweight conversation flows.',
     image: hotTakeImage,
     tags: ['Swift', 'iOS', 'Mobile App'],
     techStack: ['Swift', 'iOS', 'Firebase', 'Push Notifications', 'User Authentication'],
@@ -366,8 +372,8 @@ const projectsData = [
   {
     id: 3,
     title: 'Digitechnikum',
-    description: 'In the Digitechnikum project, I am an Mentor for Jung aspiring developers, I provide guidance and support to help them navigate the world of software development and achieve their goals.',
-    fullDescription: 'Digitechnikum is an educational initiative where I serve as a mentor for young aspiring developers. I provide guidance and support to help them navigate the world of software development and achieve their goals. The project focuses on fostering a love for programming and providing hands-on experience with real-world applications.',
+    description: 'Mentoring young developers as they turn ideas into practical software projects.',
+    fullDescription: 'Digitechnikum is an educational initiative where I mentor aspiring developers. I help participants break down ideas, work through technical decisions, and gain hands-on experience while building real projects.',
     image: digitechnikumImage,
     tags: [],
     techStack: ['Mentorship', 'Career Guidance'],
@@ -395,20 +401,55 @@ interface Project {
 const Projects: React.FC = () => {
   const [filter, setFilter] = useState('all');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
 
   const filteredProjects = filter === 'all'
     ? projectsData
     : projectsData.filter(project => project.category === filter);
 
-  const openModal = (project: Project) => {
+  const openModal = (project: Project, trigger?: HTMLElement) => {
+    triggerRef.current = trigger ?? null;
     setSelectedProject(project);
-    document.body.style.overflow = 'hidden';
   };
 
   const closeModal = () => {
     setSelectedProject(null);
-    document.body.style.overflow = 'auto';
   };
+
+  const trapModalFocus = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key !== 'Tab' || !modalRef.current) return;
+    const focusable = Array.from(
+      modalRef.current.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+    );
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
+
+  useEffect(() => {
+    if (!selectedProject) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    closeButtonRef.current?.focus();
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeModal();
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', closeOnEscape);
+      triggerRef.current?.focus();
+    };
+  }, [selectedProject]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -471,6 +512,7 @@ const Projects: React.FC = () => {
         >
           <FilterButton
             $isActive={filter === 'all'}
+            aria-pressed={filter === 'all'}
             onClick={() => setFilter('all')}
             whileHover={{ y: -3 }}
             whileTap={{ y: 0 }}
@@ -479,6 +521,7 @@ const Projects: React.FC = () => {
           </FilterButton>
           <FilterButton
             $isActive={filter === 'web'}
+            aria-pressed={filter === 'web'}
             onClick={() => setFilter('web')}
             whileHover={{ y: -3 }}
             whileTap={{ y: 0 }}
@@ -487,19 +530,12 @@ const Projects: React.FC = () => {
           </FilterButton>
           <FilterButton
             $isActive={filter === 'mobile'}
+            aria-pressed={filter === 'mobile'}
             onClick={() => setFilter('mobile')}
             whileHover={{ y: -3 }}
             whileTap={{ y: 0 }}
           >
             Mobile
-          </FilterButton>
-          <FilterButton
-            $isActive={filter === 'design'}
-            onClick={() => setFilter('design')}
-            whileHover={{ y: -3 }}
-            whileTap={{ y: 0 }}
-          >
-            Design
           </FilterButton>
         </FilterContainer>
 
@@ -514,7 +550,17 @@ const Projects: React.FC = () => {
               <TiltEffect>
                 <ProjectCard
                   variants={itemVariants}
-                  onClick={() => openModal(project)}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Read the ${project.title} case study`}
+                  onClick={(event: React.MouseEvent<HTMLDivElement>) => openModal(project, event.currentTarget)}
+                  onKeyDown={(event: React.KeyboardEvent<HTMLDivElement>) => {
+                    if (event.target !== event.currentTarget) return;
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      openModal(project, event.currentTarget);
+                    }
+                  }}
                 >
                   <ProjectImage>
                     <img src={project.image} alt={project.title} loading="lazy" />
@@ -532,12 +578,12 @@ const Projects: React.FC = () => {
                     </ProjectDescription>
                     <ProjectLinks>
                       {project.githubLink.trim() !== '' && (
-                        <ProjectLink href={project.githubLink} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
+                        <ProjectLink href={project.githubLink} target="_blank" rel="noopener noreferrer" onClick={(e: React.MouseEvent<HTMLAnchorElement>) => e.stopPropagation()}>
                           <IconWrapper icon={FaGithub} /> GitHub
                         </ProjectLink>
                       )}
                       {project.liveLink.trim() !== '' && (
-                        <ProjectLink href={project.liveLink} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
+                        <ProjectLink href={project.liveLink} target="_blank" rel="noopener noreferrer" onClick={(e: React.MouseEvent<HTMLAnchorElement>) => e.stopPropagation()}>
                           <IconWrapper icon={FaExternalLinkAlt} /> Live Demo
                         </ProjectLink>
                       )}
@@ -556,15 +602,21 @@ const Projects: React.FC = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={closeModal}
+              role="presentation"
             >
               <ModalContent
+                ref={modalRef}
                 variants={modalVariants}
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                onClick={(e) => e.stopPropagation()}
+                onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="project-dialog-title"
+                onKeyDown={trapModalFocus}
               >
-                <ModalCloseButton onClick={closeModal}>
+                <ModalCloseButton ref={closeButtonRef} onClick={closeModal} aria-label="Close project details">
                   <IconWrapper icon={FaTimes} />
                 </ModalCloseButton>
 
@@ -575,7 +627,7 @@ const Projects: React.FC = () => {
                 </ModalImageContainer>
 
                 <ModalBody>
-                  <ModalTitle>{selectedProject.title}</ModalTitle>
+                  <ModalTitle id="project-dialog-title">{selectedProject.title}</ModalTitle>
                   <ModalDescription>
                     {selectedProject.fullDescription}
                   </ModalDescription>
@@ -595,9 +647,11 @@ const Projects: React.FC = () => {
                         <IconWrapper icon={FaGithub} /> View Source Code
                       </ModalLink>
                     )}
-                    <ModalLink href={selectedProject.liveLink} target="_blank" rel="noopener noreferrer">
-                      <IconWrapper icon={FaExternalLinkAlt} /> View Live Demo
-                    </ModalLink>
+                    {selectedProject.liveLink.trim() !== '' && (
+                      <ModalLink href={selectedProject.liveLink} target="_blank" rel="noopener noreferrer">
+                        <IconWrapper icon={FaExternalLinkAlt} /> View Live Demo
+                      </ModalLink>
+                    )}
                   </ModalLinks>
                 </ModalBody>
               </ModalContent>

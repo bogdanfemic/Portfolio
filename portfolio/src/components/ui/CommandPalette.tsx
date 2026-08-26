@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { portfolioPath } from '../../config/siteConfig';
 
 type Command = {
   id: string;
@@ -81,6 +82,7 @@ export default function CommandPalette() {
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const paletteRef = useRef<HTMLDivElement>(null);
 
   const commands = useMemo<Command[]>(
     () => [
@@ -91,6 +93,9 @@ export default function CommandPalette() {
       { id: 'future-goals', label: 'Go to Future Goals', keywords: 'roadmap ambitions next', run: () => scrollToId('future-goals') },
       { id: 'threejs-game', label: 'Go to 3D Game', keywords: 'three webgl', run: () => scrollToId('threejs-game') },
       { id: 'contact', label: 'Go to Contact', run: () => scrollToId('contact') },
+      { id: 'mini-os', label: 'Open Mini OS', keywords: 'desktop terminal', run: () => window.location.assign(portfolioPath('os')) },
+      { id: 'impressum', label: 'Open Impressum', keywords: 'legal ddg', run: () => window.location.assign(portfolioPath('impressum')) },
+      { id: 'privacy', label: 'Open Privacy Notice', keywords: 'datenschutz gdpr', run: () => window.location.assign(portfolioPath('datenschutz')) },
     ],
     []
   );
@@ -129,9 +134,11 @@ export default function CommandPalette() {
 
   useEffect(() => {
     if (!open) return;
+    const previouslyFocused = document.activeElement as HTMLElement | null;
     setQuery('');
     setActiveIndex(0);
     inputRef.current?.focus();
+    return () => previouslyFocused?.focus();
   }, [open]);
 
   useEffect(() => {
@@ -145,6 +152,23 @@ export default function CommandPalette() {
     setOpen(false);
   };
 
+  const trapFocus = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key !== 'Tab' || !paletteRef.current) return;
+    const focusable = Array.from(
+      paletteRef.current.querySelectorAll<HTMLElement>('input, button:not([disabled])')
+    );
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
+
   return (
     <Backdrop
       $open={open}
@@ -153,13 +177,15 @@ export default function CommandPalette() {
       aria-label="Command palette"
       onMouseDown={() => setOpen(false)}
     >
-      <Palette onMouseDown={e => e.stopPropagation()}>
+      <Palette ref={paletteRef} onMouseDown={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()} onKeyDown={trapFocus}>
         <Input
           ref={inputRef}
           value={query}
-          onChange={e => setQuery(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
           placeholder="Type a command… (Esc to close)"
-          onKeyDown={e => {
+          aria-label="Search portfolio commands"
+          aria-controls="command-results"
+          onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
             if (e.key === 'ArrowDown') {
               e.preventDefault();
               setActiveIndex(i => Math.min(i + 1, filtered.length - 1));
@@ -172,9 +198,15 @@ export default function CommandPalette() {
             }
           }}
         />
-        <List>
+        <List id="command-results" role="listbox" aria-label="Portfolio commands">
           {filtered.map((c, idx) => (
-            <Item key={c.id} $active={idx === activeIndex} onClick={() => { c.run(); setOpen(false); }}>
+            <Item
+              key={c.id}
+              $active={idx === activeIndex}
+              role="option"
+              aria-selected={idx === activeIndex}
+              onClick={() => { c.run(); setOpen(false); }}
+            >
               <span>{c.label}</span>
               <Hint>{idx === 0 ? 'Enter' : ''}</Hint>
             </Item>

@@ -638,14 +638,18 @@ export const ProjectsApp: React.FC = () => (
           </PillRow>
         </div>
         <LinkRow>
-          <ActionLink href={project.liveLink} target={project.liveLink === '#' ? undefined : '_blank'} rel="noopener noreferrer">
-            <IconWrapper icon={FaExternalLinkAlt} />
-            Live
-          </ActionLink>
-          <ActionLink href={project.codeLink}>
-            <IconWrapper icon={FaGithub} />
-            Code
-          </ActionLink>
+          {project.liveLink !== '#' && (
+            <ActionLink href={project.liveLink} target="_blank" rel="noopener noreferrer">
+              <IconWrapper icon={FaExternalLinkAlt} />
+              Live
+            </ActionLink>
+          )}
+          {project.codeLink !== '#' && (
+            <ActionLink href={project.codeLink} target="_blank" rel="noopener noreferrer">
+              <IconWrapper icon={FaGithub} />
+              Code
+            </ActionLink>
+          )}
         </LinkRow>
       </ProjectCard>
     ))}
@@ -912,7 +916,7 @@ Identity: Bogdan Femic`;
         <TerminalInput
           aria-label="Terminal command"
           value={value}
-          onChange={(event) => setValue(event.target.value)}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => setValue(event.target.value)}
           onKeyDown={onKeyDown}
           autoComplete="off"
           spellCheck={false}

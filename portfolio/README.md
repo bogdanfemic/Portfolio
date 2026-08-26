@@ -2,6 +2,18 @@
 
 React, TypeScript, styled-components, and Three.js portfolio site built with Vite.
 
+## Launch checklist
+
+The app is configured for SPA deployments on Vercel (`vercel.json`) and Netlify (`public/_redirects` and `public/_headers`).
+Before publishing publicly:
+
+1. Complete the postal address and hosting-provider fields in `src/config/siteConfig.ts`.
+2. Review the generated `/impressum` and `/datenschutz` pages against the final hosting contract and any later analytics or form services.
+3. Confirm permission to publish every project screenshot, trademark, and third-party project description.
+4. Run `npm ci`, `npm audit`, and `npm run build`.
+
+The contact form intentionally opens the visitor's email application. It does not transmit form data from the website. The site uses no analytics, advertising trackers, third-party fonts, or embedded social plugins.
+
 ## Run Locally
 
 ```bash

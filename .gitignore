@@ -45,6 +45,8 @@ next-env.d.ts
 .npm
 .eslintcache
 .stylelintcache
+__pycache__/
+*.py[cod]
 
 # Optional REPL history
 .node_repl_history
@@ -77,6 +79,8 @@ dist
 # Gatsby files
 .cache/
 public
+!/portfolio/public/
+!/portfolio/public/**
 
 # vuepress build output
 .vuepress/dist

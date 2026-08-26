@@ -122,64 +122,38 @@ const SkillName = styled.h4`
   color: ${({ theme }) => theme.colors.text};
 `;
 
-const SkillLevel = styled.div`
-  width: 100%;
-  margin-top: 1rem;
-`;
-
-const SkillLevelText = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
+const SkillContext = styled.p`
+  margin-top: 0.5rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  background: var(--surface-2-color);
   font-size: ${({ theme }) => theme.fontSizes.small};
   color: ${({ theme }) => theme.colors.darkGray};
 `;
 
-const SkillLevelBar = styled.div`
-  width: 100%;
-  height: 8px;
-  background-color: ${({ theme }) => theme.colors.lightGray};
-  border-radius: ${({ theme }) => theme.borderRadius.small};
-  overflow: hidden;
-`;
-
-const SkillLevelFill = styled(motion.div)<{ level: number }>`
-  height: 100%;
-  background: linear-gradient(90deg, ${({ theme }) => theme.colors.primary}, ${({ theme }) => theme.colors.secondary});
-  width: ${({ level }) => `${level}%`};
-`;
-
 const Skills: React.FC = () => {
   const frontendSkills = [
-    { name: 'React', icon: FaReact, level: 85 },
-    { name: 'TypeScript', icon: SiTypescript, level: 75 },
-    { name: 'JavaScript', icon: FaJs, level: 85 },
-    { name: 'HTML5', icon: FaHtml5, level: 95 },
-    { name: 'CSS3', icon: FaCss3Alt, level: 90 },
-    { name: 'TailwindCSS', icon: SiTailwindcss, level: 80 },
-    { name: 'Styled Components', icon: SiStyledcomponents, level: 75 },
-    { name: 'Framer Motion', icon: SiFramer, level: 35 },
+    { name: 'React', icon: FaReact, context: 'Primary stack' },
+    { name: 'TypeScript', icon: SiTypescript, context: 'Production use' },
+    { name: 'JavaScript', icon: FaJs, context: 'Core language' },
+    { name: 'HTML5', icon: FaHtml5, context: 'Semantic UI' },
+    { name: 'CSS3', icon: FaCss3Alt, context: 'Responsive systems' },
+    { name: 'TailwindCSS', icon: SiTailwindcss, context: 'Working knowledge' },
+    { name: 'Styled Components', icon: SiStyledcomponents, context: 'Current portfolio' },
+    { name: 'Framer Motion', icon: SiFramer, context: 'Motion systems' },
   ];
   
   const backendSkills = [
-    { name: 'Node.js', icon: FaNodeJs, level: 80 },
-    { name: 'MongoDB', icon: SiMongodb, level: 70 },
-    { name: 'SQL', icon: FaDatabase, level: 65 },
+    { name: 'Node.js', icon: FaNodeJs, context: 'API experience' },
+    { name: 'MongoDB', icon: SiMongodb, context: 'Project experience' },
+    { name: 'SQL', icon: FaDatabase, context: 'Working knowledge' },
   ];
   
   const toolsSkills = [
-    { name: 'Git', icon: FaGitAlt, level: 85 },
-    { name: 'npm', icon: FaNpm, level: 90 },
+    { name: 'Git', icon: FaGitAlt, context: 'Daily workflow' },
+    { name: 'npm', icon: FaNpm, context: 'Daily workflow' },
   ];
-
-  
-  const barVariants = {
-    hidden: { width: 0 },
-    visible: (level: number) => ({
-      width: `${level}%`,
-      transition: { duration: 1, ease: "easeOut" },
-    }),
-  };
   
   return (
     <SkillsSection id="skills">
@@ -221,22 +195,7 @@ const Skills: React.FC = () => {
                 >
                   <SkillIcon><IconWrapper icon={skill.icon} /></SkillIcon>
                   <SkillName>{skill.name}</SkillName>
-                  <SkillLevel>
-                    <SkillLevelText>
-                      <span>Proficiency</span>
-                      <span>{skill.level}%</span>
-                    </SkillLevelText>
-                    <SkillLevelBar>
-                      <SkillLevelFill
-                        level={skill.level}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        custom={skill.level}
-                        variants={barVariants}
-                      />
-                    </SkillLevelBar>
-                  </SkillLevel>
+                  <SkillContext>{skill.context}</SkillContext>
                 </SkillCard>
               ))}
             </SkillsGrid>
@@ -261,22 +220,7 @@ const Skills: React.FC = () => {
                 >
                   <SkillIcon><IconWrapper icon={skill.icon} /></SkillIcon>
                   <SkillName>{skill.name}</SkillName>
-                  <SkillLevel>
-                    <SkillLevelText>
-                      <span>Proficiency</span>
-                      <span>{skill.level}%</span>
-                    </SkillLevelText>
-                    <SkillLevelBar>
-                      <SkillLevelFill
-                        level={skill.level}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        custom={skill.level}
-                        variants={barVariants}
-                      />
-                    </SkillLevelBar>
-                  </SkillLevel>
+                  <SkillContext>{skill.context}</SkillContext>
                 </SkillCard>
               ))}
             </SkillsGrid>
@@ -301,22 +245,7 @@ const Skills: React.FC = () => {
                 >
                   <SkillIcon><IconWrapper icon={skill.icon} /></SkillIcon>
                   <SkillName>{skill.name}</SkillName>
-                  <SkillLevel>
-                    <SkillLevelText>
-                      <span>Proficiency</span>
-                      <span>{skill.level}%</span>
-                    </SkillLevelText>
-                    <SkillLevelBar>
-                      <SkillLevelFill
-                        level={skill.level}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        custom={skill.level}
-                        variants={barVariants}
-                      />
-                    </SkillLevelBar>
-                  </SkillLevel>
+                  <SkillContext>{skill.context}</SkillContext>
                 </SkillCard>
               ))}
             </SkillsGrid>

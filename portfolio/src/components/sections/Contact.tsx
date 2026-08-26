@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { FaMapMarkerAlt, FaEnvelope, FaPhone, FaPaperPlane, FaBook } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaEnvelope, FaPaperPlane, FaBook } from 'react-icons/fa';
 import { IconWrapper } from '../../utils/IconWrapper';
+import { portfolioPath } from '../../config/siteConfig';
 
 const ContactSection = styled.section`
   background-color: ${({ theme }) => theme.colors.lightGray};
@@ -212,6 +213,18 @@ const FormMessage = styled.div<{ isSuccess: boolean }>`
   font-size: ${({ theme }) => theme.fontSizes.medium};
 `;
 
+const PrivacyNote = styled.p`
+  margin-top: 1rem;
+  color: ${({ theme }) => theme.colors.darkGray};
+  font-size: ${({ theme }) => theme.fontSizes.small};
+
+  a {
+    color: ${({ theme }) => theme.colors.primary};
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+`;
+
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -231,28 +244,17 @@ const Contact: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setFormMessage({
-        text: 'Your message has been sent successfully! I will get back to you soon.',
-        success: true,
-      });
-      
-      // Reset form
-      setFormData({
-        name: '',
-        email: '',
-        subject: '',
-        message: '',
-      });
-      
-      // Clear success message after 5 seconds
-      setTimeout(() => {
-        setFormMessage(null);
-      }, 5000);
-    }, 1500);
+
+    const subject = encodeURIComponent(`[Portfolio] ${formData.subject}`);
+    const body = encodeURIComponent(
+      `Hi Bogdan,\n\n${formData.message}\n\nFrom: ${formData.name}\nReply to: ${formData.email}`
+    );
+    window.location.href = `mailto:bogdanfemic07@gmail.com?subject=${subject}&body=${body}`;
+    setIsSubmitting(false);
+    setFormMessage({
+      text: 'Your email application should now be open. The website has not sent or stored your message.',
+      success: true,
+    });
   };
   
   return (
@@ -412,18 +414,21 @@ const Contact: React.FC = () => {
                 whileHover={{ y: -3 }}
                 whileTap={{ y: 0 }}
               >
-                {isSubmitting ? 'Sending...' : (
+                {isSubmitting ? 'Opening...' : (
                   <>
-                    Send Message <IconWrapper icon={FaPaperPlane} />
+                    Open Email App <IconWrapper icon={FaPaperPlane} />
                   </>
                 )}
               </SubmitButton>
               
               {formMessage && (
-                <FormMessage isSuccess={formMessage.success}>
+                <FormMessage isSuccess={formMessage.success} role="status" aria-live="polite">
                   {formMessage.text}
                 </FormMessage>
               )}
+              <PrivacyNote>
+                This form opens your email application; it does not send data to a website server. See the <a href={portfolioPath('datenschutz')}>privacy notice</a>.
+              </PrivacyNote>
             </form>
           </ContactForm>
         </ContactContent>

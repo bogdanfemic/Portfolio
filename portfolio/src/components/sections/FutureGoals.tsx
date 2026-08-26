@@ -18,49 +18,42 @@ const goals = [
     title: 'Master advanced React systems',
     timeframe: 'Next 3 months',
     description: 'Build cleaner state patterns, stronger component architecture, and smoother motion-driven interfaces.',
-    progress: 68,
     icon: FaCodeBranch,
   },
   {
     title: 'Launch a useful product',
     timeframe: 'This year',
     description: 'Ship a polished web app that solves a real problem and can be improved with real user feedback.',
-    progress: 42,
     icon: FaRocket,
   },
   {
     title: 'Grow AI engineering skills',
     timeframe: 'Ongoing',
     description: 'Combine frontend craft with AI-powered workflows, smarter tooling, and practical automation.',
-    progress: 55,
     icon: FaBrain,
   },
   {
     title: 'Learn game programming and design',
     timeframe: 'Next creative step',
     description: 'Study gameplay systems, level design, interaction loops, and the technical craft behind fun digital experiences.',
-    progress: 24,
     icon: FaGamepad,
   },
   {
     title: 'Work more with Blender',
     timeframe: 'Creative practice',
     description: 'Improve 3D modeling, scene composition, materials, and asset creation for interactive projects.',
-    progress: 31,
     icon: SiBlender,
   },
   {
     title: 'Polish mobile app development',
     timeframe: 'Skill upgrade',
     description: 'Build smoother mobile-first interfaces and strengthen app development skills across performance, usability, and responsive flows.',
-    progress: 48,
     icon: FaMobileAlt,
   },
   {
     title: 'Mentor and collaborate more',
     timeframe: 'Next chapter',
     description: 'Support students, contribute to meaningful teams, and build technology with visible social impact.',
-    progress: 76,
     icon: FaUsers,
   },
 ];
@@ -220,7 +213,7 @@ const Console = styled.div`
 const ConsoleLine = styled.p`
   color: ${({ theme }) => theme.colors.text};
   font-size: ${({ theme }) => theme.fontSizes.small};
-  font-family: 'Montserrat', sans-serif;
+  font-family: ${({ theme }) => theme.fonts.secondary};
 
   span {
     color: ${({ theme }) => theme.colors.secondary};
@@ -298,27 +291,6 @@ const GoalDescription = styled.p`
   margin-bottom: 1rem;
 `;
 
-const ProgressMeta = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.45rem;
-  color: ${({ theme }) => theme.colors.darkGray};
-  font-size: ${({ theme }) => theme.fontSizes.small};
-`;
-
-const ProgressTrack = styled.div`
-  height: 9px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--medium-gray) 70%, transparent);
-  overflow: hidden;
-`;
-
-const ProgressFill = styled(motion.div)<{ $progress: number }>`
-  height: 100%;
-  width: ${({ $progress }) => `${$progress}%`};
-  border-radius: inherit;
-  background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--secondary-color));
-`;
 
 const FutureGoals: React.FC = () => {
   const signalPositions = [
@@ -386,7 +358,7 @@ const FutureGoals: React.FC = () => {
               </VisionText>
               <Console>
                 <ConsoleLine><span>status:</span> learning, building, iterating</ConsoleLine>
-                <ConsoleLine><span>next:</span> add your newest goal in the goals array</ConsoleLine>
+                <ConsoleLine><span>next:</span> ship one focused product and learn from real users</ConsoleLine>
               </Console>
             </VisionContent>
           </VisionPanel>
@@ -415,19 +387,6 @@ const FutureGoals: React.FC = () => {
                     <GoalTimeframe>{goal.timeframe}</GoalTimeframe>
                   </GoalHeader>
                   <GoalDescription>{goal.description}</GoalDescription>
-                  <ProgressMeta>
-                    <span>Momentum</span>
-                    <span>{goal.progress}%</span>
-                  </ProgressMeta>
-                  <ProgressTrack>
-                    <ProgressFill
-                      $progress={goal.progress}
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${goal.progress}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1, ease: 'easeOut' }}
-                    />
-                  </ProgressTrack>
                 </div>
               </GoalCard>
             ))}
