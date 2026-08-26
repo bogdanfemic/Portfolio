@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaGithub, FaExternalLinkAlt, FaTimes } from 'react-icons/fa';
 import { IconWrapper } from '../../utils/IconWrapper';
 import TiltEffect from '../../effects/TiltEffect';
-import ScrollAnimation from '../../effects/ScrollAnimation';
 import yaraShopImage from '../../assets/Yara-Shop.webp';
 import hotTakeImage from '../../assets/HotTakePR.webp';
 import digitechnikumImage from '../../assets/Digitechnikum.webp';
@@ -75,7 +74,7 @@ const FilterButton = styled(motion.button) <{ $isActive: boolean }>`
   }
 `;
 
-const ProjectsGrid = styled(motion.div)`
+const ProjectsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 2rem;
@@ -85,7 +84,7 @@ const ProjectsGrid = styled(motion.div)`
   }
 `;
 
-const ProjectCard = styled(motion.div)`
+const ProjectCard = styled.div`
   background-color: var(--surface-color);
   border-radius: ${({ theme }) => theme.borderRadius.medium};
   overflow: hidden;
@@ -97,6 +96,10 @@ const ProjectCard = styled(motion.div)`
     outline: 3px solid var(--accent-color);
     outline-offset: 4px;
   }
+`;
+
+const ProjectItem = styled(motion.div)`
+  min-width: 0;
 `;
 
 const ProjectImage = styled.div`
@@ -451,25 +454,6 @@ const Projects: React.FC = () => {
     };
   }, [selectedProject]);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.5, ease: "easeOut" },
-    },
-  };
-
   const modalVariants = {
     hidden: { opacity: 0, scale: 0.8 },
     visible: {
@@ -539,17 +523,16 @@ const Projects: React.FC = () => {
           </FilterButton>
         </FilterContainer>
 
-        <ProjectsGrid
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
+        <ProjectsGrid>
           {filteredProjects.map((project) => (
-            <ScrollAnimation key={project.id} animationDelay={project.id * 100}>
+            <ProjectItem
+              key={project.id}
+              initial={{ opacity: 0, y: 18, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.28, ease: 'easeOut' }}
+            >
               <TiltEffect>
                 <ProjectCard
-                  variants={itemVariants}
                   role="button"
                   tabIndex={0}
                   aria-label={`Read the ${project.title} case study`}
@@ -591,7 +574,7 @@ const Projects: React.FC = () => {
                   </ProjectContent>
                 </ProjectCard>
               </TiltEffect>
-            </ScrollAnimation>
+            </ProjectItem>
           ))}
         </ProjectsGrid>
 
