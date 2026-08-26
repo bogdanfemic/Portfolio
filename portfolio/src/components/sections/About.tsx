@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { FaCode, FaLaptopCode, FaMobileAlt, FaServer } from 'react-icons/fa';
+import { FaCode, FaLaptopCode, FaMobileAlt, FaRobot } from 'react-icons/fa';
 import { IconWrapper } from '../../utils/IconWrapper';
+import profileImage from '../../assets/Bogdan-Femic-profile.webp';
 
 const AboutSection = styled.section`
   background-color: ${({ theme }) => theme.colors.background};
@@ -55,6 +56,7 @@ const AboutContent = styled.div`
 
 const AboutImage = styled(motion.div)`
   flex: 1;
+  min-height: 520px;
   border-radius: ${({ theme }) => theme.borderRadius.large};
   overflow: hidden;
   box-shadow: ${({ theme }) => theme.shadows.medium};
@@ -63,6 +65,13 @@ const AboutImage = styled(motion.div)`
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    min-height: 0;
+    aspect-ratio: 4 / 5;
   }
 `;
 
@@ -142,6 +151,56 @@ const StatNumber = styled.h4`
 const StatTitle = styled.p`
   font-size: ${({ theme }) => theme.fontSizes.small};
   color: ${({ theme }) => theme.colors.darkGray};
+`;
+
+const CareerSection = styled.div`
+  margin: 0 0 5rem;
+`;
+
+const CareerHeading = styled.h3`
+  margin-bottom: 1.4rem;
+  color: ${({ theme }) => theme.colors.text};
+  font-size: ${({ theme }) => theme.fontSizes.xlarge};
+  text-align: center;
+`;
+
+const CareerGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const CareerCard = styled(motion.article)`
+  border: 1px solid var(--border-color);
+  border-radius: ${({ theme }) => theme.borderRadius.medium};
+  background: var(--surface-color);
+  padding: 1.35rem;
+  box-shadow: ${({ theme }) => theme.shadows.small};
+
+  span {
+    display: block;
+    margin-bottom: 0.55rem;
+    color: ${({ theme }) => theme.colors.primary};
+    font-size: ${({ theme }) => theme.fontSizes.small};
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  h4 {
+    margin-bottom: 0.55rem;
+    color: ${({ theme }) => theme.colors.text};
+    font-size: ${({ theme }) => theme.fontSizes.large};
+  }
+
+  p {
+    color: ${({ theme }) => theme.colors.darkGray};
+    line-height: 1.65;
+  }
 `;
 
 const ServicesContainer = styled.div`
@@ -234,19 +293,12 @@ const About: React.FC = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            {/* Placeholder for about image */}
-            <div style={{ 
-              backgroundColor: '#f0f0f0', 
-              height: '100%', 
-              minHeight: '400px',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              color: '#aaa',
-              fontSize: '1.2rem'
-            }}>
-              Profile Image
-            </div>
+            <img
+              src={profileImage}
+              alt="Bogdan Femic at a Digitechnikum award event"
+              loading="lazy"
+              decoding="async"
+            />
           </AboutImage>
           
           <AboutText
@@ -257,20 +309,20 @@ const About: React.FC = () => {
           >
             <AboutHeading>Who am I?</AboutHeading>
             <AboutDescription>
-              I'm a Frontend Developer and Computer Science student at TU Darmstadt, based in Frankfurt. I build modern web applications with React, TypeScript, and interactive motion systems, with a focus on clarity, performance, and polished presentation.
+              I'm a Software Developer at Digital David AG and a Computer Science student at TU Darmstadt, based in Frankfurt. Since August 2023, I have worked on production web applications with React, Blazor, TypeScript, JavaScript, and C# - from implementation and testing to debugging and reliable delivery.
             </AboutDescription>
             <AboutDescription>
-              Beyond development, I mentor students through the Digitechnikum initiative at Stiftung Polytechnische Gesellschaft, helping young IT talent work on projects around mobility, climate action, sustainability, energy, and accessibility.
+              I work AI-first, using coding assistants, agents, and automation to speed up research, prototyping, debugging, and repetitive tasks. Beyond development, I mentor students through the Digitechnikum initiative and have supported 20 scholarship students with software and hardware projects.
             </AboutDescription>
 
             <HighlightGrid>
               <HighlightCard>
-                <HighlightLabel>Education</HighlightLabel>
-                <HighlightValue>B.Sc. Computer Science, TU Darmstadt</HighlightValue>
+                <HighlightLabel>Professional role</HighlightLabel>
+                <HighlightValue>Software Developer, Digital David AG</HighlightValue>
               </HighlightCard>
               <HighlightCard>
-                <HighlightLabel>Location</HighlightLabel>
-                <HighlightValue>Frankfurt, Hessen, Germany</HighlightValue>
+                <HighlightLabel>Education</HighlightLabel>
+                <HighlightValue>B.Sc. Computer Science, TU Darmstadt</HighlightValue>
               </HighlightCard>
               <HighlightCard>
                 <HighlightLabel>Mentoring</HighlightLabel>
@@ -278,7 +330,7 @@ const About: React.FC = () => {
               </HighlightCard>
               <HighlightCard>
                 <HighlightLabel>Languages</HighlightLabel>
-                <HighlightValue>German, Serbian, English, French</HighlightValue>
+                <HighlightValue>German &amp; Serbian (bilingual), English</HighlightValue>
               </HighlightCard>
             </HighlightGrid>
             
@@ -289,8 +341,8 @@ const About: React.FC = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                <StatNumber>CS</StatNumber>
-                <StatTitle>TU Darmstadt student</StatTitle>
+                <StatNumber>3+</StatNumber>
+                <StatTitle>Years in professional software development</StatTitle>
               </StatItem>
               <StatItem
                 initial={{ opacity: 0, y: 20 }}
@@ -298,8 +350,8 @@ const About: React.FC = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.3 }}
               >
-                <StatNumber>Mentor</StatNumber>
-                <StatTitle>Digitechnikum initiative</StatTitle>
+                <StatNumber>20</StatNumber>
+                <StatTitle>Digitechnikum students supported in 2023/24</StatTitle>
               </StatItem>
               <StatItem
                 initial={{ opacity: 0, y: 20 }}
@@ -307,12 +359,33 @@ const About: React.FC = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.4 }}
               >
-                <StatNumber>4</StatNumber>
-                <StatTitle>Languages spoken</StatTitle>
+                <StatNumber>AI-first</StatNumber>
+                <StatTitle>Development and automation workflow</StatTitle>
               </StatItem>
             </AboutStats>
           </AboutText>
         </AboutContent>
+
+        <CareerSection>
+          <CareerHeading>Experience snapshot</CareerHeading>
+          <CareerGrid>
+            <CareerCard whileHover={{ y: -6 }}>
+              <span>08/2023 - present</span>
+              <h4>Software Developer · Digital David AG</h4>
+              <p>Building and maintaining web applications, resolving complex defects, reviewing code, and shipping tested improvements in agile teams.</p>
+            </CareerCard>
+            <CareerCard whileHover={{ y: -6 }}>
+              <span>10/2022 - present</span>
+              <h4>Mentor · Digitechnikum</h4>
+              <p>Guiding young technologists through software and hardware projects with structured feedback, problem solving, and technical communication.</p>
+            </CareerCard>
+            <CareerCard whileHover={{ y: -6 }}>
+              <span>Selected foundations</span>
+              <h4>DigiClean &amp; programming education</h4>
+              <p>Built a recycling-app concept as a Digitechnikum scholar and delivered an introductory programming workshop at Goethe University in 2019.</p>
+            </CareerCard>
+          </CareerGrid>
+        </CareerSection>
         
         <motion.div
           variants={containerVariants}
@@ -349,9 +422,9 @@ const About: React.FC = () => {
               <ServiceIcon>
                 <IconWrapper icon={FaCode} />
               </ServiceIcon>
-              <ServiceTitle>Web Development</ServiceTitle>
+              <ServiceTitle>Product Engineering</ServiceTitle>
               <ServiceDescription>
-                Building responsive and performant websites using modern HTML, CSS, and JavaScript frameworks.
+                Taking features from requirements through implementation, testing, debugging, code review, and reliable delivery.
               </ServiceDescription>
             </ServiceCard>
             
@@ -383,9 +456,9 @@ const About: React.FC = () => {
               <ServiceIcon>
                 <IconWrapper icon={FaMobileAlt} />
               </ServiceIcon>
-              <ServiceTitle>Responsive Design</ServiceTitle>
+              <ServiceTitle>Mobile App Development</ServiceTitle>
               <ServiceDescription>
-                Creating websites that work flawlessly across all devices, from desktops to smartphones.
+                Building and prototyping mobile experiences with Flutter, Swift, and React Native.
               </ServiceDescription>
             </ServiceCard>
             
@@ -398,11 +471,11 @@ const About: React.FC = () => {
               whileHover={{ y: -10 }}
             >
               <ServiceIcon>
-                <IconWrapper icon={FaServer} />
+                <IconWrapper icon={FaRobot} />
               </ServiceIcon>
-              <ServiceTitle>API Integration</ServiceTitle>
+              <ServiceTitle>AI &amp; Automation</ServiceTitle>
               <ServiceDescription>
-                Connecting frontend applications with backend services and third-party APIs.
+                Integrating coding assistants, agents, and automations into practical development workflows.
               </ServiceDescription>
             </ServiceCard>
           </ServicesContainer>

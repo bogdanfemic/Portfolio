@@ -1005,7 +1005,7 @@ const DesktopWidgets: React.FC<{ openCount: number; reducedMotion: boolean }> = 
       <FocusList>
         <FocusItem>
           <span>Primary stack</span>
-          <span>React + TS</span>
+          <span>Web + Apps + AI</span>
         </FocusItem>
         <FocusItem>
           <span>Interaction layer</span>

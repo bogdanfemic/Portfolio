@@ -79,7 +79,7 @@ export const osApps: OSAppConfig[] = [
     title: 'Resume.pdf',
     icon: FaFilePdf,
     shortcut: 'R',
-    summary: 'Resume placeholder and focus areas',
+    summary: 'Professional experience and focus areas',
     defaultPosition: { x: 536, y: 20 },
     defaultSize: { width: 510, height: 382 },
   },
@@ -123,7 +123,7 @@ export const osProjects = [
 
 export const nowPlayingCards = [
   { label: 'Currently learning', value: '3D modeling, materials, and scene composition' },
-  { label: 'Favorite stack', value: 'React, TypeScript, styled-components, Framer Motion' },
+  { label: 'Production stack', value: 'React, Blazor, TypeScript, C#, Azure, Docker' },
   { label: 'Recent obsession', value: 'Tiny interactive systems that make portfolios feel alive' },
   { label: 'Coding soundtrack', value: 'Focused electronic sets and late-night instrumentals' },
 ];

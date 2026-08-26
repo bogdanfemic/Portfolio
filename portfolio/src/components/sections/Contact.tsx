@@ -286,7 +286,7 @@ const Contact: React.FC = () => {
           >
             <InfoTitle>Contact Information</InfoTitle>
             <InfoText>
-              I'm open for collaborations, internships, and frontend work. Feel free to reach out if you want to discuss a project, a role, or just compare notes on interfaces and product design.
+              I'm open to software, product, app-development, and AI-automation opportunities. Feel free to reach out about a role, a project, or an ambitious idea that needs hands-on execution.
             </InfoText>
             
             <InfoItems>

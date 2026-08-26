@@ -10,18 +10,24 @@ import {
   FaGitAlt, 
   FaNpm, 
   FaDatabase, 
-  FaJava
+  FaJava,
+  FaDocker,
+  FaMobileAlt,
+  FaPython,
+  FaRobot
 } from 'react-icons/fa';
 import { 
   SiTypescript, 
-  SiRedux, 
   SiStyledcomponents, 
   SiFramer, 
-  SiWebpack, 
-  SiJest, 
   SiMongodb, 
-  SiExpress, 
-  SiTailwindcss
+  SiTailwindcss,
+  SiBlazor,
+  SiDotnet,
+  SiFlutter,
+  SiLinux,
+  SiOpenai,
+  SiSwift
 } from 'react-icons/si';
 import { IconWrapper } from '../../utils/IconWrapper';
 
@@ -142,17 +148,31 @@ const Skills: React.FC = () => {
     { name: 'TailwindCSS', icon: SiTailwindcss, context: 'Working knowledge' },
     { name: 'Styled Components', icon: SiStyledcomponents, context: 'Current portfolio' },
     { name: 'Framer Motion', icon: SiFramer, context: 'Motion systems' },
+    { name: 'Blazor', icon: SiBlazor, context: 'Production use' },
   ];
   
   const backendSkills = [
     { name: 'Node.js', icon: FaNodeJs, context: 'API experience' },
+    { name: 'C# / .NET', icon: SiDotnet, context: 'Production use' },
+    { name: 'Java', icon: FaJava, context: 'Software development' },
+    { name: 'Python', icon: FaPython, context: 'Automation & tooling' },
     { name: 'MongoDB', icon: SiMongodb, context: 'Project experience' },
     { name: 'SQL', icon: FaDatabase, context: 'Working knowledge' },
+  ];
+
+  const mobileSkills = [
+    { name: 'Flutter', icon: SiFlutter, context: 'App development' },
+    { name: 'Swift', icon: SiSwift, context: 'iOS development' },
+    { name: 'React Native', icon: FaMobileAlt, context: 'Cross-platform apps' },
   ];
   
   const toolsSkills = [
     { name: 'Git', icon: FaGitAlt, context: 'Daily workflow' },
     { name: 'npm', icon: FaNpm, context: 'Daily workflow' },
+    { name: 'Docker', icon: FaDocker, context: 'Development environments' },
+    { name: 'Linux', icon: SiLinux, context: 'Development & deployment' },
+    { name: 'AI-assisted Development', icon: SiOpenai, context: 'Copilot, Claude, Codex & agents' },
+    { name: 'Automation', icon: FaRobot, context: 'AI-first workflows' },
   ];
   
   return (
@@ -207,9 +227,34 @@ const Skills: React.FC = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <CategoryTitle>Backend Development</CategoryTitle>
+            <CategoryTitle>Software &amp; Backend</CategoryTitle>
             <SkillsGrid>
               {backendSkills.map((skill, index) => (
+                <SkillCard
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ y: -10 }}
+                >
+                  <SkillIcon><IconWrapper icon={skill.icon} /></SkillIcon>
+                  <SkillName>{skill.name}</SkillName>
+                  <SkillContext>{skill.context}</SkillContext>
+                </SkillCard>
+              ))}
+            </SkillsGrid>
+          </SkillCategory>
+
+          <SkillCategory
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <CategoryTitle>Mobile App Development</CategoryTitle>
+            <SkillsGrid>
+              {mobileSkills.map((skill, index) => (
                 <SkillCard
                   key={index}
                   initial={{ opacity: 0, y: 20 }}

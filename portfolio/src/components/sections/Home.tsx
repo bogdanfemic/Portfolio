@@ -7,6 +7,7 @@ import ParallaxEffect from '../../effects/ParallaxEffect';
 import { isWebGLAvailable } from '../../utils/webGLUtils';
 import usePrefersReducedMotion from '../../hooks/usePrefersReducedMotion';
 import { portfolioPath } from '../../config/siteConfig';
+import avatarImage from '../../assets/Bogdan-Femic-avatar.webp';
 
 const ThreeBackground = lazy(() => import('../../effects/ThreeBackground'));
 
@@ -260,6 +261,15 @@ const PortraitCore = styled(motion.div)`
     inset 0 0 38px color-mix(in srgb, var(--accent-color) 16%, transparent);
 `;
 
+const HeroAvatar = styled(motion.img)`
+  width: 82%;
+  height: 82%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  box-shadow: 0 0 40px color-mix(in srgb, var(--accent-color) 18%, transparent);
+`;
+
 const OrbBadge = styled(motion.div)`
   position: absolute;
   border-radius: 999px;
@@ -406,7 +416,7 @@ const Home: React.FC = () => {
               transition={{ duration: 0.45 }}
             >
               <IconWrapper icon={FaBolt} />
-              Portfolio / Frontend / Three.js
+              Software / AI / Apps / Product
             </Eyebrow>
 
             <Title
@@ -422,7 +432,7 @@ const Home: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.05 }}
             >
-              Frontend Developer building sharp interfaces and expressive interactions.
+              Software Developer building AI-assisted web and app products.
             </Subtitle>
 
             <Lead
@@ -430,9 +440,9 @@ const Home: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.1 }}
             >
-              I design and build modern web experiences with React, TypeScript, motion design, and interactive 3D systems.
+              I ship production software with React, Blazor, TypeScript, JavaScript, and C#, while exploring mobile apps, automation, motion design, and interactive 3D systems.
               <span style={{ display: 'block', marginTop: '0.5rem', color: 'var(--hero-fg-muted)', fontWeight: 600 }}>
-                Currently focused on fast, polished product experiences and portfolio work that feels memorable in the first few seconds.
+                Currently working at Digital David AG, studying Computer Science at TU Darmstadt, and mentoring the next generation of builders.
               </span>
             </Lead>
 
@@ -441,8 +451,8 @@ const Home: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.14 }}
             >
-              <ContextPill>Computer Science student at TU Darmstadt</ContextPill>
-              <ContextPill>Based in Frankfurt, Hessen</ContextPill>
+              <ContextPill>Software Developer at Digital David AG</ContextPill>
+              <ContextPill>Computer Science at TU Darmstadt</ContextPill>
               <ContextPill>Mentor for Digitechnikum</ContextPill>
             </ContextRow>
 
@@ -471,16 +481,16 @@ const Home: React.FC = () => {
               transition={{ duration: 0.55, delay: 0.2 }}
             >
               <StatCard>
-                <StatValue>3</StatValue>
-                <StatLabel>Selected projects</StatLabel>
+                <StatValue>3+</StatValue>
+                <StatLabel>Years professional experience</StatLabel>
               </StatCard>
               <StatCard>
-                <StatValue>2</StatValue>
-                <StatLabel>Interactive experiences</StatLabel>
+                <StatValue>20</StatValue>
+                <StatLabel>Students supported</StatLabel>
               </StatCard>
               <StatCard>
-                <StatValue>1</StatValue>
-                <StatLabel>Active mentoring role</StatLabel>
+                <StatValue>AI-first</StatValue>
+                <StatLabel>Build workflow</StatLabel>
               </StatCard>
             </StatsRow>
           </div>
@@ -499,44 +509,12 @@ const Home: React.FC = () => {
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut' }}
               >
-                <motion.div
+                <HeroAvatar
+                  src={avatarImage}
+                  alt="Bogdan Femic avatar"
                   animate={{ rotate: [0, 7, 0, -7, 0] }}
                   transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-                  style={{
-                    width: '68%',
-                    aspectRatio: '1 / 1',
-                    borderRadius: '50%',
-                    display: 'grid',
-                    placeItems: 'center',
-                    color: 'var(--hero-fg)',
-                    background:
-                      'radial-gradient(circle at 50% 35%, color-mix(in srgb, var(--hero-fg) 20%, transparent), transparent 42%), linear-gradient(135deg, color-mix(in srgb, var(--accent-color) 22%, transparent), color-mix(in srgb, var(--secondary-color) 14%, transparent))',
-                    boxShadow: '0 0 40px color-mix(in srgb, var(--accent-color) 16%, transparent)',
-                  }}
-                >
-                  <svg width="220" height="220" viewBox="0 0 220 220" fill="none" aria-hidden="true">
-                    <circle cx="110" cy="110" r="72" stroke="color-mix(in srgb, var(--hero-fg) 16%, transparent)" strokeWidth="1.5" />
-                    <circle cx="110" cy="92" r="24" fill="color-mix(in srgb, var(--hero-fg) 20%, transparent)" />
-                    <path
-                      d="M58 156c10-23 31-36 52-36s42 13 52 36"
-                      stroke="color-mix(in srgb, var(--hero-fg) 22%, transparent)"
-                      strokeWidth="10"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M40 110h140"
-                      stroke="color-mix(in srgb, var(--accent-color) 22%, transparent)"
-                      strokeWidth="2"
-                      strokeDasharray="6 10"
-                    />
-                    <path
-                      d="M110 30v160"
-                      stroke="color-mix(in srgb, var(--secondary-color) 18%, transparent)"
-                      strokeWidth="2"
-                      strokeDasharray="6 10"
-                    />
-                  </svg>
-                </motion.div>
+                />
               </PortraitCore>
               <OrbBadgeTop
                 animate={{ y: [0, -6, 0] }}

@@ -2,7 +2,6 @@ import React, { FormEvent, KeyboardEvent, useEffect, useMemo, useRef, useState }
 import styled from 'styled-components';
 import {
   FaCheck,
-  FaCode,
   FaExternalLinkAlt,
   FaGithub,
   FaGraduationCap,
@@ -13,6 +12,7 @@ import {
 } from 'react-icons/fa';
 import { IconWrapper } from '../../utils/IconWrapper';
 import { contactLinks, nowPlayingCards, OSAppId, OSSystemAction, osProjects } from './osData';
+import avatarImage from '../../assets/Bogdan-Femic-avatar.webp';
 
 const Stack = styled.div`
   display: grid;
@@ -61,6 +61,13 @@ const Avatar = styled.div`
   color: var(--os-accent-text);
   font-size: 2rem;
   box-shadow: 0 18px 45px color-mix(in srgb, var(--os-accent) 22%, transparent);
+`;
+
+const AvatarImage = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
 `;
 
 const HeroTitle = styled.h2`
@@ -478,17 +485,6 @@ const ResumeLine = styled.div`
   }
 `;
 
-const DisabledButton = styled.button`
-  min-height: 40px;
-  border: 1px solid var(--os-border);
-  border-radius: 999px;
-  background: var(--os-panel);
-  color: var(--os-muted);
-  font-weight: 800;
-  padding: 0 0.9rem;
-  cursor: not-allowed;
-`;
-
 interface TerminalEntry {
   id: number;
   command?: string;
@@ -583,13 +579,13 @@ export const AboutApp: React.FC = () => (
   <Stack>
     <HeroCard>
       <Avatar>
-        <IconWrapper icon={FaCode} />
+        <AvatarImage src={avatarImage} alt="Bogdan Femic avatar" />
       </Avatar>
       <div>
         <HeroTitle>Bogdan Femic</HeroTitle>
         <Intro>
-          Frontend developer and Computer Science student at TU Darmstadt, building sharp
-          interfaces, motion-led web experiences, and interactive portfolio systems.
+          Software Developer at Digital David AG and Computer Science student at TU Darmstadt,
+          building production web software, mobile experiences, AI-assisted workflows, and interactive UI systems.
         </Intro>
       </div>
     </HeroCard>
@@ -601,8 +597,8 @@ export const AboutApp: React.FC = () => (
       </StatPanel>
       <StatPanel>
         <IconWrapper icon={FaTools} />
-        <Metric>React + TS</Metric>
-        <Intro>Primary build stack</Intro>
+        <Metric>3+ years</Metric>
+        <Intro>Professional software development</Intro>
       </StatPanel>
       <StatPanel>
         <IconWrapper icon={FaRegClock} />
@@ -726,13 +722,13 @@ export const SkillsTerminalApp: React.FC<SkillsTerminalAppProps> = ({ mode, onOp
       case 'help':
         return helpText;
       case 'whoami':
-        return 'Bogdan Femic - Computer Science student at TU Darmstadt, based near Frankfurt, building sharp web interfaces and interactive portfolio systems.';
+        return 'Bogdan Femic - Software Developer at Digital David AG, Computer Science student at TU Darmstadt, and Digitechnikum mentor based in Frankfurt.';
       case 'skills':
-        return 'React, TypeScript, styled-components, Framer Motion, Three.js, Swift, Node.js, Firebase, MongoDB, accessibility, UI polish, mentorship.';
+        return 'React, Blazor, TypeScript, JavaScript, C#, Java, Python, Flutter, Swift, React Native, Azure, Docker, Linux, AI-assisted development, testing, debugging, and mentorship.';
       case 'stack':
         return 'Preferred stack: React + TypeScript for structure, styled-components for scoped visual systems, Framer Motion for feel, Three.js for depth.';
       case 'brief':
-        return 'Bogdan Femic: CS student and frontend developer near Frankfurt. Strong fit for React/TypeScript UI work, motion-heavy product surfaces, portfolio systems, and teams that care about interface taste as much as implementation quality.';
+        return 'Bogdan Femic: Software Developer and CS student in Frankfurt with production web experience, mobile app skills, AI-first workflows, ownership from requirements through delivery, and hands-on mentoring experience.';
       case 'contact':
         return 'Email: bogdanfemic07@gmail.com\nGitHub: github.com/bogdanfemic\nLinkedIn: linkedin.com/in/bogdan-femic';
       case 'now':
@@ -754,7 +750,7 @@ Theme: ${mode}
 Window server: Framer Motion + controlled resize
 Desktop: glass grid / live widgets
 Mission Control: enabled
-Stack: React, TypeScript, styled-components, Three.js
+Stack: React, Blazor, TypeScript, C#, Flutter, Swift, React Native, Azure, Docker
 Identity: Bogdan Femic`;
       case 'matrix':
         return '01010000 01101111 01110010 01110100 01100110 01101111 01101100 01101001 01101111\nSignal locked. Creativity bus nominal. UI latency low. Build taste detected.';
@@ -1016,31 +1012,34 @@ export const ResumeApp: React.FC = () => (
       <ResumeHeader>
         <div>
           <Label>Resume.pdf</Label>
-          <h2>Resume placeholder</h2>
+          <h2>Professional snapshot</h2>
         </div>
-        <Pill>Draft</Pill>
+        <Pill>Current</Pill>
       </ResumeHeader>
       <Intro>
-        No resume PDF was found in the repository, so this window is intentionally a clean
-        placeholder. Add a real PDF later and update the button target in this app.
+        Software Developer with hands-on experience taking digital products and features from requirements through implementation, testing, debugging, and stable delivery.
       </Intro>
       <ResumeSection>
         <ResumeLine>
-          <span>Focus</span>
-          <strong>Frontend development, interactive UI, motion systems</strong>
+          <span>Experience</span>
+          <strong>Digital David AG · Software Developer · 08/2023 - present</strong>
         </ResumeLine>
         <ResumeLine>
           <span>Stack</span>
-          <strong>React, TypeScript, styled-components, Framer Motion, Three.js</strong>
+          <strong>React, Blazor, TypeScript, JavaScript, C#, Flutter, Swift, React Native</strong>
         </ResumeLine>
         <ResumeLine>
           <span>Education</span>
           <strong>Computer Science at TU Darmstadt</strong>
         </ResumeLine>
+        <ResumeLine>
+          <span>Leadership</span>
+          <strong>Digitechnikum mentor · 20 scholarship students supported in 2023/24</strong>
+        </ResumeLine>
       </ResumeSection>
     </ResumeSheet>
-    <DisabledButton type="button" disabled>
-      Download Resume unavailable
-    </DisabledButton>
+    <ActionLink href="mailto:bogdanfemic07@gmail.com?subject=CV%20request">
+      Request full CV
+    </ActionLink>
   </Stack>
 );

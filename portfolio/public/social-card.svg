@@ -8,6 +8,6 @@
   <circle cx="1040" cy="590" r="300" fill="#ff4f9a" opacity=".08"/>
   <rect x="84" y="88" width="94" height="12" rx="6" fill="url(#accent)"/>
   <text x="84" y="252" fill="#f3f7ff" font-family="Segoe UI,Arial,sans-serif" font-size="92" font-weight="750">Bogdan Femic</text>
-  <text x="88" y="336" fill="#bfcdf0" font-family="Segoe UI,Arial,sans-serif" font-size="38">Frontend developer · React · TypeScript · Interactive 3D</text>
+  <text x="88" y="336" fill="#bfcdf0" font-family="Segoe UI,Arial,sans-serif" font-size="38">Software Developer · AI · Web · Mobile · Product</text>
   <text x="88" y="490" fill="#69dfff" font-family="Consolas,monospace" font-size="28">portfolio / selected work / mini os</text>
 </svg>
